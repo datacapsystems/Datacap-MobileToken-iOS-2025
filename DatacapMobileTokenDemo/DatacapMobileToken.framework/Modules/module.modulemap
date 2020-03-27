@@ -1,0 +1,6 @@
+framework module DatacapMobileToken {
+  umbrella header "DatacapMobileToken.h"
+
+  export *
+  module * { export * }
+}

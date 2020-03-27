@@ -1,0 +1,365 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		ACD32107242D3ADB00694A06 /* DatacapMobileToken.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */; };
+		ACD32108242D3ADB00694A06 /* DatacapMobileToken.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ACD3210F242D3C9100694A06 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210B242D3C9100694A06 /* ViewController.m */; };
+		ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210C242D3C9100694A06 /* AppDelegate.m */; };
+		ACD32118242D3D3900694A06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACD32117242D3D3900694A06 /* Assets.xcassets */; };
+		ACD32121242D3E1100694A06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACD3211A242D3E1100694A06 /* LaunchScreen.storyboard */; };
+		ACD32122242D3E1100694A06 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ACD3211C242D3E1100694A06 /* logo.png */; };
+		ACD32124242D3E1100694A06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACD3211E242D3E1100694A06 /* Main.storyboard */; };
+		ACD32125242D3E1100694A06 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD32120242D3E1100694A06 /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		ACF4E6D02429418400853D25 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ACD32108242D3ADB00694A06 /* DatacapMobileToken.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6534DE931D35A81000AF43B7 /* DatacapMobileTokenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatacapMobileTokenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.framework; sourceTree = "<group>"; };
+		ACD3210B242D3C9100694A06 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../DatacapMobileDemo/ViewController.m; sourceTree = "<group>"; };
+		ACD3210C242D3C9100694A06 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../DatacapMobileDemo/AppDelegate.m; sourceTree = "<group>"; };
+		ACD3210D242D3C9100694A06 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../DatacapMobileDemo/AppDelegate.h; sourceTree = "<group>"; };
+		ACD3210E242D3C9100694A06 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../DatacapMobileDemo/ViewController.h; sourceTree = "<group>"; };
+		ACD32115242D3D1C00694A06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = DatacapMobileDemo/Info.plist; sourceTree = SOURCE_ROOT; };
+		ACD32117242D3D3900694A06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = DatacapMobileDemo/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		ACD3211B242D3E1100694A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = DatacapMobileDemo/Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
+		ACD3211C242D3E1100694A06 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = DatacapMobileDemo/logo.png; sourceTree = SOURCE_ROOT; };
+		ACD3211F242D3E1100694A06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = DatacapMobileDemo/Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
+		ACD32120242D3E1100694A06 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DatacapMobileDemo/main.m; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6534DE901D35A81000AF43B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACD32107242D3ADB00694A06 /* DatacapMobileToken.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6534DE8A1D35A81000AF43B7 = {
+			isa = PBXGroup;
+			children = (
+				6534DE951D35A81000AF43B7 /* DatacapMobileTokenDemo */,
+				6534DE941D35A81000AF43B7 /* Products */,
+				ACD32105242D3ADB00694A06 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6534DE941D35A81000AF43B7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6534DE931D35A81000AF43B7 /* DatacapMobileTokenDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6534DE951D35A81000AF43B7 /* DatacapMobileTokenDemo */ = {
+			isa = PBXGroup;
+			children = (
+				ACD3210D242D3C9100694A06 /* AppDelegate.h */,
+				ACD3210C242D3C9100694A06 /* AppDelegate.m */,
+				ACD3210E242D3C9100694A06 /* ViewController.h */,
+				ACD3210B242D3C9100694A06 /* ViewController.m */,
+				ACD32117242D3D3900694A06 /* Assets.xcassets */,
+				ACD32115242D3D1C00694A06 /* Info.plist */,
+				ACD32119242D3DF000694A06 /* Supporting Files */,
+			);
+			name = DatacapMobileTokenDemo;
+			path = MonetaryMobileDemo;
+			sourceTree = "<group>";
+		};
+		ACD32105242D3ADB00694A06 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ACD32119242D3DF000694A06 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				ACD3211A242D3E1100694A06 /* LaunchScreen.storyboard */,
+				ACD3211E242D3E1100694A06 /* Main.storyboard */,
+				ACD3211C242D3E1100694A06 /* logo.png */,
+				ACD32120242D3E1100694A06 /* main.m */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6534DE921D35A81000AF43B7 /* DatacapMobileTokenDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6534DEAA1D35A81000AF43B7 /* Build configuration list for PBXNativeTarget "DatacapMobileTokenDemo" */;
+			buildPhases = (
+				6534DE8F1D35A81000AF43B7 /* Sources */,
+				6534DE901D35A81000AF43B7 /* Frameworks */,
+				6534DE911D35A81000AF43B7 /* Resources */,
+				ACF4E6D02429418400853D25 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DatacapMobileTokenDemo;
+			productName = MonetaryMobileDemo;
+			productReference = 6534DE931D35A81000AF43B7 /* DatacapMobileTokenDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6534DE8B1D35A81000AF43B7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = Monetary;
+				TargetAttributes = {
+					6534DE921D35A81000AF43B7 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = Q68NE4GJ3V;
+					};
+				};
+			};
+			buildConfigurationList = 6534DE8E1D35A81000AF43B7 /* Build configuration list for PBXProject "DatacapMobileTokenDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+				Base,
+			);
+			mainGroup = 6534DE8A1D35A81000AF43B7;
+			productRefGroup = 6534DE941D35A81000AF43B7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6534DE921D35A81000AF43B7 /* DatacapMobileTokenDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6534DE911D35A81000AF43B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACD32124242D3E1100694A06 /* Main.storyboard in Resources */,
+				ACD32118242D3D3900694A06 /* Assets.xcassets in Resources */,
+				ACD32121242D3E1100694A06 /* LaunchScreen.storyboard in Resources */,
+				ACD32122242D3E1100694A06 /* logo.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6534DE8F1D35A81000AF43B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACD3210F242D3C9100694A06 /* ViewController.m in Sources */,
+				ACD32125242D3E1100694A06 /* main.m in Sources */,
+				ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		ACD3211A242D3E1100694A06 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACD3211B242D3E1100694A06 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		ACD3211E242D3E1100694A06 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ACD3211F242D3E1100694A06 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6534DEA81D35A81000AF43B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6534DEA91D35A81000AF43B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6534DEAB1D35A81000AF43B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q68NE4GJ3V;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = DatacapMobileDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dcap.DatacapMobileDemo;
+				PRODUCT_NAME = DatacapMobileTokenDemo;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6534DEAC1D35A81000AF43B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Q68NE4GJ3V;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = DatacapMobileDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dcap.DatacapMobileDemo;
+				PRODUCT_NAME = DatacapMobileTokenDemo;
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6534DE8E1D35A81000AF43B7 /* Build configuration list for PBXProject "DatacapMobileTokenDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6534DEA81D35A81000AF43B7 /* Debug */,
+				6534DEA91D35A81000AF43B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6534DEAA1D35A81000AF43B7 /* Build configuration list for PBXNativeTarget "DatacapMobileTokenDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6534DEAB1D35A81000AF43B7 /* Debug */,
+				6534DEAC1D35A81000AF43B7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6534DE8B1D35A81000AF43B7 /* Project object */;
+}
