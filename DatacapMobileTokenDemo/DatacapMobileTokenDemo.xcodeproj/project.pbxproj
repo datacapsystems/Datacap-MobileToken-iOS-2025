@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		ACD32107242D3ADB00694A06 /* DatacapMobileToken.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */; };
-		ACD32108242D3ADB00694A06 /* DatacapMobileToken.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ACD32107242D3ADB00694A06 /* DatacapMobileToken.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */; };
+		ACD32108242D3ADB00694A06 /* DatacapMobileToken.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACD3210F242D3C9100694A06 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210B242D3C9100694A06 /* ViewController.m */; };
 		ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210C242D3C9100694A06 /* AppDelegate.m */; };
 		ACD32118242D3D3900694A06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACD32117242D3D3900694A06 /* Assets.xcassets */; };
@@ -25,7 +25,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				ACD32108242D3ADB00694A06 /* DatacapMobileToken.framework in Embed Frameworks */,
+				ACD32108242D3ADB00694A06 /* DatacapMobileToken.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -34,7 +34,7 @@
 
 /* Begin PBXFileReference section */
 		6534DE931D35A81000AF43B7 /* DatacapMobileTokenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatacapMobileTokenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.framework; sourceTree = "<group>"; };
+		ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.xcframework; sourceTree = "<group>"; };
 		ACD3210B242D3C9100694A06 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../DatacapMobileDemo/ViewController.m; sourceTree = "<group>"; };
 		ACD3210C242D3C9100694A06 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../DatacapMobileDemo/AppDelegate.m; sourceTree = "<group>"; };
 		ACD3210D242D3C9100694A06 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../DatacapMobileDemo/AppDelegate.h; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACD32107242D3ADB00694A06 /* DatacapMobileToken.framework in Frameworks */,
+				ACD32107242D3ADB00694A06 /* DatacapMobileToken.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +94,7 @@
 		ACD32105242D3ADB00694A06 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ACD32106242D3ADB00694A06 /* DatacapMobileToken.framework */,
+				ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
