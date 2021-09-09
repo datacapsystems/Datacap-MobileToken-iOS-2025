@@ -6,7 +6,7 @@
 	<dict>
 		<key>CardDataEntry.nib</key>
 		<data>
-		zXSzxg8j0PrSB0nCT2wOZFW2vzY=
+		xB5LGORAzPbXLfnGisLFeU819IA=
 		</data>
 		<key>Headers/DatacapMobileToken.h</key>
 		<data>
@@ -30,7 +30,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		+XMzexp8uA8QeGCwbDqH8CgK4eo=
+		gAKU05GEZ9UT80HHEKl7CUd+V1Y=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -63,11 +63,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			zXSzxg8j0PrSB0nCT2wOZFW2vzY=
+			xB5LGORAzPbXLfnGisLFeU819IA=
 			</data>
 			<key>hash2</key>
 			<data>
-			UNj5g5QTIdtoZ5pGBcvlyPhBzXczUt1ImlZzMWBaR6o=
+			aQ7Xo1OmLJUd6fX9h2rgyzB+qqptjeXKRMtNy5M64uQ=
 			</data>
 		</dict>
 		<key>Headers/DatacapMobileToken.h</key>
