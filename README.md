@@ -1,0 +1,251 @@
+# Datacap Token iOS - Modern Payment Tokenization
+
+<div align="center">
+  <img src="DatacapMobileTokenDemo/DatacapMobileDemo/logo.png" alt="Datacap Logo" width="300"/>
+  
+  [![iOS](https://img.shields.io/badge/iOS-13.0+-black.svg)](https://www.apple.com/ios/)
+  [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org/)
+  [![License](https://img.shields.io/badge/License-Commercial-blue.svg)](LICENSE)
+  [![App Store Ready](https://img.shields.io/badge/App%20Store-Ready-green.svg)](APP_STORE_SUBMISSION.md)
+</div>
+
+## 🚀 Overview
+
+Datacap Token is a cutting-edge iOS application that demonstrates secure payment tokenization using Datacap's MobileToken SDK. Built with iOS 26's stunning Liquid Glass design language, this app provides enterprise-grade security with a beautiful, modern interface.
+
+## 🎨 Features
+
+- **iOS 26 Liquid Glass UI** - Stunning glass morphism effects with dynamic animations
+- **Secure Tokenization** - Convert sensitive payment data to secure tokens
+- **Bank-Level Encryption** - Industry-standard security protocols
+- **Lightning Fast** - Get tokens in milliseconds
+- **PCI Compliant** - Meet all regulatory requirements
+- **Beautiful Animations** - Smooth transitions and haptic feedback
+
+## 📱 Screenshots
+
+<div align="center">
+  <img src="docs/screenshot1.png" alt="Home Screen" width="250"/>
+  <img src="docs/screenshot2.png" alt="Token Generation" width="250"/>
+  <img src="docs/screenshot3.png" alt="Success Screen" width="250"/>
+</div>
+
+## 🏗️ Architecture
+
+```mermaid
+graph TB
+    subgraph "iOS App"
+        A[ModernViewController<br/>Swift UI Layer] --> B[DatacapTokenizer<br/>Objective-C Bridge]
+        A --> C[GlassMorphism<br/>UI Extensions]
+        B --> D[DatacapMobileToken<br/>Framework]
+    end
+    
+    subgraph "Datacap API"
+        D --> E[Token Service<br/>API Endpoint]
+        E --> F[Secure Token<br/>Generation]
+        F --> G[Response]
+    end
+    
+    subgraph "UI Components"
+        C --> H[Liquid Glass<br/>Effects]
+        C --> I[Custom Alerts]
+        C --> J[Loading States]
+        H --> K[Blur Effects]
+        H --> L[Specular Highlights]
+        H --> M[Shimmer Animation]
+    end
+    
+    G --> A
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#bfb,stroke:#333,stroke-width:2px
+```
+
+## 🛠️ Technical Stack
+
+- **Language**: Swift 5.0+ & Objective-C
+- **UI Framework**: UIKit with programmatic UI
+- **Design Pattern**: MVC with Extensions
+- **Minimum iOS**: 13.0
+- **Architecture**: arm64, armv7
+
+## 📦 Installation
+
+### Prerequisites
+
+- Xcode 15.0 or later
+- iOS 13.0+ deployment target
+- Apple Developer account (for device testing)
+
+### Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone git@github.com:datacapsystems/MobileToken-iOS-Datacap.git
+   cd MobileToken-iOS-Datacap
+   ```
+
+2. **Open in Xcode**
+   ```bash
+   open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
+   ```
+
+3. **Configure Signing**
+   - Select your development team in project settings
+   - Enable automatic code signing
+
+4. **Build and Run**
+   - Select a simulator or device
+   - Press ⌘+R to run
+
+## 🔧 Configuration
+
+### Swift Bridging Header
+
+The project uses a bridging header to integrate the Objective-C framework:
+```objc
+// DatacapMobileDemo-Bridging-Header.h
+#import <DatacapMobileToken/DatacapMobileToken.h>
+#import "ViewController.h"
+```
+
+### Public Key Setup
+
+For production use, replace the test public key in `ModernViewController.swift`:
+```swift
+tokenizer.requestKeyedToken(
+    withPublicKey: "YOUR_PRODUCTION_PUBLIC_KEY",
+    isCertification: false,  // Set to false for production
+    andDelegate: self,
+    overViewController: self
+)
+```
+
+## 🎯 Usage
+
+### Basic Implementation
+
+```swift
+// Initialize tokenizer
+let tokenizer = DatacapTokenizer()
+
+// Request token
+tokenizer.requestKeyedToken(
+    withPublicKey: publicKey,
+    isCertification: true,
+    andDelegate: self,
+    overViewController: self
+)
+
+// Handle response
+func tokenCreated(_ token: DatacapToken!) {
+    print("Token: \(token.token)")
+    print("Brand: \(token.brand)")
+    print("Last 4: \(token.last4)")
+}
+```
+
+### Custom UI Styling
+
+```swift
+// Apply glass morphism to any view
+myView.applyLiquidGlass(
+    intensity: 0.85,
+    cornerRadius: 20,
+    shadowOpacity: 0.15
+)
+
+// Add shimmer effect
+myView.addGlassShimmer()
+
+// Style buttons with Datacap branding
+myButton.applyDatacapGlassStyle(isPrimary: true)
+```
+
+## 🎨 Design System
+
+### Colors
+
+| Color | Hex | Usage |
+|-------|-----|-------|
+| Primary Red | #941a25 | Buttons, accents |
+| Dark Gray | #54595f | Text, secondary |
+| Blue Gray | #778799 | Subtle elements |
+| Near Black | #231f20 | Headers |
+| Light Background | #f6f9fc | Backgrounds |
+
+### Glass Morphism Parameters
+
+- **Blur Intensity**: 0.85 - 0.95
+- **Corner Radius**: 16 - 24px
+- **Shadow Opacity**: 0.05 - 0.20
+- **Border Width**: 0.5px
+- **Border Opacity**: 0.2
+
+## 📱 App Store Submission
+
+See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for complete submission guidelines.
+
+### Quick Checklist
+
+- [ ] Update version and build number
+- [ ] Test on multiple devices
+- [ ] Create App Store screenshots
+- [ ] Prepare app description and keywords
+- [ ] Archive and validate
+- [ ] Submit for review
+
+## 🧪 Testing
+
+### Manual Testing
+
+1. Launch app and verify glass morphism effects
+2. Tap "Get Secure Token" button
+3. Enter test card data
+4. Verify token generation
+5. Check error handling
+
+### Test Card Numbers
+
+Use these test cards in certification mode:
+- Visa: 4111111111111111
+- Mastercard: 5555555555554444
+- Amex: 378282246310005
+
+## 🔒 Security
+
+- All payment data is transmitted over secure HTTPS
+- No sensitive data is stored on device
+- Tokens are one-time use only
+- PCI DSS compliant implementation
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is proprietary software owned by Datacap Systems, Inc. All rights reserved.
+
+## 🆘 Support
+
+- **Technical Support**: https://datacapsystems.com/support
+- **Documentation**: https://docs.datacapsystems.com
+- **Issues**: https://github.com/datacapsystems/MobileToken-iOS/issues
+
+## 🙏 Acknowledgments
+
+- Built with Datacap's MobileToken SDK
+- Inspired by iOS 26's Liquid Glass design
+- Optimized for modern iOS devices
+
+---
+
+<div align="center">
+  Made with ❤️ by <a href="https://datacapsystems.com">Datacap Systems</a>
+</div>
