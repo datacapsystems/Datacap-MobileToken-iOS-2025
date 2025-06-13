@@ -101,13 +101,147 @@ graph TB
    open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
    ```
 
-3. **Configure Signing**
-   - Select your development team in project settings
-   - Enable automatic code signing
+## 🚀 Building and Testing
+
+### Building for iOS Simulator
+
+1. **Open the Project**
+   ```bash
+   cd /path/to/MobileToken-iOS-Datacap
+   open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
+   ```
+
+2. **Configure Build Settings**
+   - Select the project in navigator
+   - Go to Build Settings tab
+   - Search for "Objective-C Bridging Header"
+   - Set to: `DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h`
+
+3. **Select Simulator**
+   - Click device selector in Xcode toolbar
+   - Choose iPhone 14 Pro or newer (recommended)
+   - Download simulator if needed via Window → Devices and Simulators
 
 4. **Build and Run**
-   - Select a simulator or device
-   - Press ⌘+R to run
+   - Press `⌘+R` or click Play button
+   - App will launch with glass morphism UI
+
+### Building for Your iPhone
+
+1. **Prerequisites**
+   - Connect iPhone via USB cable
+   - Trust computer when prompted on phone
+   - Enable Developer Mode (iOS 16+):
+     - Settings → Privacy & Security → Developer Mode → Enable
+     - Restart phone when prompted
+
+2. **Configure Code Signing**
+   - Go to Signing & Capabilities tab
+   - Check "Automatically manage signing"
+   - Select Team (use personal Apple ID if no paid developer account)
+   - Bundle Identifier: `com.datacapsystems.mobiletoken` (or change to your own)
+
+3. **Select Your Device**
+   - Choose your iPhone from device selector
+   - Wait for Xcode to prepare device (first time only)
+
+4. **Install and Run**
+   - Press `⌘+R` to build and install
+   - If prompted about untrusted developer:
+     - On iPhone: Settings → General → VPN & Device Management
+     - Trust your developer certificate
+
+### Command Line Build (Automated)
+
+For automated builds without Xcode UI:
+
+```bash
+# Build for simulator
+xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
+  -scheme DatacapMobileTokenDemo \
+  -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+  build
+
+# Build for device (requires provisioning)
+xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
+  -scheme DatacapMobileTokenDemo \
+  -destination 'platform=iOS,name=Your iPhone Name' \
+  build
+```
+
+### Using Fastlane (Advanced)
+
+Create a `Fastfile` for automated deployment:
+
+```ruby
+# fastlane/Fastfile
+platform :ios do
+  desc "Build and install on device"
+  lane :install do
+    build_app(
+      project: "DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj",
+      scheme: "DatacapMobileTokenDemo",
+      export_method: "development"
+    )
+    install_on_device
+  end
+end
+```
+
+Then run: `fastlane install`
+
+### Testing the App
+
+1. **Launch App** - See glass morphism home screen
+2. **Tap "Get Secure Token"** - Opens tokenization form
+3. **Enter Test Card Data**:
+   - Number: `4111111111111111` (Visa)
+   - Expiry: Any future date (e.g., 12/25)
+   - CVV: Any 3 digits (e.g., 123)
+4. **Submit** - Receive secure token response
+
+### Troubleshooting
+
+#### Common Issues
+
+**"Module 'DatacapMobileToken' not found"**
+- Clean build: `⌘+Shift+K`
+- Delete derived data: `rm -rf ~/Library/Developer/Xcode/DerivedData`
+- Ensure framework is set to "Embed & Sign"
+
+**"Could not launch app - code signing"**
+- Check team selection in Signing & Capabilities
+- For free accounts, delete app from device every 7 days
+- Verify provisioning profile is valid
+
+**"Unable to install app"**
+- Delete existing app from device
+- Restart Xcode and device
+- Check device has enough storage
+
+**Build succeeds but app crashes**
+- Check console for errors: `⌘+Shift+Y`
+- Verify deployment target is iOS 13.0+
+- Ensure all frameworks are properly embedded
+
+#### Xcode Terms Agreement Issue
+
+If Xcode shows "You must agree to terms":
+1. Quit Xcode completely
+2. Open Terminal and run: `sudo xcodebuild -license accept`
+3. Or reboot Mac and reopen Xcode
+4. Click through agreement prompts
+
+### Quick Commands Reference
+
+| Action | Shortcut |
+|--------|----------|
+| Build | `⌘+B` |
+| Run | `⌘+R` |
+| Stop | `⌘+.` |
+| Clean | `⌘+Shift+K` |
+| Console | `⌘+Shift+Y` |
+| Devices | `⌘+Shift+2` |
 
 ## 🔧 Configuration
 
