@@ -10,6 +10,7 @@ This file contains important information for AI assistants (like Claude) working
 **UI Design**: iOS 26 Liquid Glass (Glass Morphism)  
 **Target**: App Store Ready Demo Application  
 **Status**: Complete with modern UI, ready for testing and deployment  
+**Repository**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025  
 
 ## Recent Updates (2025)
 
@@ -50,7 +51,7 @@ Light Background: #f6f9fc
 ### 3. Project Structure
 
 ```
-MobileToken-iOS-Datacap/
+Datacap-MobileToken-iOS-2025/
 ├── DatacapMobileTokenDemo/
 │   ├── DatacapMobileDemo/
 │   │   ├── AppDelegate.m/h (Objective-C app lifecycle)
@@ -187,7 +188,7 @@ git commit -m "feat: Add glass morphism to payment form
 Co-Authored-By: Claude <noreply@anthropic.com>"
 
 # Push to remote
-git push origin main:Datacap
+git push origin main
 ```
 
 ### 11. Troubleshooting

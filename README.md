@@ -92,8 +92,8 @@ graph TB
 
 1. **Clone the repository**
    ```bash
-   git clone git@github.com:datacapsystems/MobileToken-iOS.git
-   cd MobileToken-iOS
+   git clone git@github.com:datacapsystems/Datacap-MobileToken-iOS-2025.git
+   cd Datacap-MobileToken-iOS-2025
    ```
 
 2. **Open in Xcode**
@@ -107,7 +107,7 @@ graph TB
 
 1. **Open the Project**
    ```bash
-   cd /path/to/MobileToken-iOS-Datacap
+   cd /path/to/Datacap-MobileToken-iOS-2025
    open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
    ```
 
@@ -435,7 +435,7 @@ This project is proprietary software owned by Datacap Systems, Inc. All rights r
 
 - **Technical Support**: https://datacapsystems.com/support
 - **Documentation**: https://docs.datacapsystems.com
-- **Issues**: https://github.com/datacapsystems/MobileToken-iOS/issues
+- **Issues**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues
 
 ## 🙏 Acknowledgments
 
@@ -444,7 +444,7 @@ This project is proprietary software owned by Datacap Systems, Inc. All rights r
 - Optimized for modern iOS devices
 
 ### Report bugs
-If you encounter any bugs or issues with the latest version of MobileToken for iOS, please report them to us by opening a [GitHub Issue](https://github.com/datacapsystems/MobileToken-iOS/issues)!
+If you encounter any bugs or issues with the latest version of MobileToken for iOS, please report them to us by opening a [GitHub Issue](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues)!
 
 ---
 
