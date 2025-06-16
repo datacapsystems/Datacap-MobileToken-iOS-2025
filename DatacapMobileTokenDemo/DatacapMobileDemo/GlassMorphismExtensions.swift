@@ -144,9 +144,17 @@ extension UIButton {
         // Content padding
         contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
         
-        // Interaction states
+        // Store existing targets before adding animation handlers
+        let hasCustomTargets = !allTargets.isEmpty
+        
+        // Add animation handlers without interfering with existing targets
         addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
-        addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside, .touchCancel])
+        addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpOutside, .touchCancel])
+        
+        // Only add touchUpInside if no custom targets exist
+        if !hasCustomTargets {
+            addTarget(self, action: #selector(buttonTouchUp), for: .touchUpInside)
+        }
     }
     
     @objc private func buttonTouchDown() {
@@ -160,6 +168,11 @@ extension UIButton {
         UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5) {
             self.transform = .identity
             self.alpha = 1.0
+        }
+        
+        // Send the touch up inside action if we're handling it
+        if allTargets.count == 1 {
+            sendActions(for: .touchUpInside)
         }
     }
 }

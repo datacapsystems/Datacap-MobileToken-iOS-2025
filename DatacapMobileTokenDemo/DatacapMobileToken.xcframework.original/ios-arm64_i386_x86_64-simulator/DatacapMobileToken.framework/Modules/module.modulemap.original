@@ -1,9 +1,6 @@
 framework module DatacapMobileToken {
   umbrella header "DatacapMobileToken.h"
-  
+
   export *
   module * { export * }
-  
-  link framework "Foundation"
-  link framework "UIKit"
 }

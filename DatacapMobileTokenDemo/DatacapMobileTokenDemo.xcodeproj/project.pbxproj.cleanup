@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3B5871F3D8B54AF0AF2B5560 /* DatacapTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E7713CD663491AB32149D6 /* DatacapTokenService.swift */; };
+tt3B5871F3D8B54AF0AF2B5560 /* DatacapTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E7713CD663491AB32149D6 /* DatacapTokenService.swift */; };
 		2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */; };
 		2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */; };
-		2637A06F2DFCBE210075A9A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */; };
+		269F1D0F2DFCC4DF00AF47E8 /* TestFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269F1D0E2DFCC4DF00AF47E8 /* TestFramework.swift */; };
+		269F1D112DFCC6E600AF47E8 /* DatacapTokenizerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269F1D102DFCC6E600AF47E8 /* DatacapTokenizerExtension.swift */; };
+		269F1D142DFCC77200AF47E8 /* DatacapFrameworkWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 269F1D132DFCC77200AF47E8 /* DatacapFrameworkWrapper.m */; };
+		ACD32107242D3ADB00694A06 /* DatacapMobileToken.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */; };
+		ACD32108242D3ADB00694A06 /* DatacapMobileToken.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACD3210F242D3C9100694A06 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210B242D3C9100694A06 /* ViewController.m */; };
 		ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210C242D3C9100694A06 /* AppDelegate.m */; };
 		ACD32118242D3D3900694A06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACD32117242D3D3900694A06 /* Assets.xcassets */; };
@@ -27,6 +31,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				ACD32108242D3ADB00694A06 /* DatacapMobileToken.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -34,10 +39,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		60E7713CD663491AB32149D6 /* DatacapTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatacapTokenService.swift; path = ../DatacapMobileDemo/DatacapTokenService.swift; sourceTree = "<group>"; };
-		2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GlassMorphismExtensions.swift; path = ../DatacapMobileDemo/GlassMorphismExtensions.swift; sourceTree = "<group>"; };
-		2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ModernViewController.swift; path = ../DatacapMobileDemo/ModernViewController.swift; sourceTree = "<group>"; };
-		2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ../DatacapMobileDemo/SettingsViewController.swift; sourceTree = "<group>"; };
+tt60E7713CD663491AB32149D6 /* DatacapTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatacapTokenService.swift; sourceTree = "<group>"; };
+		2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassMorphismExtensions.swift; sourceTree = "<group>"; };
+		2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernViewController.swift; sourceTree = "<group>"; };
+		269F1D0E2DFCC4DF00AF47E8 /* TestFramework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFramework.swift; sourceTree = "<group>"; };
+		269F1D102DFCC6E600AF47E8 /* DatacapTokenizerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatacapTokenizerExtension.swift; sourceTree = "<group>"; };
+		269F1D122DFCC77200AF47E8 /* DatacapFrameworkWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DatacapFrameworkWrapper.h; sourceTree = "<group>"; };
+		269F1D132DFCC77200AF47E8 /* DatacapFrameworkWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DatacapFrameworkWrapper.m; sourceTree = "<group>"; };
+		6534DE931D35A81000AF43B7 /* DatacapMobileTokenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatacapMobileTokenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.xcframework; sourceTree = "<group>"; };
 		ACD3210B242D3C9100694A06 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../DatacapMobileDemo/ViewController.m; sourceTree = "<group>"; };
 		ACD3210C242D3C9100694A06 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../DatacapMobileDemo/AppDelegate.m; sourceTree = "<group>"; };
@@ -56,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACD32107242D3ADB00694A06 /* DatacapMobileToken.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +75,12 @@
 		6534DE8A1D35A81000AF43B7 = {
 			isa = PBXGroup;
 			children = (
+				269F1D122DFCC77200AF47E8 /* DatacapFrameworkWrapper.h */,
+				269F1D132DFCC77200AF47E8 /* DatacapFrameworkWrapper.m */,
+				269F1D102DFCC6E600AF47E8 /* DatacapTokenizerExtension.swift */,
+				269F1D0E2DFCC4DF00AF47E8 /* TestFramework.swift */,
+				2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */,
+				2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */,
 				6534DE951D35A81000AF43B7 /* DatacapMobileTokenDemo */,
 				6534DE941D35A81000AF43B7 /* Products */,
 				ACD32105242D3ADB00694A06 /* Frameworks */,
@@ -86,10 +102,6 @@
 				ACD3210C242D3C9100694A06 /* AppDelegate.m */,
 				ACD3210E242D3C9100694A06 /* ViewController.h */,
 				ACD3210B242D3C9100694A06 /* ViewController.m */,
-				2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */,
-				2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */,
-				60E7713CD663491AB32149D6 /* DatacapTokenService.swift */,
-				2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */,
 				ACD32117242D3D3900694A06 /* Assets.xcassets */,
 				ACD32115242D3D1C00694A06 /* Info.plist */,
 				ACD32119242D3DF000694A06 /* Supporting Files */,
@@ -192,9 +204,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B5871F3D8B54AF0AF2B5560 /* DatacapTokenService.swift in Sources */,
+				269F1D0F2DFCC4DF00AF47E8 /* TestFramework.swift in Sources */,
+				269F1D142DFCC77200AF47E8 /* DatacapFrameworkWrapper.m in Sources */,
 				2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */,
+				269F1D112DFCC6E600AF47E8 /* DatacapTokenizerExtension.swift in Sources */,
 				2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */,
-				2637A06F2DFCBE210075A9A1 /* SettingsViewController.swift in Sources */,
 				ACD3210F242D3C9100694A06 /* ViewController.m in Sources */,
 				ACD32125242D3E1100694A06 /* main.m in Sources */,
 				ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */,

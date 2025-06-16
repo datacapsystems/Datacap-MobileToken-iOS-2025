@@ -1,0 +1,96 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project DatacapMobileTokenDemo.xcodeproj -scheme DatacapMobileTokenDemo -configuration Debug -xcconfig Debug.xcconfig -derivedDataPath build clean build
+
+Build settings from configuration file 'Debug.xcconfig':
+    CLANG_ENABLE_MODULES = NO
+    DEFINES_MODULE = NO
+    FRAMEWORK_SEARCH_PATHS = $(SRCROOT)
+    HEADER_SEARCH_PATHS = 
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00008132-001C28CE1A7A801C, name:My Mac }
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS, arch:arm64, id:00008110-00020D4E3AFB801E, name:iPhone (310) }
+ComputePackagePrebuildTargetDependencyGraph
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+** CLEAN SUCCEEDED **
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:macOS, arch:arm64, variant:Designed for [iPad,iPhone], id:00008132-001C28CE1A7A801C, name:My Mac }
+{ platform:iOS, id:dvtdevice-DVTiPhonePlaceholder-iphoneos:placeholder, name:Any iOS Device }
+{ platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device }
+{ platform:iOS Simulator, arch:arm64, id:574F7742-9E9B-4A2D-B94C-8A628440544B, OS:18.5, name:iPad (A16) }
+{ platform:iOS Simulator, arch:x86_64, id:574F7742-9E9B-4A2D-B94C-8A628440544B, OS:18.5, name:iPad (A16) }
+{ platform:iOS Simulator, arch:arm64, id:5340DB9D-C886-4678-81E3-66E0DDCCA458, OS:18.5, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:x86_64, id:5340DB9D-C886-4678-81E3-66E0DDCCA458, OS:18.5, name:iPad Air 11-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:482E0A91-F304-4CB9-BCE6-CF5C73CD301A, OS:18.5, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:x86_64, id:482E0A91-F304-4CB9-BCE6-CF5C73CD301A, OS:18.5, name:iPad Air 13-inch (M3) }
+{ platform:iOS Simulator, arch:arm64, id:DB2F9FBD-1D5B-42EE-A806-CF8A2866338D, OS:18.5, name:iPad Pro 11-inch (M4) }
+{ platform:iOS Simulator, arch:x86_64, id:DB2F9FBD-1D5B-42EE-A806-CF8A2866338D, OS:18.5, name:iPad Pro 11-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:C1186DAC-0BB8-48E2-B57B-86F48E1F7BDB, OS:18.5, name:iPad Pro 13-inch (M4) }
+{ platform:iOS Simulator, arch:x86_64, id:C1186DAC-0BB8-48E2-B57B-86F48E1F7BDB, OS:18.5, name:iPad Pro 13-inch (M4) }
+{ platform:iOS Simulator, arch:arm64, id:8EFBC2D9-0997-47FA-B725-8917153AF1D8, OS:18.5, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:x86_64, id:8EFBC2D9-0997-47FA-B725-8917153AF1D8, OS:18.5, name:iPad mini (A17 Pro) }
+{ platform:iOS Simulator, arch:arm64, id:E4323303-EE0C-481A-BFE8-8708B9A4E9F5, OS:18.5, name:iPhone 16 }
+{ platform:iOS Simulator, arch:x86_64, id:E4323303-EE0C-481A-BFE8-8708B9A4E9F5, OS:18.5, name:iPhone 16 }
+{ platform:iOS Simulator, arch:arm64, id:59D18C95-7936-4BC8-8E88-F88F0E4A5EF8, OS:18.5, name:iPhone 16 Plus }
+{ platform:iOS Simulator, arch:x86_64, id:59D18C95-7936-4BC8-8E88-F88F0E4A5EF8, OS:18.5, name:iPhone 16 Plus }
+{ platform:iOS Simulator, arch:arm64, id:CE797196-6656-4CC7-9886-9D3C489742AE, OS:18.5, name:iPhone 16 Pro }
+{ platform:iOS Simulator, arch:x86_64, id:CE797196-6656-4CC7-9886-9D3C489742AE, OS:18.5, name:iPhone 16 Pro }
+{ platform:iOS Simulator, arch:arm64, id:512BA8D4-B121-4EF3-BAC5-F0428019E118, OS:18.5, name:iPhone 16 Pro Max }
+{ platform:iOS Simulator, arch:x86_64, id:512BA8D4-B121-4EF3-BAC5-F0428019E118, OS:18.5, name:iPhone 16 Pro Max }
+{ platform:iOS Simulator, arch:arm64, id:CE05C654-F7D7-4F25-8D46-3BE3E2CA7009, OS:18.5, name:iPhone 16e }
+{ platform:iOS Simulator, arch:x86_64, id:CE05C654-F7D7-4F25-8D46-3BE3E2CA7009, OS:18.5, name:iPhone 16e }
+{ platform:iOS, arch:arm64, id:00008110-00020D4E3AFB801E, name:iPhone (310) }
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'DatacapMobileTokenDemo' in project 'DatacapMobileTokenDemo' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk -x objective-c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/edcrotty/Documents/Datacap-MobileToken-iOS-2025/DatacapMobileTokenDemo/DatacapMobileDemo/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk -x c -c /dev/null
+
+Build description signature: 81a2d1770a24db08fd8048fc8c09326b
+Build description path: /Users/edcrotty/Documents/Datacap-MobileToken-iOS-2025/DatacapMobileTokenDemo/build/Build/Intermediates.noindex/XCBuildData/81a2d1770a24db08fd8048fc8c09326b.xcbuilddata
+/Users/edcrotty/Documents/Datacap-MobileToken-iOS-2025/DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj: error: No profiles for 'com.dcap.DatacapMobileDemo' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.dcap.DatacapMobileDemo'. Automatic signing is disabled and unable to generate a profile. To enable automatic signing, pass -allowProvisioningUpdates to xcodebuild. (in target 'DatacapMobileTokenDemo' from project 'DatacapMobileTokenDemo')
+note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'DatacapMobileTokenDemo' from project 'DatacapMobileTokenDemo')
+** BUILD FAILED **
+
+
+The following build commands failed:
+	Building project DatacapMobileTokenDemo with scheme DatacapMobileTokenDemo and configuration Debug
+(1 failure)

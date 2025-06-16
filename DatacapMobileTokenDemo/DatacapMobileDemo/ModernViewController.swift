@@ -12,10 +12,36 @@ class ModernViewController: UIViewController {
     // MARK: - Properties
     
     private var tokenService: DatacapTokenService!
+    private var currentPublicKey: String = "cd67abe67d544936b0f3708b9fda7238"
+    private var currentEndpoint: String?
     
     // MARK: - UI Components
     
     private let backgroundGradient = CAGradientLayer()
+    
+    private let settingsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
+        button.tintColor = UIColor.Datacap.darkGray
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let modeIndicator: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.cornerRadius = 12
+        view.isHidden = true
+        return view
+    }()
+    
+    private let modeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13, weight: .bold)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -28,9 +54,12 @@ class ModernViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Secure Payment Tokenization"
-        label.font = .systemFont(ofSize: 28, weight: .bold)
+        label.font = .systemFont(ofSize: 26, weight: .bold)
         label.textColor = UIColor.Datacap.nearBlack
         label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.8
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -49,6 +78,7 @@ class ModernViewController: UIViewController {
     private let containerView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -56,6 +86,7 @@ class ModernViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Get Secure Token", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
         return button
     }()
     
@@ -88,6 +119,13 @@ class ModernViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         animateIn()
+        
+        // Debug button
+        print("Button frame: \(getTokenButton.frame)")
+        print("Button superview: \(getTokenButton.superview)")
+        print("Button is enabled: \(getTokenButton.isEnabled)")
+        print("Button is user interaction enabled: \(getTokenButton.isUserInteractionEnabled)")
+        print("Container user interaction: \(containerView.isUserInteractionEnabled)")
     }
     
     override func viewDidLayoutSubviews() {
@@ -98,11 +136,22 @@ class ModernViewController: UIViewController {
     // MARK: - Setup
     
     private func setupTokenService() {
+        // Load saved settings
+        let isDemoMode = UserDefaults.standard.object(forKey: "DatacapDemoMode") as? Bool ?? true
+        let savedPublicKey = UserDefaults.standard.string(forKey: "DatacapPublicKey") ?? currentPublicKey
+        let savedEndpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint")
+        
+        currentPublicKey = savedPublicKey.isEmpty ? currentPublicKey : savedPublicKey
+        currentEndpoint = isDemoMode ? nil : savedEndpoint
+        
         tokenService = DatacapTokenService(
-            publicKey: "cd67abe67d544936b0f3708b9fda7238",
-            isCertification: true
+            publicKey: currentPublicKey,
+            isCertification: true,
+            apiEndpoint: currentEndpoint
         )
         tokenService.delegate = self
+        
+        updateModeIndicator()
     }
     
     private func setupUI() {
@@ -117,22 +166,60 @@ class ModernViewController: UIViewController {
         view.layer.insertSublayer(backgroundGradient, at: 0)
         
         // Add subviews
+        view.addSubview(settingsButton)
         view.addSubview(logoImageView)
         view.addSubview(titleLabel)
         view.addSubview(subtitleLabel)
         view.addSubview(containerView)
         view.addSubview(featureStackView)
+        view.addSubview(modeIndicator)
+        modeIndicator.addSubview(modeLabel)
         containerView.addSubview(getTokenButton)
         containerView.addSubview(loadingView)
         
         // Apply glass morphism to container
         containerView.applyLiquidGlass(intensity: 0.85, cornerRadius: 24, shadowOpacity: 0.1)
         
-        // Style button
-        getTokenButton.applyDatacapGlassStyle(isPrimary: true)
-        
         // Add feature cards
         setupFeatureCards()
+        
+        // Style button with darker red for primary action
+        styleGetTokenButton()
+    }
+    
+    private func styleGetTokenButton() {
+        // Create a darker red for primary CTA
+        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0) // Darker than #941a25
+        
+        getTokenButton.backgroundColor = darkRed
+        getTokenButton.setTitleColor(.white, for: .normal)
+        getTokenButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        getTokenButton.layer.cornerRadius = 16
+        getTokenButton.contentEdgeInsets = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
+        
+        // Add stronger shadow for emphasis
+        getTokenButton.layer.shadowColor = darkRed.cgColor
+        getTokenButton.layer.shadowOpacity = 0.3
+        getTokenButton.layer.shadowOffset = CGSize(width: 0, height: 4)
+        getTokenButton.layer.shadowRadius = 8
+        
+        // Add press animations
+        getTokenButton.addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+        getTokenButton.addTarget(self, action: #selector(buttonTouchUp), for: [.touchUpInside, .touchUpOutside, .touchCancel])
+    }
+    
+    @objc private func buttonTouchDown() {
+        UIView.animate(withDuration: 0.1) {
+            self.getTokenButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+            self.getTokenButton.layer.shadowOpacity = 0.2
+        }
+    }
+    
+    @objc private func buttonTouchUp() {
+        UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5) {
+            self.getTokenButton.transform = .identity
+            self.getTokenButton.layer.shadowOpacity = 0.3
+        }
     }
     
     private func setupFeatureCards() {
@@ -198,8 +285,23 @@ class ModernViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
+            // Settings button
+            settingsButton.centerYAnchor.constraint(equalTo: modeIndicator.centerYAnchor),
+            settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            settingsButton.widthAnchor.constraint(equalToConstant: 44),
+            settingsButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            // Mode indicator
+            modeIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            modeIndicator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            modeIndicator.heightAnchor.constraint(equalToConstant: 28),
+            
+            modeLabel.leadingAnchor.constraint(equalTo: modeIndicator.leadingAnchor, constant: 12),
+            modeLabel.trailingAnchor.constraint(equalTo: modeIndicator.trailingAnchor, constant: -12),
+            modeLabel.centerYAnchor.constraint(equalTo: modeIndicator.centerYAnchor),
+            
             // Logo
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            logoImageView.topAnchor.constraint(equalTo: modeIndicator.bottomAnchor, constant: 24),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: 200),
             logoImageView.heightAnchor.constraint(equalToConstant: 80),
@@ -241,9 +343,39 @@ class ModernViewController: UIViewController {
     
     private func setupActions() {
         getTokenButton.addTarget(self, action: #selector(getTokenTapped), for: .touchUpInside)
+        settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
+        
+        // Add debug tap gesture to container
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(containerTapped))
+        containerView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func containerTapped(_ gesture: UITapGestureRecognizer) {
+        let location = gesture.location(in: containerView)
+        print("Container tapped at: \(location)")
+        print("Button frame in container: \(getTokenButton.frame)")
+        
+        if getTokenButton.frame.contains(location) {
+            print("Tap was inside button frame!")
+            getTokenTapped()
+        }
     }
     
     // MARK: - Actions
+    
+    @objc private func settingsTapped() {
+        let settingsVC = SettingsViewController()
+        settingsVC.modalPresentationStyle = .overFullScreen
+        settingsVC.modalTransitionStyle = .crossDissolve
+        
+        settingsVC.onSettingsChanged = { [weak self] (publicKey: String, endpoint: String?) in
+            self?.currentPublicKey = publicKey
+            self?.currentEndpoint = endpoint
+            self?.setupTokenService()
+        }
+        
+        present(settingsVC, animated: true)
+    }
     
     @objc private func getTokenTapped() {
         // Haptic feedback
@@ -349,7 +481,7 @@ extension ModernViewController: DatacapTokenServiceDelegate {
         
         let checkmarkView = UIImageView()
         checkmarkView.image = UIImage(systemName: "checkmark.circle.fill")
-        checkmarkView.tintColor = UIColor.Datacap.primaryRed
+        checkmarkView.tintColor = UIColor(red: 34/255, green: 139/255, blue: 34/255, alpha: 1.0) // Forest green - much darker
         checkmarkView.contentMode = .scaleAspectFit
         checkmarkView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -377,8 +509,13 @@ extension ModernViewController: DatacapTokenServiceDelegate {
         
         let okButton = UIButton(type: .system)
         okButton.setTitle("OK", for: .normal)
-        okButton.applyDatacapGlassStyle(isPrimary: true)
         okButton.translatesAutoresizingMaskIntoConstraints = false
+        okButton.backgroundColor = UIColor.Datacap.primaryRed
+        okButton.setTitleColor(.white, for: .normal)
+        okButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        okButton.layer.cornerRadius = 16
+        okButton.contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
+        okButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
         
         container.addSubview(checkmarkView)
         container.addSubview(titleLabel)
@@ -412,8 +549,6 @@ extension ModernViewController: DatacapTokenServiceDelegate {
             okButton.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -24)
         ])
         
-        okButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
-        
         return container
     }
     
@@ -444,7 +579,11 @@ extension ModernViewController: DatacapTokenServiceDelegate {
         
         let retryButton = UIButton(type: .system)
         retryButton.setTitle("Try Again", for: .normal)
-        retryButton.applyDatacapGlassStyle(isPrimary: true)
+        retryButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)  // Smaller font to fit
+        retryButton.backgroundColor = UIColor.Datacap.primaryRed
+        retryButton.setTitleColor(.white, for: .normal)
+        retryButton.layer.cornerRadius = 16
+        retryButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)  // Smaller padding
         retryButton.translatesAutoresizingMaskIntoConstraints = false
         
         container.addSubview(errorView)
@@ -485,7 +624,7 @@ extension ModernViewController: DatacapTokenServiceDelegate {
         alertContainer.alpha = 0
         alertContainer.translatesAutoresizingMaskIntoConstraints = false
         
-        view.center = self.view.center
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
         view.alpha = 0
         
@@ -520,5 +659,29 @@ extension ModernViewController: DatacapTokenServiceDelegate {
             alertContainer.removeFromSuperview()
             self.getTokenButton.isHidden = false
         }
+    }
+    
+    // MARK: - UI Updates
+    
+    private func updateModeIndicator() {
+        let isDemoMode = currentEndpoint == nil || currentEndpoint?.isEmpty == true
+        
+        // Always use black background with white text
+        modeIndicator.backgroundColor = UIColor.Datacap.nearBlack
+        modeLabel.textColor = .white
+        
+        if isDemoMode {
+            modeLabel.text = "DEMO MODE"
+        } else {
+            modeLabel.text = "LIVE MODE"
+        }
+        
+        modeIndicator.isHidden = false
+        
+        // Add subtle animation
+        modeIndicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
+            self.modeIndicator.transform = .identity
+        })
     }
 }

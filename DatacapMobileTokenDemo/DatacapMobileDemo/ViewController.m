@@ -23,12 +23,13 @@
 
 - (IBAction)btnGetAToken_Pressed:(id)sender
 {
-    DatacapTokenizer *tokenizer = [DatacapTokenizer new];
-    [tokenizer requestKeyedTokenWithPublicKey:@"cd67abe67d544936b0f3708b9fda7238"
-                              isCertification:true  // <-- remove for production
-                                  andDelegate:self
-                           overViewController:self];
+    // Legacy tokenizer code removed - use ModernViewController instead
+    // This view controller is kept for backward compatibility only
 }
+
+/*
+// Legacy DatacapTokenDelegate methods - commented out
+// Use ModernViewController for tokenization functionality
 
 - (void)tokenLoading
 {
@@ -80,7 +81,6 @@
     
     [self presentViewController:alertController animated:YES completion:^(){[_btnGetAToken setHidden:NO];}];
 }
-
 - (void)tokenizationCancelled
 {
     [_aiLoadingSpinner stopAnimating];
@@ -101,5 +101,6 @@
     
     [self presentViewController:alertController animated:YES completion:^(){[_btnGetAToken setHidden:NO];}];
 }
+*/
 
 @end
