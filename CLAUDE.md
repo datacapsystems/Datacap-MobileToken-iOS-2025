@@ -22,6 +22,8 @@ This file contains important information for AI assistants (like Claude) working
 - ✅ Updated for App Store submission requirements
 - ✅ Created automated build scripts
 - ✅ Comprehensive documentation added
+- ✅ Fixed iOS deployment target for physical device compatibility
+- ✅ Added deployment scripts for iPhone installation
 
 ## Architecture Overview
 
@@ -109,7 +111,11 @@ Datacap-MobileToken-iOS-2025/
 ├── APP_STORE_SUBMISSION.md (Submission guide)
 ├── TROUBLESHOOTING.md (Common issues)
 ├── build-and-install.sh (Automated build script)
-└── fix-xcode-license.sh (License fix script)
+├── fix-xcode-license.sh (License fix script)
+├── launch-app.sh (Launch in simulator)
+├── deploy-to-phone.sh (Deploy to physical device guide)
+├── force-install-iphone.sh (Force install to iPhone)
+└── diagnose-install.sh (Diagnose installation issues)
 ```
 
 ### 4. Key Implementation Details
@@ -292,9 +298,16 @@ git push origin main
    - Delete app from device after 7 days (free accounts)
 
 4. **Build Succeeds but Crashes**
-   - Check deployment target is iOS 13.0+
+   - Check deployment target matches device iOS version
    - Verify all Swift files are compiled
    - Check console for specific errors
+   - Ensure module name in storyboard is correct
+
+5. **App Won't Install on Physical Device**
+   - Check MinimumOSVersion in Info.plist matches deployment target
+   - Ensure code signing is configured
+   - Trust developer certificate on device
+   - Check for ThreatLocker or other security software blocking
 
 #### Debug Commands
 ```bash
