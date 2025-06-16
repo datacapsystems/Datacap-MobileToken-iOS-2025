@@ -1,28 +1,42 @@
-# Datacap Token iOS - Modern Payment Tokenization
+# Datacap MobileToken iOS Demo 2025 🚀
 
 <div align="center">
   <img src="DatacapMobileTokenDemo/DatacapMobileDemo/logo.png" alt="Datacap Logo" width="300"/>
   
   [![iOS](https://img.shields.io/badge/iOS-15.6+-black.svg)](https://www.apple.com/ios/)
   [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org/)
-  [![License](https://img.shields.io/badge/License-Commercial-blue.svg)](LICENSE)
+  [![Xcode](https://img.shields.io/badge/Xcode-16.0+-blue.svg)](https://developer.apple.com/xcode/)
+  [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   [![App Store Ready](https://img.shields.io/badge/App%20Store-Ready-green.svg)](APP_STORE_SUBMISSION.md)
-  [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025)
 </div>
 
 ## 🚀 Overview
 
-Datacap Token is a cutting-edge iOS application that demonstrates secure payment tokenization using a modern pure Swift implementation. Built with iOS 26's stunning Liquid Glass design language, this app provides enterprise-grade security with a beautiful, modern interface.
+A modern iOS application showcasing Datacap's payment tokenization technology with iOS 26 Liquid Glass design system. This demo app provides a secure, elegant interface for converting sensitive payment card data into secure tokens for PCI-compliant payment processing.
 
 ## 🎨 Features
 
-- **iOS 26 Liquid Glass UI** - Stunning glass morphism effects with dynamic animations
-- **Secure Tokenization** - Convert sensitive payment data to secure tokens
-- **Bank-Level Encryption** - Industry-standard security protocols
-- **Lightning Fast** - Get tokens in milliseconds
-- **PCI Compliant** - Meet all regulatory requirements
-- **Beautiful Animations** - Smooth transitions and haptic feedback
-- **Pure Swift Implementation** - No legacy framework dependencies
+### Core Functionality
+- **Secure Payment Tokenization**: Convert credit/debit card numbers into secure tokens
+- **Real-time Card Type Detection**: Automatically identifies Visa, Mastercard, Amex, Discover, and more
+- **Smart Input Formatting**: Dynamic card number formatting based on card type
+- **Production & Demo Modes**: Toggle between live API calls and mock tokenization
+- **API Configuration**: Built-in settings for API key and endpoint management
+
+### UI/UX Excellence
+- **iOS 26 Liquid Glass Design**: Modern glass morphism with blur effects and specular highlights
+- **Date Picker for Expiry**: Native iOS date selector wheel for card expiration
+- **Smooth Animations**: Spring animations and haptic feedback
+- **Responsive Layout**: Adapts to all iPhone and iPad sizes
+- **Custom Alerts**: Beautiful success/error notifications with glass morphism
+- **Dynamic Button States**: Visual feedback with scale animations
+
+### Security Features
+- **No Sensitive Data Storage**: Card details are never persisted
+- **Secure API Communication**: HTTPS-only connections
+- **Input Validation**: Luhn algorithm and format verification
+- **PCI Compliance**: Follows industry security standards
+- **Demo/Production Isolation**: Clear visual indicators for mode
 
 ## 📱 Screenshots
 
@@ -231,13 +245,24 @@ If you're having issues installing:
 
 ## 💳 Testing
 
-Use these test card numbers:
+### Test Card Numbers
 
-| Card Type | Number | CVV | Expiry |
-|-----------|--------|-----|---------|
-| Visa | 4111111111111111 | 123 | 12/25 |
-| Mastercard | 5555555555554444 | 456 | 01/26 |
-| Amex | 378282246310005 | 7890 | 03/27 |
+| Card Type | Number | CVV | Max Length | Formatting |
+| Visa | 4111111111111111 | 123 | 16 | 4-4-4-4 |
+| Mastercard | 5555555555554444 | 123 | 16 | 4-4-4-4 |
+| Amex | 378282246310005 | 1234 | 15 | 4-6-5 |
+| Discover | 6011111111111117 | 123 | 16 | 4-4-4-4 |
+| Diners Club | 36700102000000 | 123 | 14 | 4-6-4 |
+
+### Card Detection Logic
+
+The app automatically detects card types based on BIN (Bank Identification Number):
+
+- **Visa**: Starts with 4
+- **Mastercard**: Starts with 51-55 or 2221-2720
+- **Amex**: Starts with 34 or 37
+- **Discover**: Starts with 6011, 65, or 644-649
+- **Diners Club**: Starts with 36, 38, or 300-305
 
 ## 🔧 Project Structure
 

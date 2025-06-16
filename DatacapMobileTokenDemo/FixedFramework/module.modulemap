@@ -1,0 +1,7 @@
+module DatacapMobileToken {
+    header "DatacapTokenDelegate.h"
+    header "DatacapTokenErrorCodes.h"
+    header "DatacapToken.h"
+    header "DatacapTokenizer.h"
+    export *
+}

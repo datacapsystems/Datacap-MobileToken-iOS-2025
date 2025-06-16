@@ -62,10 +62,14 @@ class DatacapTokenService {
     weak var delegate: DatacapTokenServiceDelegate?
     private var publicKey: String
     private var isCertification: Bool
+    private var apiEndpoint: String?
+    private var isDemoMode: Bool
     
-    init(publicKey: String, isCertification: Bool = true) {
+    init(publicKey: String, isCertification: Bool = true, apiEndpoint: String? = nil) {
         self.publicKey = publicKey
         self.isCertification = isCertification
+        self.apiEndpoint = apiEndpoint
+        self.isDemoMode = apiEndpoint == nil || apiEndpoint?.isEmpty == true
     }
     
     // MARK: - Public Methods
@@ -131,38 +135,163 @@ class DatacapTokenService {
     }
     
     private func generateToken(for cardData: CardData) -> DatacapToken {
-        // In a real implementation, this would make an API call to Datacap's servers
-        // For demo purposes, we'll generate a mock token
-        
-        let tokenData = "\(cardData.cardNumber):\(cardData.expirationMonth)/\(cardData.expirationYear):\(cardData.cvv):\(Date().timeIntervalSince1970)"
-        let token = tokenData.data(using: .utf8)?.base64EncodedString() ?? ""
-        
-        return DatacapToken(
-            token: "DC_\(token.prefix(32))",
-            maskedCardNumber: maskCardNumber(cardData.cardNumber),
-            cardType: detectCardType(cardData.cardNumber),
-            expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
-            responseCode: "00",
-            responseMessage: "Success",
-            timestamp: Date()
-        )
+        if !isDemoMode, let apiURL = apiEndpoint {
+            // PRODUCTION MODE: Real API call
+            print("🔐 PRODUCTION MODE: Using real tokenization API")
+            
+            let cleanedCardNumber = cardData.cardNumber.replacingOccurrences(of: " ", with: "")
+            
+            let requestBody: [String: Any] = [
+                "publicKey": publicKey,
+                "cardNumber": cleanedCardNumber,
+                "expirationMonth": cardData.expirationMonth,
+                "expirationYear": cardData.expirationYear,
+                "cvv": cardData.cvv,
+                "isCertification": isCertification
+            ]
+            
+            guard let url = URL(string: apiURL) else {
+                return DatacapToken(
+                    token: "",
+                    maskedCardNumber: maskCardNumber(cardData.cardNumber),
+                    cardType: detectCardType(cardData.cardNumber),
+                    expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                    responseCode: "999",
+                    responseMessage: "Invalid API endpoint",
+                    timestamp: Date()
+                )
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+            
+            // In production, use async/await or completion handlers
+            let semaphore = DispatchSemaphore(value: 0)
+            var responseData: Data?
+            var urlResponse: URLResponse?
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                responseData = data
+                urlResponse = response
+                semaphore.signal()
+            }.resume()
+            
+            semaphore.wait()
+            
+            if let error = urlResponse as? HTTPURLResponse, error.statusCode != 200 {
+                return DatacapToken(
+                    token: "",
+                    maskedCardNumber: maskCardNumber(cardData.cardNumber),
+                    cardType: detectCardType(cardData.cardNumber),
+                    expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                    responseCode: "\(error.statusCode)",
+                    responseMessage: "API Error: HTTP \(error.statusCode)",
+                    timestamp: Date()
+                )
+            }
+            
+            if let data = responseData,
+               let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                
+                if let errorMessage = json["error"] as? String {
+                    // Handle API error
+                    return DatacapToken(
+                        token: "",
+                        maskedCardNumber: maskCardNumber(cardData.cardNumber),
+                        cardType: detectCardType(cardData.cardNumber),
+                        expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                        responseCode: "999",
+                        responseMessage: errorMessage,
+                        timestamp: Date()
+                    )
+                }
+                
+                // Success response
+                let token = json["token"] as? String ?? ""
+                let brand = json["brand"] as? String ?? detectCardType(cardData.cardNumber)
+                let last4 = json["last4"] as? String ?? String(cardData.cardNumber.suffix(4))
+                
+                return DatacapToken(
+                    token: token,
+                    maskedCardNumber: "**** \(last4)",
+                    cardType: brand,
+                    expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                    responseCode: json["responseCode"] as? String ?? "00",
+                    responseMessage: json["responseMessage"] as? String ?? "Success",
+                    timestamp: Date()
+                )
+            }
+            
+            return DatacapToken(
+                token: "",
+                maskedCardNumber: maskCardNumber(cardData.cardNumber),
+                cardType: detectCardType(cardData.cardNumber),
+                expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                responseCode: "999",
+                responseMessage: "Failed to parse API response",
+                timestamp: Date()
+            )
+        } else {
+            // DEMO MODE: Generate mock token
+            print("⚠️ DEMO MODE: Using mock tokenization.")
+            print("To use real tokenization, tap the settings icon and configure your API.")
+            
+            let tokenData = "DEMO_\(cardData.cardNumber):\(cardData.expirationMonth)/\(cardData.expirationYear):\(Date().timeIntervalSince1970)"
+            let token = tokenData.data(using: .utf8)?.base64EncodedString() ?? ""
+            
+            return DatacapToken(
+                token: "DC_\(token.prefix(20))...DEMO",
+                maskedCardNumber: maskCardNumber(cardData.cardNumber),
+                cardType: detectCardType(cardData.cardNumber),
+                expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                responseCode: "00",
+                responseMessage: "Demo Mode - Success",
+                timestamp: Date()
+            )
+        }
     }
 }
 
 // MARK: - Token View Controller Delegate
 extension DatacapTokenService: DatacapTokenViewControllerDelegate {
     func tokenViewController(_ controller: DatacapTokenViewController, didCollectCardData cardData: CardData) {
+        print("DatacapTokenService received card data!")
+        
         // Validate card data
-        guard validateCardNumber(cardData.cardNumber) else {
-            delegate?.tokenRequestDidFail(error: .invalidCardNumber)
+        let cleanedNumber = cardData.cardNumber.replacingOccurrences(of: " ", with: "")
+        print("Validating card number: \(cleanedNumber)")
+        
+        guard validateCardNumber(cleanedNumber) else {
+            print("Card validation failed!")
+            // Dismiss the card input view first, then show error
+            controller.dismiss(animated: true) {
+                self.delegate?.tokenRequestDidFail(error: .invalidCardNumber)
+            }
             return
         }
         
+        print("Card validation passed!")
+        
         // Generate token (in production, this would be an API call)
         let token = generateToken(for: cardData)
+        print("Generated token: \(token.token)")
+        
+        // Check if token generation failed (responseCode not "00")
+        if token.responseCode != "00" && !token.responseCode.isEmpty {
+            print("Token generation failed with response code: \(token.responseCode)")
+            // Dismiss the card input view first, then show error
+            controller.dismiss(animated: true) {
+                let error = DatacapTokenError.tokenizationFailed(token.responseMessage)
+                self.delegate?.tokenRequestDidFail(error: error)
+            }
+            return
+        }
         
         // Dismiss the view controller
         controller.dismiss(animated: true) {
+            print("View dismissed, calling success delegate")
             self.delegate?.tokenRequestDidSucceed(token)
         }
     }
@@ -197,9 +326,16 @@ class DatacapTokenViewController: UIViewController {
     private let contentView = UIView()
     private let cardNumberField = UITextField()
     private let expirationField = UITextField()
+    private let expirationDatePicker = UIDatePicker()
     private let cvvField = UITextField()
     private let submitButton = UIButton(type: .system)
     private let cancelButton = UIButton(type: .system)
+    
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM/yy"
+        return formatter
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -218,9 +354,26 @@ class DatacapTokenViewController: UIViewController {
         cardNumberField.delegate = self
         
         expirationField.placeholder = "MM/YY"
-        expirationField.keyboardType = .numberPad
         expirationField.borderStyle = .roundedRect
         expirationField.delegate = self
+        
+        // Configure date picker
+        expirationDatePicker.datePickerMode = .date
+        expirationDatePicker.preferredDatePickerStyle = .wheels
+        expirationDatePicker.minimumDate = Date()
+        expirationDatePicker.maximumDate = Calendar.current.date(byAdding: .year, value: 20, to: Date())
+        expirationDatePicker.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
+        
+        // Set date picker as input view for expiration field
+        expirationField.inputView = expirationDatePicker
+        
+        // Add toolbar with Done button
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissDatePicker))
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolbar.items = [flexSpace, doneButton]
+        expirationField.inputAccessoryView = toolbar
         
         cvvField.placeholder = "CVV"
         cvvField.keyboardType = .numberPad
@@ -319,22 +472,36 @@ class DatacapTokenViewController: UIViewController {
         scrollView.scrollIndicatorInsets = .zero
     }
     
+    @objc private func datePickerChanged() {
+        expirationField.text = dateFormatter.string(from: expirationDatePicker.date)
+    }
+    
+    @objc private func dismissDatePicker() {
+        expirationField.resignFirstResponder()
+    }
+    
     @objc private func submitTapped() {
+        print("Submit button tapped!")
+        
         guard let cardNumber = cardNumberField.text, !cardNumber.isEmpty,
               let expiration = expirationField.text, !expiration.isEmpty,
               let cvv = cvvField.text, !cvv.isEmpty else {
+            print("Missing fields - Card: \(cardNumberField.text ?? "nil"), Exp: \(expirationField.text ?? "nil"), CVV: \(cvvField.text ?? "nil")")
             showAlert(title: "Error", message: "Please fill in all fields")
             return
         }
         
-        // Parse expiration date
+        // Parse expiration date from MM/yy format
         let components = expiration.split(separator: "/")
         guard components.count == 2,
               let month = String(components[0]).count == 2 ? String(components[0]) : nil,
               let year = String(components[1]).count == 2 ? String(components[1]) : nil else {
+            print("Invalid expiration format: \(expiration)")
             showAlert(title: "Error", message: "Invalid expiration date format")
             return
         }
+        
+        print("Creating card data - Number: \(cardNumber), Month: \(month), Year: \(year), CVV: \(cvv)")
         
         let cardData = CardData(
             cardNumber: cardNumber,
@@ -343,6 +510,7 @@ class DatacapTokenViewController: UIViewController {
             cvv: cvv
         )
         
+        print("Calling delegate with card data")
         delegate?.tokenViewController(self, didCollectCardData: cardData)
     }
     
@@ -355,6 +523,128 @@ class DatacapTokenViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+    
+    // MARK: - Card Type Detection Helpers
+    
+    private func getMaxLengthForCardNumber(_ number: String) -> Int {
+        if number.isEmpty { return 19 }
+        
+        // American Express: 15 digits
+        if number.hasPrefix("34") || number.hasPrefix("37") {
+            return 15
+        }
+        
+        // Diners Club: 14 digits
+        if number.hasPrefix("36") || number.hasPrefix("38") ||
+           (number.hasPrefix("30") && number.count >= 3) {
+            let prefix = number.prefix(3)
+            if prefix >= "300" && prefix <= "305" {
+                return 14
+            }
+        }
+        
+        // Discover: 16 digits
+        if number.hasPrefix("6011") || number.hasPrefix("65") ||
+           (number.hasPrefix("64") && number.count >= 3 && number.prefix(3) >= "644") {
+            return 16
+        }
+        
+        // Mastercard: 16 digits
+        if number.count >= 2 {
+            let prefix = Int(number.prefix(2)) ?? 0
+            if (prefix >= 51 && prefix <= 55) || (prefix >= 22 && prefix <= 27) {
+                return 16
+            }
+        }
+        
+        // Visa: 16 digits (can be 13-19, but most common is 16)
+        if number.hasPrefix("4") {
+            return 16
+        }
+        
+        // Default to 16 for unknown types
+        return 16
+    }
+    
+    private func formatCardNumber(_ number: String) -> String {
+        if number.isEmpty { return number }
+        
+        var formatted = ""
+        
+        // American Express: 4-6-5
+        if number.hasPrefix("34") || number.hasPrefix("37") {
+            for (index, character) in number.enumerated() {
+                if index == 4 || index == 10 {
+                    formatted += " "
+                }
+                formatted += String(character)
+            }
+            return formatted
+        }
+        
+        // Diners Club: 4-6-4
+        if number.hasPrefix("36") || number.hasPrefix("38") ||
+           (number.hasPrefix("30") && number.count >= 3) {
+            let prefix = number.prefix(3)
+            if prefix >= "300" && prefix <= "305" {
+                for (index, character) in number.enumerated() {
+                    if index == 4 || index == 10 {
+                        formatted += " "
+                    }
+                    formatted += String(character)
+                }
+                return formatted
+            }
+        }
+        
+        // Default formatting: 4-4-4-4
+        for (index, character) in number.enumerated() {
+            if index > 0 && index % 4 == 0 {
+                formatted += " "
+            }
+            formatted += String(character)
+        }
+        
+        return formatted
+    }
+    
+    private func updateCardNumberPlaceholder(for number: String) {
+        if number.isEmpty {
+            cardNumberField.placeholder = "Card Number"
+            return
+        }
+        
+        let maxLength = getMaxLengthForCardNumber(number)
+        var cardType = ""
+        
+        // Detect card type for placeholder
+        if number.hasPrefix("34") || number.hasPrefix("37") {
+            cardType = "Amex"
+        } else if number.hasPrefix("4") {
+            cardType = "Visa"
+        } else if number.count >= 2 {
+            let prefix = Int(number.prefix(2)) ?? 0
+            if (prefix >= 51 && prefix <= 55) || (prefix >= 22 && prefix <= 27) {
+                cardType = "Mastercard"
+            } else if number.hasPrefix("6011") || number.hasPrefix("65") {
+                cardType = "Discover"
+            } else if number.hasPrefix("36") || number.hasPrefix("38") {
+                cardType = "Diners"
+            }
+        }
+        
+        if !cardType.isEmpty {
+            cardNumberField.placeholder = "\(cardType) (\(maxLength) digits)"
+        }
+    }
+    
+    private func updateCVVPlaceholder(for cardNumber: String) {
+        if cardNumber.hasPrefix("34") || cardNumber.hasPrefix("37") {
+            cvvField.placeholder = "CVV (4 digits)"
+        } else {
+            cvvField.placeholder = "CVV (3 digits)"
+        }
+    }
 }
 
 // MARK: - Text Field Delegate
@@ -366,31 +656,30 @@ extension DatacapTokenViewController: UITextFieldDelegate {
         if textField == cardNumberField {
             // Format card number with spaces
             let cleaned = newText.replacingOccurrences(of: " ", with: "")
-            if cleaned.count > 19 { return false }
             
-            var formatted = ""
-            for (index, character) in cleaned.enumerated() {
-                if index > 0 && index % 4 == 0 {
-                    formatted += " "
-                }
-                formatted += String(character)
-            }
+            // Determine max length based on card type
+            let maxLength = getMaxLengthForCardNumber(cleaned)
+            if cleaned.count > maxLength { return false }
+            
+            // Format based on card type
+            let formatted = formatCardNumber(cleaned)
             textField.text = formatted
+            
+            // Update placeholder to show expected length
+            updateCardNumberPlaceholder(for: cleaned)
+            
+            // Update CVV placeholder based on card type
+            updateCVVPlaceholder(for: cleaned)
+            
             return false
         } else if textField == expirationField {
-            // Format MM/YY
-            let cleaned = newText.replacingOccurrences(of: "/", with: "")
-            if cleaned.count > 4 { return false }
-            
-            if cleaned.count >= 2 {
-                let month = cleaned.prefix(2)
-                let year = cleaned.dropFirst(2)
-                textField.text = "\(month)/\(year)"
-                return false
-            }
+            // Prevent manual input - user must use date picker
+            return false
         } else if textField == cvvField {
-            // Limit CVV to 4 digits
-            if newText.count > 4 { return false }
+            // Limit CVV based on card type
+            let cardNumber = cardNumberField.text?.replacingOccurrences(of: " ", with: "") ?? ""
+            let maxCVV = (cardNumber.hasPrefix("34") || cardNumber.hasPrefix("37")) ? 4 : 3
+            if newText.count > maxCVV { return false }
         }
         
         return true

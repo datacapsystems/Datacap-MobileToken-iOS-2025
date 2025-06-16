@@ -6,9 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <DatacapMobileToken/DatacapMobileToken.h>
 
-@interface ViewController : UIViewController <DatacapTokenDelegate>
+@interface ViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *aiLoadingSpinner;
 @property (weak, nonatomic) IBOutlet UIButton *btnGetAToken;
