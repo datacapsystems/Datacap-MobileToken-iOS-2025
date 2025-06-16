@@ -9,6 +9,10 @@ import UIKit
 
 class ModernViewController: UIViewController {
     
+    // MARK: - Properties
+    
+    private var tokenService: DatacapTokenService!
+    
     // MARK: - UI Components
     
     private let backgroundGradient = CAGradientLayer()
@@ -71,29 +75,35 @@ class ModernViewController: UIViewController {
         return stack
     }()
     
-    // MARK: - Properties
-    
-    private let tokenizer = DatacapTokenizer()
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTokenService()
         setupUI()
         setupConstraints()
         setupActions()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         animateIn()
     }
     
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .darkContent
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        backgroundGradient.frame = view.bounds
     }
     
     // MARK: - Setup
+    
+    private func setupTokenService() {
+        tokenService = DatacapTokenService(
+            publicKey: "cd67abe67d544936b0f3708b9fda7238",
+            isCertification: true
+        )
+        tokenService.delegate = self
+    }
     
     private func setupUI() {
         // Background gradient
@@ -156,7 +166,7 @@ class ModernViewController: UIViewController {
         
         let subtitleLabel = UILabel()
         subtitleLabel.text = subtitle
-        subtitleLabel.font = .systemFont(ofSize: 13, weight: .regular)
+        subtitleLabel.font = .systemFont(ofSize: 14, weight: .regular)
         subtitleLabel.textColor = UIColor.Datacap.darkGray
         subtitleLabel.numberOfLines = 0
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -166,25 +176,22 @@ class ModernViewController: UIViewController {
         card.addSubview(subtitleLabel)
         
         NSLayoutConstraint.activate([
+            card.heightAnchor.constraint(equalToConstant: 80),
+            
             iconView.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
             iconView.centerYAnchor.constraint(equalTo: card.centerYAnchor),
             iconView.widthAnchor.constraint(equalToConstant: 32),
             iconView.heightAnchor.constraint(equalToConstant: 32),
             
+            titleLabel.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
             titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
-            titleLabel.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
             
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             subtitleLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             subtitleLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            subtitleLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16),
-            
-            card.heightAnchor.constraint(equalToConstant: 80)
+            subtitleLabel.bottomAnchor.constraint(lessThanOrEqualTo: card.bottomAnchor, constant: -16)
         ])
-        
-        // Add shimmer effect
-        card.addGlassShimmer()
         
         return card
     }
@@ -195,7 +202,7 @@ class ModernViewController: UIViewController {
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: 200),
-            logoImageView.heightAnchor.constraint(equalToConstant: 56),
+            logoImageView.heightAnchor.constraint(equalToConstant: 80),
             
             // Title
             titleLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 32),
@@ -247,13 +254,8 @@ class ModernViewController: UIViewController {
         getTokenButton.isHidden = true
         loadingView.startAnimating()
         
-        // Request token
-        tokenizer.requestKeyedToken(
-            withPublicKey: "cd67abe67d544936b0f3708b9fda7238",
-            isCertification: true,
-            andDelegate: self,
-            overViewController: self
-        )
+        // Request token using the new service
+        tokenService.requestToken(from: self)
     }
     
     // MARK: - Animations
@@ -298,29 +300,20 @@ class ModernViewController: UIViewController {
             self.featureStackView.transform = .identity
         }
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        backgroundGradient.frame = view.bounds
-    }
 }
 
-// MARK: - DatacapTokenDelegate
+// MARK: - DatacapTokenServiceDelegate
 
-extension ModernViewController: DatacapTokenDelegate {
+extension ModernViewController: DatacapTokenServiceDelegate {
     
-    func tokenLoading() {
-        // Already showing loading indicator
-    }
-    
-    func tokenCreated(_ token: DatacapToken!) {
+    func tokenRequestDidSucceed(_ token: DatacapToken) {
         DispatchQueue.main.async { [weak self] in
             self?.loadingView.stopAnimating()
             self?.presentSuccessAlert(token: token)
         }
     }
     
-    func tokenizationError(_ error: Error!) {
+    func tokenRequestDidFail(error: DatacapTokenError) {
         DispatchQueue.main.async { [weak self] in
             self?.loadingView.stopAnimating()
             self?.getTokenButton.isHidden = false
@@ -328,7 +321,7 @@ extension ModernViewController: DatacapTokenDelegate {
         }
     }
     
-    func tokenizationCancelled() {
+    func tokenRequestDidCancel() {
         DispatchQueue.main.async { [weak self] in
             self?.loadingView.stopAnimating()
             self?.getTokenButton.isHidden = false
@@ -342,78 +335,101 @@ extension ModernViewController: DatacapTokenDelegate {
         presentCustomAlert(view: successView)
     }
     
-    private func presentErrorAlert(error: Error) {
-        let nsError = error as NSError
+    private func presentErrorAlert(error: DatacapTokenError) {
         let errorView = createErrorView(
-            title: nsError.localizedFailureReason ?? "Tokenization Error",
-            message: nsError.localizedRecoverySuggestion ?? "Please try again"
+            title: "Tokenization Error",
+            message: error.localizedDescription
         )
         presentCustomAlert(view: errorView)
     }
     
     private func createSuccessView(token: DatacapToken) -> UIView {
-        let view = UIView()
-        view.applyLiquidGlass(intensity: 0.95, cornerRadius: 24, shadowOpacity: 0.2)
+        let container = UIView()
+        container.applyLiquidGlass(intensity: 0.95, cornerRadius: 24, shadowOpacity: 0.15)
         
-        let checkmark = UIImageView(image: UIImage(systemName: "checkmark.circle.fill"))
-        checkmark.tintColor = UIColor.Datacap.primaryRed
-        checkmark.contentMode = .scaleAspectFit
-        checkmark.translatesAutoresizingMaskIntoConstraints = false
+        let checkmarkView = UIImageView()
+        checkmarkView.image = UIImage(systemName: "checkmark.circle.fill")
+        checkmarkView.tintColor = UIColor.Datacap.primaryRed
+        checkmarkView.contentMode = .scaleAspectFit
+        checkmarkView.translatesAutoresizingMaskIntoConstraints = false
         
         let titleLabel = UILabel()
-        titleLabel.text = "Token Created Successfully!"
-        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.text = "Success!"
+        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
         titleLabel.textColor = UIColor.Datacap.nearBlack
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let detailsLabel = UILabel()
-        detailsLabel.text = """
-        Token: \(String(token.token.prefix(20)))...
-        Card: \(token.brand ?? "Unknown") •••• \(token.last4 ?? "")
-        Expires: \(token.expirationMonth ?? "")/\(token.expirationYear ?? "")
-        """
-        detailsLabel.font = .systemFont(ofSize: 14, weight: .regular)
-        detailsLabel.textColor = UIColor.Datacap.darkGray
-        detailsLabel.textAlignment = .center
-        detailsLabel.numberOfLines = 0
-        detailsLabel.translatesAutoresizingMaskIntoConstraints = false
+        let tokenLabel = UILabel()
+        tokenLabel.text = "Token: \(token.token)"
+        tokenLabel.font = .monospacedSystemFont(ofSize: 14, weight: .regular)
+        tokenLabel.textColor = UIColor.Datacap.darkGray
+        tokenLabel.numberOfLines = 0
+        tokenLabel.textAlignment = .center
+        tokenLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(checkmark)
-        view.addSubview(titleLabel)
-        view.addSubview(detailsLabel)
+        let cardLabel = UILabel()
+        cardLabel.text = "\(token.cardType) \(token.maskedCardNumber)"
+        cardLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        cardLabel.textColor = UIColor.Datacap.darkGray
+        cardLabel.textAlignment = .center
+        cardLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let okButton = UIButton(type: .system)
+        okButton.setTitle("OK", for: .normal)
+        okButton.applyDatacapGlassStyle(isPrimary: true)
+        okButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        container.addSubview(checkmarkView)
+        container.addSubview(titleLabel)
+        container.addSubview(tokenLabel)
+        container.addSubview(cardLabel)
+        container.addSubview(okButton)
         
         NSLayoutConstraint.activate([
-            checkmark.topAnchor.constraint(equalTo: view.topAnchor, constant: 24),
-            checkmark.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            checkmark.widthAnchor.constraint(equalToConstant: 60),
-            checkmark.heightAnchor.constraint(equalToConstant: 60),
+            container.widthAnchor.constraint(equalToConstant: 300),
             
-            titleLabel.topAnchor.constraint(equalTo: checkmark.bottomAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            checkmarkView.topAnchor.constraint(equalTo: container.topAnchor, constant: 24),
+            checkmarkView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            checkmarkView.widthAnchor.constraint(equalToConstant: 60),
+            checkmarkView.heightAnchor.constraint(equalToConstant: 60),
             
-            detailsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            detailsLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            detailsLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            detailsLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24)
+            titleLabel.topAnchor.constraint(equalTo: checkmarkView.bottomAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -24),
+            
+            cardLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            cardLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 24),
+            cardLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -24),
+            
+            tokenLabel.topAnchor.constraint(equalTo: cardLabel.bottomAnchor, constant: 12),
+            tokenLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 24),
+            tokenLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -24),
+            
+            okButton.topAnchor.constraint(equalTo: tokenLabel.bottomAnchor, constant: 24),
+            okButton.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            okButton.widthAnchor.constraint(equalToConstant: 100),
+            okButton.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -24)
         ])
         
-        return view
+        okButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
+        
+        return container
     }
     
     private func createErrorView(title: String, message: String) -> UIView {
-        let view = UIView()
-        view.applyLiquidGlass(intensity: 0.95, cornerRadius: 24, shadowOpacity: 0.2)
+        let container = UIView()
+        container.applyLiquidGlass(intensity: 0.95, cornerRadius: 24, shadowOpacity: 0.15)
         
-        let errorIcon = UIImageView(image: UIImage(systemName: "exclamationmark.triangle.fill"))
-        errorIcon.tintColor = UIColor.systemRed
-        errorIcon.contentMode = .scaleAspectFit
-        errorIcon.translatesAutoresizingMaskIntoConstraints = false
+        let errorView = UIImageView()
+        errorView.image = UIImage(systemName: "exclamationmark.triangle.fill")
+        errorView.tintColor = UIColor.Datacap.primaryRed
+        errorView.contentMode = .scaleAspectFit
+        errorView.translatesAutoresizingMaskIntoConstraints = false
         
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
         titleLabel.textColor = UIColor.Datacap.nearBlack
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -422,94 +438,86 @@ extension ModernViewController: DatacapTokenDelegate {
         messageLabel.text = message
         messageLabel.font = .systemFont(ofSize: 16, weight: .regular)
         messageLabel.textColor = UIColor.Datacap.darkGray
-        messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .center
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        view.addSubview(errorIcon)
-        view.addSubview(titleLabel)
-        view.addSubview(messageLabel)
+        let retryButton = UIButton(type: .system)
+        retryButton.setTitle("Try Again", for: .normal)
+        retryButton.applyDatacapGlassStyle(isPrimary: true)
+        retryButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        container.addSubview(errorView)
+        container.addSubview(titleLabel)
+        container.addSubview(messageLabel)
+        container.addSubview(retryButton)
         
         NSLayoutConstraint.activate([
-            errorIcon.topAnchor.constraint(equalTo: view.topAnchor, constant: 24),
-            errorIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorIcon.widthAnchor.constraint(equalToConstant: 60),
-            errorIcon.heightAnchor.constraint(equalToConstant: 60),
+            container.widthAnchor.constraint(equalToConstant: 280),
             
-            titleLabel.topAnchor.constraint(equalTo: errorIcon.bottomAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            errorView.topAnchor.constraint(equalTo: container.topAnchor, constant: 24),
+            errorView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            errorView.widthAnchor.constraint(equalToConstant: 48),
+            errorView.heightAnchor.constraint(equalToConstant: 48),
             
-            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
-            messageLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            messageLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            messageLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24)
+            titleLabel.topAnchor.constraint(equalTo: errorView.bottomAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -24),
+            
+            messageLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            messageLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 24),
+            messageLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -24),
+            
+            retryButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 24),
+            retryButton.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            retryButton.widthAnchor.constraint(equalToConstant: 120),
+            retryButton.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -24)
         ])
         
-        return view
+        retryButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)
+        
+        return container
     }
     
     private func presentCustomAlert(view: UIView) {
-        let dimView = UIView()
-        dimView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-        dimView.frame = self.view.bounds
-        dimView.alpha = 0
+        let alertContainer = UIView()
+        alertContainer.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        alertContainer.alpha = 0
+        alertContainer.translatesAutoresizingMaskIntoConstraints = false
         
-        let containerView = UIView()
-        containerView.addSubview(view)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
+        view.center = self.view.center
+        view.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        view.alpha = 0
         
-        self.view.addSubview(dimView)
-        self.view.addSubview(containerView)
+        self.view.addSubview(alertContainer)
+        alertContainer.addSubview(view)
         
-        view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            containerView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            containerView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
-            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: self.view.leadingAnchor, constant: 40),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: self.view.trailingAnchor, constant: -40),
+            alertContainer.topAnchor.constraint(equalTo: self.view.topAnchor),
+            alertContainer.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            alertContainer.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            alertContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             
-            view.topAnchor.constraint(equalTo: containerView.topAnchor),
-            view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            view.centerXAnchor.constraint(equalTo: alertContainer.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: alertContainer.centerYAnchor)
         ])
         
-        // Add tap to dismiss
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissCustomAlert))
-        dimView.addGestureRecognizer(tapGesture)
-        
-        // Animate in
-        containerView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-        containerView.alpha = 0
-        
-        UIView.animate(withDuration: 0.3) {
-            dimView.alpha = 1
-            containerView.alpha = 1
-            containerView.transform = .identity
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5) {
+            alertContainer.alpha = 1
+            view.transform = .identity
+            view.alpha = 1
         }
         
-        // Auto dismiss after delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-            self?.dismissCustomAlert()
-        }
-        
-        // Store references for dismissal
-        dimView.tag = 999
-        containerView.tag = 998
+        alertContainer.tag = 999
     }
     
-    @objc private func dismissCustomAlert() {
-        guard let dimView = view.viewWithTag(999),
-              let containerView = view.viewWithTag(998) else { return }
+    @objc private func dismissAlert() {
+        guard let alertContainer = view.viewWithTag(999) else { return }
         
-        UIView.animate(withDuration: 0.3, animations: {
-            dimView.alpha = 0
-            containerView.alpha = 0
-            containerView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+        UIView.animate(withDuration: 0.2, animations: {
+            alertContainer.alpha = 0
         }) { _ in
-            dimView.removeFromSuperview()
-            containerView.removeFromSuperview()
+            alertContainer.removeFromSuperview()
             self.getTokenButton.isHidden = false
         }
     }

@@ -3,12 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		ACD32107242D3ADB00694A06 /* DatacapMobileToken.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */; };
-		ACD32108242D3ADB00694A06 /* DatacapMobileToken.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3B5871F3D8B54AF0AF2B5560 /* DatacapTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E7713CD663491AB32149D6 /* DatacapTokenService.swift */; };
+		2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */; };
+		2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */; };
 		ACD3210F242D3C9100694A06 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210B242D3C9100694A06 /* ViewController.m */; };
 		ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210C242D3C9100694A06 /* AppDelegate.m */; };
 		ACD32118242D3D3900694A06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACD32117242D3D3900694A06 /* Assets.xcassets */; };
@@ -25,7 +26,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				ACD32108242D3ADB00694A06 /* DatacapMobileToken.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -33,7 +33,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6534DE931D35A81000AF43B7 /* DatacapMobileTokenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DatacapMobileTokenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		60E7713CD663491AB32149D6 /* DatacapTokenService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatacapTokenService.swift; path = ../DatacapMobileDemo/DatacapTokenService.swift; sourceTree = "<group>"; };
+		2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GlassMorphismExtensions.swift; path = ../DatacapMobileDemo/GlassMorphismExtensions.swift; sourceTree = "<group>"; };
+		2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ModernViewController.swift; path = ../DatacapMobileDemo/ModernViewController.swift; sourceTree = "<group>"; };
 		ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.xcframework; sourceTree = "<group>"; };
 		ACD3210B242D3C9100694A06 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../DatacapMobileDemo/ViewController.m; sourceTree = "<group>"; };
 		ACD3210C242D3C9100694A06 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../DatacapMobileDemo/AppDelegate.m; sourceTree = "<group>"; };
@@ -52,7 +54,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACD32107242D3ADB00694A06 /* DatacapMobileToken.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +84,9 @@
 				ACD3210C242D3C9100694A06 /* AppDelegate.m */,
 				ACD3210E242D3C9100694A06 /* ViewController.h */,
 				ACD3210B242D3C9100694A06 /* ViewController.m */,
+				2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */,
+				60E7713CD663491AB32149D6 /* DatacapTokenService.swift */,
+				2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */,
 				ACD32117242D3D3900694A06 /* Assets.xcassets */,
 				ACD32115242D3D1C00694A06 /* Info.plist */,
 				ACD32119242D3DF000694A06 /* Supporting Files */,
@@ -137,7 +141,8 @@
 		6534DE8B1D35A81000AF43B7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1640;
 				ORGANIZATIONNAME = Monetary;
 				TargetAttributes = {
 					6534DE921D35A81000AF43B7 = {
@@ -148,10 +153,9 @@
 			};
 			buildConfigurationList = 6534DE8E1D35A81000AF43B7 /* Build configuration list for PBXProject "DatacapMobileTokenDemo" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
 				Base,
 			);
@@ -184,6 +188,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3B5871F3D8B54AF0AF2B5560 /* DatacapTokenService.swift in Sources */,
+				2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */,
+				2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */,
 				ACD3210F242D3C9100694A06 /* ViewController.m in Sources */,
 				ACD32125242D3E1100694A06 /* main.m in Sources */,
 				ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */,
@@ -216,27 +223,39 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Q68NE4GJ3V;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -251,7 +270,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -263,27 +282,39 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Q68NE4GJ3V;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -292,7 +323,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -303,18 +334,25 @@
 		6534DEAB1D35A81000AF43B7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Q68NE4GJ3V;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				DEFINES_MODULE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DatacapMobileDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dcap.DatacapMobileDemo;
 				PRODUCT_NAME = DatacapMobileTokenDemo;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -322,18 +360,25 @@
 		6534DEAC1D35A81000AF43B7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Q68NE4GJ3V;
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
+				DEFINES_MODULE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DatacapMobileDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dcap.DatacapMobileDemo;
 				PRODUCT_NAME = DatacapMobileTokenDemo;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
