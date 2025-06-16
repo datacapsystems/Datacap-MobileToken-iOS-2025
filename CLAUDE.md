@@ -6,7 +6,7 @@ This file contains important information for AI assistants (like Claude) working
 
 **Project Type**: iOS Mobile Application  
 **Languages**: Swift 5.0+ and Objective-C  
-**Framework**: Datacap MobileToken SDK  
+**Framework**: Pure Swift Implementation (replaced legacy SDK)  
 **UI Design**: iOS 26 Liquid Glass (Glass Morphism)  
 **Target**: App Store Ready Demo Application  
 **Status**: Complete with modern UI, ready for testing and deployment  
@@ -14,12 +14,53 @@ This file contains important information for AI assistants (like Claude) working
 
 ## Recent Updates (2025)
 
+- ✅ Replaced problematic DatacapMobileToken.xcframework with pure Swift implementation
+- ✅ Created `DatacapTokenService.swift` for tokenization functionality
 - ✅ Implemented iOS 26 Liquid Glass design system
 - ✅ Created `ModernViewController.swift` with programmatic UI
 - ✅ Added `GlassMorphismExtensions.swift` for reusable effects
 - ✅ Updated for App Store submission requirements
 - ✅ Created automated build scripts
 - ✅ Comprehensive documentation added
+
+## Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "UI Layer"
+        MVC[ModernViewController]
+        DTVC[DatacapTokenViewController]
+        GME[GlassMorphismExtensions]
+    end
+    
+    subgraph "Business Logic"
+        DTS[DatacapTokenService]
+        DTD[DatacapTokenServiceDelegate]
+    end
+    
+    subgraph "Models"
+        DT[DatacapToken]
+        CD[CardData]
+        DTE[DatacapTokenError]
+    end
+    
+    subgraph "Legacy Support"
+        VC[ViewController.m/h]
+        AD[AppDelegate.m/h]
+    end
+    
+    MVC --> DTS
+    MVC -.-> GME
+    DTS --> DTVC
+    DTVC --> CD
+    DTS --> DT
+    DTS --> DTE
+    MVC --> DTD
+    
+    style MVC fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+    style DTS fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+    style GME fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
+```
 
 ## Key Development Guidelines
 
@@ -56,11 +97,12 @@ Datacap-MobileToken-iOS-2025/
 │   ├── DatacapMobileDemo/
 │   │   ├── AppDelegate.m/h (Objective-C app lifecycle)
 │   │   ├── ViewController.m/h (Legacy Objective-C - kept for compatibility)
-│   │   ├── ModernViewController.swift (Main UI - NEW)
-│   │   ├── GlassMorphismExtensions.swift (UI extensions - NEW)
+│   │   ├── ModernViewController.swift (Main UI)
+│   │   ├── DatacapTokenService.swift (Tokenization logic)
+│   │   ├── GlassMorphismExtensions.swift (UI extensions)
 │   │   ├── DatacapMobileDemo-Bridging-Header.h (Swift/ObjC bridge)
 │   │   └── Assets.xcassets/
-│   ├── DatacapMobileToken.xcframework/ (SDK)
+│   ├── DatacapMobileToken.xcframework/ (Legacy - no longer used)
 │   └── DatacapMobileTokenDemo.xcodeproj/
 ├── README.md (Updated with build instructions)
 ├── CLAUDE.md (This file)
@@ -72,21 +114,60 @@ Datacap-MobileToken-iOS-2025/
 
 ### 4. Key Implementation Details
 
+#### New Swift Implementation Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant MVC as ModernViewController
+    participant DTS as DatacapTokenService
+    participant DTVC as DatacapTokenViewController
+    participant Delegate as DatacapTokenServiceDelegate
+    
+    User->>MVC: Tap "Get Secure Token"
+    MVC->>DTS: requestToken(from: viewController)
+    DTS->>DTVC: Present(animated: true)
+    DTVC->>User: Show Card Input Form
+    User->>DTVC: Enter Card Details
+    DTVC->>DTVC: Validate Card (Luhn)
+    DTVC->>DTS: didCollectCardData(cardData)
+    DTS->>DTS: generateToken(cardData)
+    DTS->>DTVC: dismiss(animated: true)
+    DTS->>Delegate: tokenRequestDidSucceed(token)
+    Delegate->>MVC: presentSuccessAlert(token)
+    MVC->>User: Show Success with Token
+```
+
 #### Swift/Objective-C Bridge
 ```objc
 // DatacapMobileDemo-Bridging-Header.h
-#import <DatacapMobileToken/DatacapMobileToken.h>
+// Only imports Objective-C view controller now
 #import "ViewController.h"
 ```
 
-#### Main View Controller
-- `ModernViewController.swift` - Primary UI implementation
+#### Main Components
+
+##### DatacapTokenService.swift
+- Pure Swift implementation replacing the framework
+- Handles tokenization logic
+- Card validation (Luhn algorithm)
+- Card type detection
+- Mock token generation for demo
+
+##### ModernViewController.swift
+- Primary UI implementation
 - Programmatic UI only, no Storyboard elements
-- Implements `DatacapTokenDelegate` protocol
+- Implements `DatacapTokenServiceDelegate` protocol
 - Features glass morphism design with animations
 
-#### UI Extensions
-- `GlassMorphismExtensions.swift` - Reusable glass effects
+##### DatacapTokenViewController.swift
+- Card input form UI
+- Built-in validation
+- Keyboard handling
+- Secure text entry for CVV
+
+##### GlassMorphismExtensions.swift
+- Reusable glass effects
 - `UIView.applyLiquidGlass()` - Main glass morphism method
 - `UIButton.applyDatacapGlassStyle()` - Branded button styling
 - `LiquidGlassLoadingView` - Custom loading indicator
@@ -104,15 +185,14 @@ Datacap-MobileToken-iOS-2025/
 # Direct commands
 xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
   -scheme DatacapMobileTokenDemo \
-  -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
   build
 ```
 
 #### Manual Build Steps
 1. Open Xcode: `open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj`
-2. Set bridging header: `DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h`
-3. Select team for code signing
-4. Press ⌘+R to build and run
+2. Select team for code signing
+3. Press ⌘+R to build and run
 
 #### Testing Cards
 - Visa: `4111111111111111`
@@ -130,7 +210,7 @@ xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
 4. Add haptic feedback for interactions
 
 #### Update Token Integration
-1. Modify in `ModernViewController.swift`
+1. Modify in `DatacapTokenService.swift`
 2. Implement delegate methods properly
 3. Handle all error cases
 4. Show appropriate UI feedback
@@ -147,6 +227,7 @@ xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
 When making changes, always verify:
 - `Info.plist` - App configuration and privacy settings
 - `ModernViewController.swift` - Main functionality
+- `DatacapTokenService.swift` - Tokenization logic
 - `GlassMorphismExtensions.swift` - UI consistency
 - `DatacapMobileDemo-Bridging-Header.h` - Framework imports
 - `Main.storyboard` - Set to use ModernViewController
@@ -177,11 +258,12 @@ git status
 git add -A
 
 # Commit with descriptive message
-git commit -m "feat: Add glass morphism to payment form
+git commit -m "feat: Replace framework with pure Swift implementation
 
-- Implement iOS 26 Liquid Glass design
-- Add shimmer animations
-- Update color scheme to match Datacap brand
+- Create DatacapTokenService for tokenization
+- Remove dependency on DatacapMobileToken.xcframework
+- Add card validation and type detection
+- Implement mock token generation for demo
 
 🤖 Generated with Claude Code
 
@@ -195,14 +277,14 @@ git push origin main
 
 #### Common Issues
 
-1. **Xcode License Agreement**
-   - Run: `./fix-xcode-license.sh`
-   - Or: `sudo xcodebuild -license accept`
+1. **Swift Types Not Found**
+   - Ensure all Swift files are in `DatacapMobileDemo` directory
+   - Check that files are included in target membership
+   - Clean build: ⌘+Shift+K
 
 2. **Module 'DatacapMobileToken' not found**
-   - Clean build: ⌘+Shift+K
-   - Check bridging header path
-   - Verify framework is "Embed & Sign"
+   - This is expected - we removed the framework
+   - Use `DatacapTokenService` instead
 
 3. **Code Signing Errors**
    - Select team in Signing & Capabilities
@@ -211,7 +293,7 @@ git push origin main
 
 4. **Build Succeeds but Crashes**
    - Check deployment target is iOS 13.0+
-   - Verify all frameworks embedded
+   - Verify all Swift files are compiled
    - Check console for specific errors
 
 #### Debug Commands
@@ -236,6 +318,7 @@ Before any significant changes:
 - [ ] App launches on simulator
 - [ ] Glass morphism effects render correctly
 - [ ] Token generation works
+- [ ] Card validation functions properly
 - [ ] Error handling shows proper alerts
 - [ ] Memory usage is reasonable
 - [ ] No crashes on device rotation
@@ -245,6 +328,7 @@ Before any significant changes:
 
 Consider these for future updates:
 - SwiftUI migration for iOS 17+
+- Real API integration (replace mock)
 - Dynamic Island support
 - Apple Pay integration
 - Biometric authentication
@@ -295,6 +379,7 @@ Consider these for future updates:
 
 **Key Files:**
 - UI: `ModernViewController.swift`
+- Logic: `DatacapTokenService.swift`
 - Styling: `GlassMorphismExtensions.swift`
 - Config: `Info.plist`
 - Docs: `README.md`, `APP_STORE_SUBMISSION.md`

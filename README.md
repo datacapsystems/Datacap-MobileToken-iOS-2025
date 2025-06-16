@@ -3,7 +3,7 @@
 <div align="center">
   <img src="DatacapMobileTokenDemo/DatacapMobileDemo/logo.png" alt="Datacap Logo" width="300"/>
   
-  [![iOS](https://img.shields.io/badge/iOS-13.0+-black.svg)](https://www.apple.com/ios/)
+  [![iOS](https://img.shields.io/badge/iOS-15.6+-black.svg)](https://www.apple.com/ios/)
   [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org/)
   [![License](https://img.shields.io/badge/License-Commercial-blue.svg)](LICENSE)
   [![App Store Ready](https://img.shields.io/badge/App%20Store-Ready-green.svg)](APP_STORE_SUBMISSION.md)
@@ -11,7 +11,7 @@
 
 ## 🚀 Overview
 
-Datacap Token is a cutting-edge iOS application that demonstrates secure payment tokenization using Datacap's MobileToken SDK. Built with iOS 26's stunning Liquid Glass design language, this app provides enterprise-grade security with a beautiful, modern interface.
+Datacap Token is a cutting-edge iOS application that demonstrates secure payment tokenization using a modern pure Swift implementation. Built with iOS 26's stunning Liquid Glass design language, this app provides enterprise-grade security with a beautiful, modern interface.
 
 ## 🎨 Features
 
@@ -21,6 +21,7 @@ Datacap Token is a cutting-edge iOS application that demonstrates secure payment
 - **Lightning Fast** - Get tokens in milliseconds
 - **PCI Compliant** - Meet all regulatory requirements
 - **Beautiful Animations** - Smooth transitions and haptic feedback
+- **Pure Swift Implementation** - No legacy framework dependencies
 
 ## 📱 Screenshots
 
@@ -32,18 +33,20 @@ Datacap Token is a cutting-edge iOS application that demonstrates secure payment
 
 ## 🏗️ Architecture
 
+### High-Level Architecture
+
 ```mermaid
 graph TB
     subgraph "iOS App"
-        A[ModernViewController<br/>Swift UI Layer] --> B[DatacapTokenizer<br/>Objective-C Bridge]
+        A[ModernViewController<br/>Swift UI Layer] --> B[DatacapTokenService<br/>Pure Swift]
         A --> C[GlassMorphism<br/>UI Extensions]
-        B --> D[DatacapMobileToken<br/>Framework]
+        B --> D[DatacapTokenViewController<br/>Card Input UI]
     end
     
-    subgraph "Datacap API"
-        D --> E[Token Service<br/>API Endpoint]
-        E --> F[Secure Token<br/>Generation]
-        F --> G[Response]
+    subgraph "Business Logic"
+        B --> E[Card Validation<br/>Luhn Algorithm]
+        B --> F[Token Generation<br/>Mock Service]
+        E --> G[Card Type Detection]
     end
     
     subgraph "UI Components"
@@ -55,11 +58,88 @@ graph TB
         H --> M[Shimmer Animation]
     end
     
-    G --> A
+    style A fill:#941a25,stroke:#fff,stroke-width:4px,color:#fff
+    style B fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+    style C fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+### Component Architecture
+
+```mermaid
+classDiagram
+    class ModernViewController {
+        -tokenService: DatacapTokenService
+        -backgroundGradient: CAGradientLayer
+        +viewDidLoad()
+        +getTokenTapped()
+    }
     
-    style A fill:#f9f,stroke:#333,stroke-width:4px
-    style D fill:#bbf,stroke:#333,stroke-width:2px
-    style E fill:#bfb,stroke:#333,stroke-width:2px
+    class DatacapTokenService {
+        -publicKey: String
+        -isCertification: Bool
+        +delegate: DatacapTokenServiceDelegate
+        +requestToken(from: UIViewController)
+        -validateCardNumber(String): Bool
+        -detectCardType(String): String
+        -generateToken(CardData): DatacapToken
+    }
+    
+    class DatacapTokenViewController {
+        -cardNumberField: UITextField
+        -expirationField: UITextField
+        -cvvField: UITextField
+        +delegate: DatacapTokenViewControllerDelegate
+    }
+    
+    class GlassMorphismExtensions {
+        <<extension>>
+        +applyLiquidGlass()
+        +applyDatacapGlassStyle()
+    }
+    
+    class DatacapToken {
+        +token: String
+        +maskedCardNumber: String
+        +cardType: String
+        +expirationDate: String
+    }
+    
+    ModernViewController --> DatacapTokenService
+    ModernViewController ..> GlassMorphismExtensions
+    DatacapTokenService --> DatacapTokenViewController
+    DatacapTokenService --> DatacapToken
+    DatacapTokenViewController --> CardData
+```
+
+### Tokenization Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as ModernViewController
+    participant Service as DatacapTokenService
+    participant Input as DatacapTokenViewController
+    participant Validator as Card Validator
+    
+    User->>UI: Tap "Get Secure Token"
+    UI->>Service: requestToken(from: self)
+    Service->>Input: Present card input form
+    Input->>User: Show input fields
+    User->>Input: Enter card details
+    Input->>Input: Format card number
+    Input->>Input: Format expiry date
+    User->>Input: Tap Submit
+    Input->>Validator: Validate card (Luhn)
+    alt Valid Card
+        Validator->>Service: Card is valid
+        Service->>Service: Generate token
+        Service->>UI: tokenRequestDidSucceed
+        UI->>User: Show success alert
+    else Invalid Card
+        Validator->>Service: Validation failed
+        Service->>UI: tokenRequestDidFail
+        UI->>User: Show error alert
+    end
 ```
 
 ## 🛠️ Technical Stack
@@ -67,28 +147,18 @@ graph TB
 - **Language**: Swift 5.0+ & Objective-C
 - **UI Framework**: UIKit with programmatic UI
 - **Design Pattern**: MVC with Extensions
-- **Minimum iOS**: 13.0
-- **Architecture**: arm64, armv7
+- **Minimum iOS**: 15.6
+- **Architecture**: arm64, x86_64 (Simulator)
 
-## 📦 Getting Started with MobileToken for iOS
+## 📦 Installation
 
-### Add DatacapMobileToken.xcframework to your Xcode project
-1. In the project navigator, select the project or group within a project to which you want to add the framework.
-2. Choose File > Add Files to "*Your Project Name*".
-3. Select the DatacapMobileToken.xcframework bundle, and click Add.
-4. In the project settings, choose the Build Phases tab.
-5. Under the Embed Frameworks section, choose "+" to add a new Embedded Framework.
-6. Select the DatacapMobileToken.xcframework bundle, and click Add.
-
-### Installation
-
-#### Prerequisites
+### Prerequisites
 
 - Xcode 15.0 or later
-- iOS 13.0+ deployment target
+- iOS 15.6+ deployment target
 - Apple Developer account (for device testing)
 
-#### Setup
+### Setup
 
 1. **Clone the repository**
    ```bash
@@ -101,353 +171,124 @@ graph TB
    open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
    ```
 
-## 🚀 Building and Testing
+3. **Configure signing**
+   - Select the project in Xcode
+   - Go to "Signing & Capabilities"
+   - Select your team
+   - Update bundle identifier if needed
 
-### Building for iOS Simulator
+4. **Build and run**
+   - Select a simulator or device
+   - Press ⌘+R to build and run
 
-1. **Open the Project**
-   ```bash
-   cd /path/to/Datacap-MobileToken-iOS-2025
-   open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
-   ```
+## 🚀 Quick Start
 
-2. **Configure Build Settings**
-   - Select the project in navigator
-   - Go to Build Settings tab
-   - Search for "Objective-C Bridging Header"
-   - Set to: `DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h`
+### Using the Build Script
 
-3. **Select Simulator**
-   - Click device selector in Xcode toolbar
-   - Choose iPhone 14 Pro or newer (recommended)
-   - Download simulator if needed via Window → Devices and Simulators
-
-4. **Build and Run**
-   - Press `⌘+R` or click Play button
-   - App will launch with glass morphism UI
-
-### Building for Your iPhone
-
-1. **Prerequisites**
-   - Connect iPhone via USB cable
-   - Trust computer when prompted on phone
-   - Enable Developer Mode (iOS 16+):
-     - Settings → Privacy & Security → Developer Mode → Enable
-     - Restart phone when prompted
-
-2. **Configure Code Signing**
-   - Go to Signing & Capabilities tab
-   - Check "Automatically manage signing"
-   - Select Team (use personal Apple ID if no paid developer account)
-   - Bundle Identifier: `com.datacapsystems.mobiletoken` (or change to your own)
-
-3. **Select Your Device**
-   - Choose your iPhone from device selector
-   - Wait for Xcode to prepare device (first time only)
-
-4. **Install and Run**
-   - Press `⌘+R` to build and install
-   - If prompted about untrusted developer:
-     - On iPhone: Settings → General → VPN & Device Management
-     - Trust your developer certificate
-
-### Command Line Build (Automated)
-
-For automated builds without Xcode UI:
+For a streamlined build process, use our automated script:
 
 ```bash
-# Build for simulator
+./build-and-install.sh
+```
+
+This interactive script will:
+- List available simulators
+- Build the project
+- Install on selected simulator
+- Launch the app automatically
+
+### Manual Build
+
+```bash
 xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
   -scheme DatacapMobileTokenDemo \
-  -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
-  build
-
-# Build for device (requires provisioning)
-xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
-  -scheme DatacapMobileTokenDemo \
-  -destination 'platform=iOS,name=Your iPhone Name' \
+  -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
   build
 ```
 
-### Using Fastlane (Advanced)
+## 💳 Testing
 
-Create a `Fastfile` for automated deployment:
+Use these test card numbers:
 
-```ruby
-# fastlane/Fastfile
-platform :ios do
-  desc "Build and install on device"
-  lane :install do
-    build_app(
-      project: "DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj",
-      scheme: "DatacapMobileTokenDemo",
-      export_method: "development"
-    )
-    install_on_device
-  end
-end
+| Card Type | Number | CVV | Expiry |
+|-----------|--------|-----|---------|
+| Visa | 4111111111111111 | 123 | 12/25 |
+| Mastercard | 5555555555554444 | 456 | 01/26 |
+| Amex | 378282246310005 | 7890 | 03/27 |
+
+## 🔧 Project Structure
+
+```
+DatacapMobileTokenDemo/
+├── DatacapMobileDemo/
+│   ├── ModernViewController.swift      # Main UI controller
+│   ├── DatacapTokenService.swift       # Token service logic
+│   ├── GlassMorphismExtensions.swift   # UI extensions
+│   ├── AppDelegate.m/h                 # App lifecycle
+│   ├── ViewController.m/h              # Legacy support
+│   └── Assets.xcassets/                # Images and colors
+├── DatacapMobileToken.xcframework/     # Legacy framework (unused)
+└── DatacapMobileTokenDemo.xcodeproj/   # Xcode project
 ```
 
-Then run: `fastlane install`
+## 🎯 Key Components
 
-### Testing the App
+### DatacapTokenService
+Pure Swift implementation providing:
+- Card number validation (Luhn algorithm)
+- Card type detection (Visa, MC, Amex, etc.)
+- Mock token generation
+- Delegate pattern for async callbacks
 
-1. **Launch App** - See glass morphism home screen
-2. **Tap "Get Secure Token"** - Opens tokenization form
-3. **Enter Test Card Data**:
-   - Number: `4111111111111111` (Visa)
-   - Expiry: Any future date (e.g., 12/25)
-   - CVV: Any 3 digits (e.g., 123)
-4. **Submit** - Receive secure token response
+### ModernViewController
+Main UI featuring:
+- iOS 26 Liquid Glass design
+- Animated gradient backgrounds
+- Glass morphism effects
+- Custom success/error alerts
 
-### Troubleshooting
+### GlassMorphismExtensions
+Reusable UI components:
+- `applyLiquidGlass()` - Glass morphism effects
+- `applyDatacapGlassStyle()` - Branded buttons
+- `LiquidGlassLoadingView` - Loading animations
 
-#### Common Issues
+## 🔐 Security
 
-**"Module 'DatacapMobileToken' not found"**
-- Clean build: `⌘+Shift+K`
-- Delete derived data: `rm -rf ~/Library/Developer/Xcode/DerivedData`
-- Ensure framework is set to "Embed & Sign"
-
-**"Could not launch app - code signing"**
-- Check team selection in Signing & Capabilities
-- For free accounts, delete app from device every 7 days
-- Verify provisioning profile is valid
-
-**"Unable to install app"**
-- Delete existing app from device
-- Restart Xcode and device
-- Check device has enough storage
-
-**Build succeeds but app crashes**
-- Check console for errors: `⌘+Shift+Y`
-- Verify deployment target is iOS 13.0+
-- Ensure all frameworks are properly embedded
-
-#### Xcode Terms Agreement Issue
-
-If Xcode shows "You must agree to terms":
-1. Quit Xcode completely
-2. Open Terminal and run: `sudo xcodebuild -license accept`
-3. Or reboot Mac and reopen Xcode
-4. Click through agreement prompts
-
-### Quick Commands Reference
-
-| Action | Shortcut |
-|--------|----------|
-| Build | `⌘+B` |
-| Run | `⌘+R` |
-| Stop | `⌘+.` |
-| Clean | `⌘+Shift+K` |
-| Console | `⌘+Shift+Y` |
-| Devices | `⌘+Shift+2` |
-
-## 🔧 Configuration
-
-### Include the framework in your code
-```objective-c
-#import <DatacapMobileToken/DatacapMobileToken.h>
-```
-
-### Swift Bridging Header
-
-For Swift projects, use a bridging header:
-```objc
-// DatacapMobileDemo-Bridging-Header.h
-#import <DatacapMobileToken/DatacapMobileToken.h>
-#import "ViewController.h"
-```
-
-### Implement the tokenization delegate
-
-#### Implement the `DatacapTokenDelegate` protocol
-```objective-c
-@interface ViewController : UIViewController <DatacapTokenDelegate>
-```
-
-Or in Swift:
-```swift
-class ModernViewController: UIViewController, DatacapTokenDelegate {
-```
-
-#### Implement `DatacapTokenDelegate` methods
-
-**On Loading:**
-```objective-c
-- (void)tokenLoading
-{
-  // The framework has begun tokenizing user-input account data.
-}
-```
-
-**On Success:**
-```objective-c
-- (void)tokenCreated:(DatacapToken *)token
-{
-  // A token has been received!
-}
-```
-
-In the `tokenCreated` method, the received `DatacapToken` object contains 5 `NSString` properties:  
-* `Token`: The one-time-use token for the user-entered account data.
-* `Brand`: The card brand of account represented by the token.
-* `ExpirationMonth`: The 2-digit expiration month of the account.
-* `ExpirationYear`: The 4-digit expiration year of the account.
-* `Last4`: The last 4 digits of the account number.
-
-**On Error:**
-```objective-c
-- (void)tokenizationError:(NSError *)error
-{
-  // A tokenization error has occurred!
-}
-```
-
-The `tokenizationError` method will receive an `NSError` object with one of the 4 following error codes:
-* `DMTConnectionError`: Failed to communicate with Datacap Token API.
-* `DMTAuthenticationError`: Public key authentication failed.
-* `DMTDataValidationError`: Failed to tokenize due to invalid account information.
-* `DMTTokenizationError`: An error has occurred tokenizing the account data at the Datacap Token API.
-
-**On Cancel:**
-```objective-c
-- (void)tokenizationCancelled
-{
-  // The user has cancelled tokenization!
-}
-```
-
-### Request a token for keyed account
-
-Provide a `DatacapTokenizer` object with a Datacap public key, a `DatacapTokenDelegate` object which to send events, and a `UIViewController` over which to display the account entry views:
-
-```objective-c
-DatacapTokenizer *tokenizer = [DatacapTokenizer new];
-[tokenizer requestKeyedTokenWithPublicKey:@"[Public Key Goes Here]"
-			  isCertification:true // <-- remove for production
-                              andDelegate:self
-                       overViewController:self];
-```
-
-Or in Swift:
-```swift
-let tokenizer = DatacapTokenizer()
-tokenizer.requestKeyedToken(
-    withPublicKey: "YOUR_PRODUCTION_PUBLIC_KEY",
-    isCertification: false,  // Set to false for production
-    andDelegate: self,
-    overViewController: self
-)
-```
-
-## 🎯 Advanced Usage
-
-### Custom UI Styling
-
-The demo app includes modern glass morphism extensions:
-
-```swift
-// Apply glass morphism to any view
-myView.applyLiquidGlass(
-    intensity: 0.85,
-    cornerRadius: 20,
-    shadowOpacity: 0.15
-)
-
-// Add shimmer effect
-myView.addGlassShimmer()
-
-// Style buttons with Datacap branding
-myButton.applyDatacapGlassStyle(isPrimary: true)
-```
-
-## 🎨 Design System
-
-### Colors
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Primary Red | #941a25 | Buttons, accents |
-| Dark Gray | #54595f | Text, secondary |
-| Blue Gray | #778799 | Subtle elements |
-| Near Black | #231f20 | Headers |
-| Light Background | #f6f9fc | Backgrounds |
-
-### Glass Morphism Parameters
-
-- **Blur Intensity**: 0.85 - 0.95
-- **Corner Radius**: 16 - 24px
-- **Shadow Opacity**: 0.05 - 0.20
-- **Border Width**: 0.5px
-- **Border Opacity**: 0.2
+- No sensitive data logging
+- Secure text entry for CVV
+- Card numbers masked in display
+- Demo mode with test keys
+- PCI compliance ready
 
 ## 📱 App Store Submission
 
-See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for complete submission guidelines.
+See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for detailed submission guidelines.
 
-### Quick Checklist
+## 🐛 Troubleshooting
 
-- [ ] Update version and build number
-- [ ] Test on multiple devices
-- [ ] Create App Store screenshots
-- [ ] Prepare app description and keywords
-- [ ] Archive and validate
-- [ ] Submit for review
+See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions.
 
-## 🧪 Testing
+## 📚 Documentation
 
-### Manual Testing
+- [CLAUDE.md](CLAUDE.md) - AI assistant guide
+- [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) - Submission checklist
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common issues
 
-1. Launch app and verify glass morphism effects
-2. Tap "Get Secure Token" button
-3. Enter test card data
-4. Verify token generation
-5. Check error handling
+## 🤝 Support
 
-### Test Card Numbers
-
-Use these test cards in certification mode:
-- Visa: 4111111111111111
-- Mastercard: 5555555555554444
-- Amex: 378282246310005
-
-## 🔒 Security
-
-- All payment data is transmitted over secure HTTPS
-- No sensitive data is stored on device
-- Tokens are one-time use only
-- PCI DSS compliant implementation
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+For technical support and questions:
+- Email: support@datacapsystems.com
+- Documentation: https://docs.datacapsystems.com
+- Issues: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues
 
 ## 📄 License
 
-This project is proprietary software owned by Datacap Systems, Inc. All rights reserved.
-
-## 🆘 Support
-
-- **Technical Support**: https://datacapsystems.com/support
-- **Documentation**: https://docs.datacapsystems.com
-- **Issues**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues
-
-## 🙏 Acknowledgments
-
-- Built with Datacap's MobileToken SDK
-- Inspired by iOS 26's Liquid Glass design
-- Optimized for modern iOS devices
-
-### Report bugs
-If you encounter any bugs or issues with the latest version of MobileToken for iOS, please report them to us by opening a [GitHub Issue](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues)!
+This project is proprietary software. See LICENSE file for details.
 
 ---
 
 <div align="center">
-  Made with ❤️ by <a href="https://datacapsystems.com">Datacap Systems</a>
+  <p>Built with ❤️ by <a href="https://datacapsystems.com">Datacap Systems</a></p>
+  <p>© 2025 Datacap Systems, Inc. All rights reserved.</p>
 </div>
