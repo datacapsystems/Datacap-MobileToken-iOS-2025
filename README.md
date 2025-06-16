@@ -7,6 +7,7 @@
   [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org/)
   [![License](https://img.shields.io/badge/License-Commercial-blue.svg)](LICENSE)
   [![App Store Ready](https://img.shields.io/badge/App%20Store-Ready-green.svg)](APP_STORE_SUBMISSION.md)
+  [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025)
 </div>
 
 ## 🚀 Overview
@@ -197,6 +198,20 @@ This interactive script will:
 - Install on selected simulator
 - Launch the app automatically
 
+### Deploy to Physical iPhone
+
+To install on your connected iPhone:
+
+```bash
+./deploy-to-phone.sh
+```
+
+This will guide you through:
+- Setting up code signing
+- Selecting your device
+- Building and installing the app
+- Trusting developer certificate
+
 ### Manual Build
 
 ```bash
@@ -204,6 +219,14 @@ xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
   -scheme DatacapMobileTokenDemo \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
   build
+```
+
+### Troubleshooting Installation
+
+If you're having issues installing:
+
+```bash
+./diagnose-install.sh
 ```
 
 ## 💳 Testing
@@ -268,6 +291,13 @@ See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for detailed submission g
 ## 🐛 Troubleshooting
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions.
+
+### Common Issues
+
+1. **MinimumOSVersion Error**: Update Info.plist to match your device iOS version
+2. **Code Signing**: Enable automatic signing in Xcode
+3. **ThreatLocker Blocking**: Add exception for Xcode and the app
+4. **Device Not Found**: Reconnect USB and trust computer on device
 
 ## 📚 Documentation
 
