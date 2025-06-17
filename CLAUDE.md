@@ -440,28 +440,29 @@ Consider these for future updates:
 
 ## Current Status & Next Steps
 
-### Just Completed
-1. **App Store Asset Generation (Latest Session)**
-   - Generated all 19 app icon sizes using create-app-icon.swift
-   - Created comprehensive screenshot capture scripts
-   - Captured all 6 required screenshots (Home, Card Entry, Success, Settings, Help, Transaction)
-   - Resized screenshots to App Store dimensions (1290×2796px)
-   - Organized assets in AppStoreAssets directory structure
-   - Created APP_STORE_ASSETS_SUMMARY.md with submission checklist
-   - Started App Store Connect submission process
+### Latest Session Completed (2025-06-17)
+1. **App Store Submission - FINAL PUSH**
+   - Updated bundle ID to `dsi.dcap.demo` to match existing App ID
+   - Created quick-app-store-build.sh for automated archiving
+   - Resolved build issues (root user vs regular user context)
+   - Successfully created archive for App Store upload
+   - Condensed app description to ~2400 characters (under 4000 limit)
+   - Prepared all review notes and compliance information
+   - Waiting for ThreatLocker approval to complete upload
 
-2. **UI/UX Improvements**
-   - Enhanced help overlay readability with better contrast and color opacity
-   - Renamed "CERT MODE" to "CERTIFICATION MODE" for consistency
-   - Updated Process Transaction button to match Get Secure Token styling
-   - Fixed token card width to prevent text cutoff
-   - Added proper padding and constraints for token display
-   
-3. **Core Features Completed**
-   - Added TransactionViewController.swift to Xcode project
-   - Fixed "SavedToken not found" compilation error
-   - Moved SavedToken struct to DatacapTokenService.swift
-   - Manually edited project.pbxproj to include TransactionViewController
+2. **App Store Assets Finalized**
+   - Generated all 19 app icon sizes using create-app-icon.swift
+   - Captured 6 screenshots: Home, Card Entry, Success, Settings, Help, Transaction
+   - Resized all screenshots to 1290×2796px for iPhone 6.7" display
+   - Created comprehensive asset organization in AppStoreAssets/
+   - Filled out complete App Store Connect listing
+
+3. **UI/UX Final Polish**
+   - Enhanced help overlay readability (opacity 0.1 → 0.15, thicker borders)
+   - Renamed "CERT MODE" to "CERTIFICATION MODE" for clarity
+   - Updated Process Transaction button to match main CTA styling (bold, same font)
+   - Fixed token card width (140px → 180px) to prevent text cutoff
+   - Added darker() color extension for better contrast
 
 ### App Features Now Implemented
 1. **Three operation modes**: Demo, Certification, Production
@@ -470,37 +471,48 @@ Consider these for future updates:
 4. **Help system**: Comprehensive help overlay explaining modes
 5. **App Store ready**: Complete listing and asset requirements
 
-### To Resume Development
-1. **Build and run the app**:
+### Build Instructions (Updated)
+1. **Build for App Store** (IMPORTANT: Run as regular user, not root!):
    ```bash
-   cd DatacapMobileTokenDemo
-   xcodebuild -project DatacapMobileTokenDemo.xcodeproj \
-     -scheme DatacapMobileTokenDemo \
-     -sdk iphonesimulator \
-     -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
-     build
+   ./quick-app-store-build.sh
    ```
 
-2. **Install to simulator**:
-   ```bash
-   # Find built app
-   APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "DatacapMobileTokenDemo.app" | head -1)
-   
-   # Install and launch
-   xcrun simctl install booted "$APP_PATH"
-   xcrun simctl launch booted com.datacapsystems.DatacapMobileTokenDemo
-   ```
-
-3. **Or open in Xcode**:
+2. **Or use Xcode GUI** (Recommended for App Store):
    ```bash
    open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
-   # Press ⌘+R to build and run
+   # Select "Any iOS Device (arm64)" as destination
+   # Product → Archive
+   # Distribute App → App Store Connect → Upload
    ```
 
-### Known Issues
-- Build scripts having issues with bash shell context
-- Simulator detection in scripts sometimes fails
-- May need to manually open Xcode and run
+3. **For simulator testing**:
+   ```bash
+   ./simple-reload.sh
+   # or
+   ./build-and-install.sh  # Choose option 3
+   ```
+
+### App Store Submission Checklist
+- ✅ Bundle ID: `dsi.dcap.demo`
+- ✅ App Name: "Datacap Token"
+- ✅ SKU: DATACAP-TOKEN-2025
+- ✅ Primary Category: Finance
+- ✅ Secondary Category: Developer Tools
+- ✅ Age Rating: 4+
+- ✅ All 19 app icon sizes generated
+- ✅ 5 screenshots resized to 1290×2796px
+- ✅ App description condensed to ~2400 characters
+- ✅ Review notes prepared
+- ✅ Export compliance: HTTPS/TLS only
+- ✅ Archive created and ready for upload
+- ⏳ Upload pending (ThreatLocker approval needed)
+
+### Known Issues Resolved
+- ✅ Fixed root user build context issues (use regular user)
+- ✅ Resolved provisioning profile errors
+- ✅ Fixed button text truncation in transaction view
+- ✅ Enhanced help overlay readability
+- ✅ Bundle ID mismatch resolved
 
 ## Notes for AI Assistants
 
