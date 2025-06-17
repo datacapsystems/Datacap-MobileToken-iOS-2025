@@ -198,6 +198,30 @@ sequenceDiagram
 - **Minimum iOS**: 15.6
 - **Architecture**: arm64, x86_64 (Simulator)
 
+## 🎨 Asset Generation
+
+### App Store Assets
+Generate all required assets using included scripts:
+
+```bash
+# Generate app icons (all sizes)
+./create-app-icon.swift
+
+# Generate App Store asset structure
+./generate-app-store-assets.sh
+
+# Capture screenshots interactively
+./capture-screenshots-interactive.sh
+
+# Resize screenshots for App Store
+./resize-screenshots.sh
+```
+
+**Generated Files:**
+- `AppIcons/` - All app icon sizes with Contents.json
+- `AppStoreAssets/Screenshots/Resized_AppStore/` - Properly sized screenshots (1290×2796px)
+- `APP_STORE_ASSETS_SUMMARY.md` - Complete asset checklist
+
 ## 📦 Installation
 
 ### Prerequisites
@@ -344,7 +368,20 @@ Reusable UI components:
 
 ## 📱 App Store Submission
 
-See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for detailed submission guidelines.
+**Status**: ✅ Ready for submission with all assets generated
+
+### Generated Assets
+- **App Icons**: All 19 sizes (20x20 to 1024x1024) in `AppIcons/`
+- **Screenshots**: iPhone 6.7" screenshots in `AppStoreAssets/Screenshots/Resized_AppStore/`
+- **Marketing Text**: Complete listing in [APP_STORE_LISTING.md](APP_STORE_LISTING.md)
+
+### Quick Submission Guide
+1. **App Name**: Datacap Token
+2. **Bundle ID**: Select available from dropdown (e.g., `dsi.dcap.demo`)
+3. **SKU**: DATACAP-TOKEN-2025
+4. **Screenshots**: Upload from `AppStoreAssets/Screenshots/Resized_AppStore/` in order (1-5)
+
+See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for detailed guidelines.
 
 ## 🐛 Troubleshooting
 
