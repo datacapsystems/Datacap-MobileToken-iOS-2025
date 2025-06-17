@@ -3,21 +3,20 @@
 <plist version="1.0">
 <dict>
     <key>method</key>
-    <string>app-store</string>
+    <string>app-store-connect</string>
     <key>teamID</key>
-    <string>YOUR_TEAM_ID</string>
+    <string>Q68NE4GJ3V</string>
+    <key>signingStyle</key>
+    <string>automatic</string>
     <key>uploadBitcode</key>
     <true/>
     <key>compileBitcode</key>
     <true/>
     <key>uploadSymbols</key>
     <true/>
-    <key>signingCertificate</key>
-    <string>Apple Distribution</string>
-    <key>provisioningProfiles</key>
-    <dict>
-        <key>dsi.dcap.demo</key>
-        <string>YOUR_PROVISIONING_PROFILE_NAME</string>
-    </dict>
+    <key>generateAppStoreInformation</key>
+    <false/>
+    <key>stripSwiftSymbols</key>
+    <true/>
 </dict>
 </plist>

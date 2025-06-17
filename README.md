@@ -369,18 +369,25 @@ Reusable UI components:
 
 ## 📱 App Store Submission
 
-**Status**: ✅ Archive created, awaiting upload (ThreatLocker approval pending)
+**Status**: 🎉 **Submitted for Review!**
 
 ### Submission Progress
-- ✅ Bundle ID updated to `dsi.dcap.demo`
+- ✅ Bundle ID: `dsi.dcap.demo`
 - ✅ All assets generated and properly sized
 - ✅ App Store Connect listing completed
-- ✅ Archive built successfully
-- ⏳ Upload pending
+- ✅ Archive built and uploaded successfully
+- ✅ Build 1.1 selected and approved
+- ✅ Screenshots uploaded (iPhone & iPad)
+- ✅ App icon uploaded (1024x1024)
+- ✅ Categories set (Finance / Developer Tools)
+- ✅ Age rating: 4+
+- ✅ Privacy policy configured
+- ✅ Submitted for App Store review
 
 ### Generated Assets
 - **App Icons**: All 19 sizes (20x20 to 1024x1024) in `AppIcons/`
-- **Screenshots**: iPhone 6.7" screenshots (1290×2796px) in `AppStoreAssets/Screenshots/Resized_AppStore/`
+- **iPhone Screenshots**: 6.7" display (1290×2796px) in `AppStoreAssets/Screenshots/Resized_AppStore/`
+- **iPad Screenshots**: 13" display (2048×2732px) in `~/Desktop/iPad_Screenshots/`
 - **Marketing Text**: Condensed to ~2400 characters in [APP_STORE_LISTING.md](APP_STORE_LISTING.md)
 
 ### Quick Submission Guide
