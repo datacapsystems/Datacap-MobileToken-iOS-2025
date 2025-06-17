@@ -34,9 +34,10 @@ A modern iOS application showcasing Datacap's payment tokenization technology wi
 - **Responsive Layout**: Adapts to all iPhone and iPad sizes
 - **Custom Alerts**: Beautiful success/error notifications with glass morphism
 - **Dynamic Button States**: Visual feedback with scale animations
-- **Enhanced Readability**: Improved contrast and sizing in help overlay
-- **Consistent Button Styling**: Bold red CTA buttons throughout the app
-- **Token Card Display**: Properly sized cards with full number visibility
+- **Enhanced Readability**: Improved help overlay with 0.15 opacity and thicker borders
+- **Consistent Button Styling**: Bold red CTA buttons with matching typography
+- **Token Card Display**: Expanded width (180px) prevents text cutoff
+- **Professional Polish**: "CERTIFICATION MODE" label for clarity
 
 ### Security Features
 - **No Sensitive Data Storage**: Card details are never persisted
@@ -368,18 +369,42 @@ Reusable UI components:
 
 ## 📱 App Store Submission
 
-**Status**: ✅ Ready for submission with all assets generated
+**Status**: ✅ Archive created, awaiting upload (ThreatLocker approval pending)
+
+### Submission Progress
+- ✅ Bundle ID updated to `dsi.dcap.demo`
+- ✅ All assets generated and properly sized
+- ✅ App Store Connect listing completed
+- ✅ Archive built successfully
+- ⏳ Upload pending
 
 ### Generated Assets
 - **App Icons**: All 19 sizes (20x20 to 1024x1024) in `AppIcons/`
-- **Screenshots**: iPhone 6.7" screenshots in `AppStoreAssets/Screenshots/Resized_AppStore/`
-- **Marketing Text**: Complete listing in [APP_STORE_LISTING.md](APP_STORE_LISTING.md)
+- **Screenshots**: iPhone 6.7" screenshots (1290×2796px) in `AppStoreAssets/Screenshots/Resized_AppStore/`
+- **Marketing Text**: Condensed to ~2400 characters in [APP_STORE_LISTING.md](APP_STORE_LISTING.md)
 
 ### Quick Submission Guide
 1. **App Name**: Datacap Token
-2. **Bundle ID**: Select available from dropdown (e.g., `dsi.dcap.demo`)
+2. **Bundle ID**: `dsi.dcap.demo` (using existing App ID)
 3. **SKU**: DATACAP-TOKEN-2025
-4. **Screenshots**: Upload from `AppStoreAssets/Screenshots/Resized_AppStore/` in order (1-5)
+4. **Primary Category**: Finance
+5. **Secondary Category**: Developer Tools
+6. **Screenshots**: Upload from `AppStoreAssets/Screenshots/Resized_AppStore/` in order:
+   - 1_Home_67.png
+   - 2_Token_67.png
+   - 3_Transaction_67.png
+   - 4_Settings_67.png
+   - 5_Help_67.png
+
+### Build for App Store
+```bash
+# As regular user (not root!)
+./quick-app-store-build.sh
+
+# Or use Xcode GUI:
+open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
+# Product → Archive → Distribute App
+```
 
 See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for detailed guidelines.
 

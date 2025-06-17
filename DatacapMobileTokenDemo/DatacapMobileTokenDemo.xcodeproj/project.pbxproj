@@ -356,7 +356,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dcap.DatacapMobileDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = dsi.dcap.demo;
 				PRODUCT_NAME = DatacapMobileTokenDemo;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h";
@@ -382,7 +382,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.dcap.DatacapMobileDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = dsi.dcap.demo;
 				PRODUCT_NAME = DatacapMobileTokenDemo;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DatacapMobileDemo/DatacapMobileDemo-Bridging-Header.h";
