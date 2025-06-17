@@ -20,7 +20,7 @@ class SettingsViewController: UIViewController {
     private let titleLabel = UILabel()
     private let closeButton = UIButton(type: .system)
     
-    private let modeSegmentedControl = UISegmentedControl(items: ["Demo Mode", "Production"])
+    private let modeSegmentedControl = UISegmentedControl(items: ["Demo Mode", "Certification", "Production"])
     private let modeDescriptionLabel = UILabel()
     
     private let apiKeyContainerView = UIView()
@@ -350,8 +350,8 @@ class SettingsViewController: UIViewController {
         let publicKey = apiKeyTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         let endpoint = endpointTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        // Validate inputs in production mode
-        if modeSegmentedControl.selectedSegmentIndex == 1 {
+        // Validate inputs in certification and production modes
+        if modeSegmentedControl.selectedSegmentIndex > 0 {
             if publicKey.isEmpty {
                 showError("Please enter your API public key")
                 return
@@ -380,7 +380,19 @@ class SettingsViewController: UIViewController {
         saveButton.alpha = 0.6
         
         // Save to UserDefaults
-        UserDefaults.standard.set(modeSegmentedControl.selectedSegmentIndex == 0, forKey: "DatacapDemoMode")
+        let mode: String
+        switch modeSegmentedControl.selectedSegmentIndex {
+        case 0:
+            mode = "demo"
+        case 1:
+            mode = "certification"
+        case 2:
+            mode = "production"
+        default:
+            mode = "demo"
+        }
+        
+        UserDefaults.standard.set(mode, forKey: "DatacapOperationMode")
         UserDefaults.standard.set(publicKey, forKey: "DatacapPublicKey")
         UserDefaults.standard.set(endpoint, forKey: "DatacapAPIEndpoint")
         
@@ -429,17 +441,30 @@ class SettingsViewController: UIViewController {
     // MARK: - Helper Methods
     
     private func loadCurrentSettings() {
-        let isDemoMode = UserDefaults.standard.object(forKey: "DatacapDemoMode") as? Bool ?? true
+        let mode = UserDefaults.standard.string(forKey: "DatacapOperationMode") ?? "demo"
         let publicKey = UserDefaults.standard.string(forKey: "DatacapPublicKey") ?? ""
-        let endpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint") ?? "https://api.datacapsystems.com/v1/tokenize"
+        let endpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint")
         
-        modeSegmentedControl.selectedSegmentIndex = isDemoMode ? 0 : 1
+        switch mode {
+        case "demo":
+            modeSegmentedControl.selectedSegmentIndex = 0
+            endpointTextField.text = ""
+        case "certification":
+            modeSegmentedControl.selectedSegmentIndex = 1
+            endpointTextField.text = endpoint ?? "https://pay-cert.dcap.com/v2/"
+        case "production":
+            modeSegmentedControl.selectedSegmentIndex = 2
+            endpointTextField.text = endpoint ?? "https://pay.dcap.com/v2/"
+        default:
+            modeSegmentedControl.selectedSegmentIndex = 0
+        }
+        
         apiKeyTextField.text = publicKey
-        endpointTextField.text = endpoint
     }
     
     private func updateUIForMode() {
-        let isDemoMode = modeSegmentedControl.selectedSegmentIndex == 0
+        let selectedIndex = modeSegmentedControl.selectedSegmentIndex
+        let isDemoMode = selectedIndex == 0
         
         UIView.animate(withDuration: 0.3) {
             self.apiKeyContainerView.alpha = isDemoMode ? 0.5 : 1.0
@@ -447,10 +472,22 @@ class SettingsViewController: UIViewController {
             self.apiKeyTextField.isEnabled = !isDemoMode
             self.endpointTextField.isEnabled = !isDemoMode
             
-            if isDemoMode {
+            switch selectedIndex {
+            case 0:
                 self.modeDescriptionLabel.text = "Demo mode uses mock tokenization for testing"
-            } else {
-                self.modeDescriptionLabel.text = "Production mode uses real API for tokenization"
+                self.endpointTextField.text = ""
+            case 1:
+                self.modeDescriptionLabel.text = "Certification mode for testing with Datacap's test environment"
+                if self.endpointTextField.text?.isEmpty ?? true {
+                    self.endpointTextField.text = "https://pay-cert.dcap.com/v2/"
+                }
+            case 2:
+                self.modeDescriptionLabel.text = "Production mode uses real API for live transactions"
+                if self.endpointTextField.text?.isEmpty ?? true {
+                    self.endpointTextField.text = "https://pay.dcap.com/v2/"
+                }
+            default:
+                break
             }
         }
     }

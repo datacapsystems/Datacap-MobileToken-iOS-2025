@@ -113,6 +113,23 @@ extension UIColor {
         static let glassGray = darkGray.withAlphaComponent(0.7)
         static let glassBackground = lightBackground.withAlphaComponent(0.95)
     }
+    
+    /// Returns a darker version of the color
+    func darker(by percentage: CGFloat = 0.3) -> UIColor {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        return UIColor(
+            red: max(red - percentage, 0),
+            green: max(green - percentage, 0),
+            blue: max(blue - percentage, 0),
+            alpha: alpha
+        )
+    }
 }
 
 // MARK: - Modern Button Styles

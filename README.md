@@ -20,8 +20,12 @@ A modern iOS application showcasing Datacap's payment tokenization technology wi
 - **Secure Payment Tokenization**: Convert credit/debit card numbers into secure tokens
 - **Real-time Card Type Detection**: Automatically identifies Visa, Mastercard, Amex, Discover, and more
 - **Smart Input Formatting**: Dynamic card number formatting based on card type
-- **Production & Demo Modes**: Toggle between live API calls and mock tokenization
+- **Three Operation Modes**: Demo, Certification, and Production environments
+- **Token Saving**: Automatically saves generated tokens for one-click reuse
+- **Transaction Processing**: Process payments using saved tokens with Pay API v2
+- **Configurable Amounts**: Built-in number pad for entering USD transaction amounts
 - **API Configuration**: Built-in settings for API key and endpoint management
+- **In-App Help**: Comprehensive help overlay with improved readability and contrast
 
 ### UI/UX Excellence
 - **iOS 26 Liquid Glass Design**: Modern glass morphism with blur effects and specular highlights
@@ -30,6 +34,9 @@ A modern iOS application showcasing Datacap's payment tokenization technology wi
 - **Responsive Layout**: Adapts to all iPhone and iPad sizes
 - **Custom Alerts**: Beautiful success/error notifications with glass morphism
 - **Dynamic Button States**: Visual feedback with scale animations
+- **Enhanced Readability**: Improved contrast and sizing in help overlay
+- **Consistent Button Styling**: Bold red CTA buttons throughout the app
+- **Token Card Display**: Properly sized cards with full number visibility
 
 ### Security Features
 - **No Sensitive Data Storage**: Card details are never persisted
@@ -55,13 +62,17 @@ graph TB
     subgraph "iOS App"
         A[ModernViewController<br/>Swift UI Layer] --> B[DatacapTokenService<br/>Pure Swift]
         A --> C[GlassMorphism<br/>UI Extensions]
+        A --> T[TransactionViewController<br/>Payment Processing]
         B --> D[DatacapTokenViewController<br/>Card Input UI]
+        T --> B
     end
     
     subgraph "Business Logic"
         B --> E[Card Validation<br/>Luhn Algorithm]
-        B --> F[Token Generation<br/>Mock Service]
+        B --> F[Token Generation<br/>Mock/API Service]
         E --> G[Card Type Detection]
+        B --> S[SavedToken<br/>Storage]
+        T --> P[Pay API v2<br/>Integration]
     end
     
     subgraph "UI Components"
@@ -71,11 +82,13 @@ graph TB
         H --> K[Blur Effects]
         H --> L[Specular Highlights]
         H --> M[Shimmer Animation]
+        T --> N[Number Pad<br/>Amount Entry]
     end
     
     style A fill:#941a25,stroke:#fff,stroke-width:4px,color:#fff
     style B fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
     style C fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
+    style T fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
 ```
 
 ### Component Architecture
@@ -87,6 +100,8 @@ classDiagram
         -backgroundGradient: CAGradientLayer
         +viewDidLoad()
         +getTokenTapped()
+        +showTransactionView()
+        +showHelp()
     }
     
     class DatacapTokenService {
@@ -99,10 +114,19 @@ classDiagram
         -generateToken(CardData): DatacapToken
     }
     
+    class TransactionViewController {
+        -savedTokens: [DatacapToken]
+        -currentAmount: Double
+        -selectedToken: DatacapToken?
+        +processTapped()
+        +numberPadTapped()
+    }
+    
     class DatacapTokenViewController {
         -cardNumberField: UITextField
         -expirationField: UITextField
         -cvvField: UITextField
+        -expirationDatePicker: UIDatePicker
         +delegate: DatacapTokenViewControllerDelegate
     }
     
@@ -110,6 +134,7 @@ classDiagram
         <<extension>>
         +applyLiquidGlass()
         +applyDatacapGlassStyle()
+        +darker(): UIColor
     }
     
     class DatacapToken {
@@ -117,6 +142,14 @@ classDiagram
         +maskedCardNumber: String
         +cardType: String
         +expirationDate: String
+    }
+    
+    class SavedToken {
+        +token: String
+        +maskedCardNumber: String
+        +cardType: String
+        +expirationDate: String
+        +timestamp: Date
     }
     
     ModernViewController --> DatacapTokenService

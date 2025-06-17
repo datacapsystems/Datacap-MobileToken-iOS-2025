@@ -19,6 +19,15 @@ struct DatacapToken {
     let timestamp: Date
 }
 
+// MARK: - Saved Token Model
+struct SavedToken: Codable {
+    let token: String
+    let maskedCardNumber: String
+    let cardType: String
+    let expirationDate: String
+    let timestamp: Date
+}
+
 // MARK: - Token Delegate Protocol
 protocol DatacapTokenServiceDelegate: AnyObject {
     func tokenRequestDidSucceed(_ token: DatacapToken)
@@ -61,15 +70,13 @@ class DatacapTokenService {
     
     weak var delegate: DatacapTokenServiceDelegate?
     private var publicKey: String
-    private var isCertification: Bool
+    private var mode: String
     private var apiEndpoint: String?
-    private var isDemoMode: Bool
     
-    init(publicKey: String, isCertification: Bool = true, apiEndpoint: String? = nil) {
+    init(publicKey: String, mode: String = "demo", apiEndpoint: String? = nil) {
         self.publicKey = publicKey
-        self.isCertification = isCertification
+        self.mode = mode
         self.apiEndpoint = apiEndpoint
-        self.isDemoMode = apiEndpoint == nil || apiEndpoint?.isEmpty == true
     }
     
     // MARK: - Public Methods
@@ -135,9 +142,10 @@ class DatacapTokenService {
     }
     
     private func generateToken(for cardData: CardData) -> DatacapToken {
-        if !isDemoMode, let apiURL = apiEndpoint {
-            // PRODUCTION MODE: Real API call
-            print("🔐 PRODUCTION MODE: Using real tokenization API")
+        if mode != "demo", let apiURL = apiEndpoint {
+            // CERTIFICATION/PRODUCTION MODE: Real API call
+            let modeLabel = mode == "certification" ? "CERTIFICATION" : "PRODUCTION"
+            print("🔐 \(modeLabel) MODE: Using real tokenization API")
             
             let cleanedCardNumber = cardData.cardNumber.replacingOccurrences(of: " ", with: "")
             
@@ -147,7 +155,7 @@ class DatacapTokenService {
                 "expirationMonth": cardData.expirationMonth,
                 "expirationYear": cardData.expirationYear,
                 "cvv": cardData.cvv,
-                "isCertification": isCertification
+                "isCertification": mode == "certification"
             ]
             
             guard let url = URL(string: apiURL) else {
