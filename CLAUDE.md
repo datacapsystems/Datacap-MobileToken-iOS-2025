@@ -386,7 +386,36 @@ Before any significant changes:
 - [ ] No crashes on device rotation
 - [ ] Animations are smooth (60fps)
 
-### 14. Future Enhancements
+### 14. Asset Generation Scripts
+
+The project includes several scripts for App Store asset generation:
+
+#### App Icon Generator
+```bash
+./create-app-icon.swift
+```
+- Generates all 19 required icon sizes
+- Creates programmatic icon with lock/card design
+- Outputs to `AppIcons/` with Contents.json
+
+#### Screenshot Scripts
+```bash
+./capture-screenshots-interactive.sh  # Interactive capture guide
+./resize-screenshots.sh              # Resize to App Store dimensions
+```
+- Guides through capturing all required screens
+- Resizes to 1290×2796px for iPhone 6.7"
+- Saves to `AppStoreAssets/Screenshots/`
+
+#### Asset Structure Generator
+```bash
+./generate-app-store-assets.sh
+```
+- Creates complete App Store asset directory structure
+- Generates screenshot guides and checklists
+- Creates marketing materials templates
+
+### 15. Future Enhancements
 
 Consider these for future updates:
 - SwiftUI migration for iOS 17+
@@ -400,7 +429,7 @@ Consider these for future updates:
 - Internationalization support
 - Analytics integration
 
-### 15. Resources
+### 16. Resources
 
 - [Datacap API Docs](https://docs.datacapsystems.com)
 - [Developer Portal](https://www.dsidevportal.com)
@@ -412,14 +441,23 @@ Consider these for future updates:
 ## Current Status & Next Steps
 
 ### Just Completed
-1. **UI/UX Improvements (Latest Session)**
+1. **App Store Asset Generation (Latest Session)**
+   - Generated all 19 app icon sizes using create-app-icon.swift
+   - Created comprehensive screenshot capture scripts
+   - Captured all 6 required screenshots (Home, Card Entry, Success, Settings, Help, Transaction)
+   - Resized screenshots to App Store dimensions (1290×2796px)
+   - Organized assets in AppStoreAssets directory structure
+   - Created APP_STORE_ASSETS_SUMMARY.md with submission checklist
+   - Started App Store Connect submission process
+
+2. **UI/UX Improvements**
    - Enhanced help overlay readability with better contrast and color opacity
    - Renamed "CERT MODE" to "CERTIFICATION MODE" for consistency
    - Updated Process Transaction button to match Get Secure Token styling
    - Fixed token card width to prevent text cutoff
    - Added proper padding and constraints for token display
    
-2. **Previously Completed**
+3. **Core Features Completed**
    - Added TransactionViewController.swift to Xcode project
    - Fixed "SavedToken not found" compilation error
    - Moved SavedToken struct to DatacapTokenService.swift
