@@ -28,6 +28,19 @@ This file contains important information for AI assistants (like Claude) working
 - ✅ Enhanced error handling with proper view dismissal
 - ✅ Customized button colors for visual hierarchy
 - ✅ Fixed green checkmark color to forest green
+- ✅ **Added Certification mode** (between Demo and Production)
+- ✅ **Created TransactionViewController** for processing transactions with saved tokens
+- ✅ **Implemented token saving** functionality with one-click reuse
+- ✅ **Added configurable amount selector** with number pad for USD transactions
+- ✅ **Integrated Pay API v2** for real transaction processing
+- ✅ **Added help button** explaining app features and modes
+- ✅ **Created App Store listing** positioning app for both existing and new customers
+- ✅ **Fixed SavedToken compilation error** by moving struct to DatacapTokenService
+- ✅ **Added TransactionViewController to Xcode project** via project.pbxproj edits
+- ✅ **Enhanced help overlay readability** with better contrast and opacity
+- ✅ **Updated mode indicator** from "CERT MODE" to "CERTIFICATION MODE"
+- ✅ **Unified button styling** - Process Transaction matches Get Secure Token
+- ✅ **Fixed token card display** - Increased width and added proper constraints
 
 ## Architecture Overview
 
@@ -113,9 +126,10 @@ Datacap-MobileToken-iOS-2025/
 │   ├── DatacapMobileDemo/
 │   │   ├── AppDelegate.m/h (Objective-C app lifecycle)
 │   │   ├── ViewController.m/h (Legacy Objective-C - kept for compatibility)
-│   │   ├── ModernViewController.swift (Main UI - NEW)
-│   │   ├── SettingsViewController.swift (API Settings - NEW)
-│   │   ├── DatacapTokenService.swift (Token Service - ENHANCED)
+│   │   ├── ModernViewController.swift (Main UI - ENHANCED with help & transactions)
+│   │   ├── SettingsViewController.swift (API Settings - ENHANCED with 3 modes)
+│   │   ├── TransactionViewController.swift (Transaction Processing - NEW)
+│   │   ├── DatacapTokenService.swift (Token Service - ENHANCED with SavedToken)
 │   │   ├── GlassMorphismExtensions.swift (UI extensions - NEW)
 │   │   ├── DatacapMobileDemo-Bridging-Header.h (Swift/ObjC bridge)
 │   │   └── Assets.xcassets/
@@ -124,9 +138,11 @@ Datacap-MobileToken-iOS-2025/
 ├── README.md (Updated with comprehensive docs)
 ├── CLAUDE.md (This file)
 ├── APP_STORE_SUBMISSION.md (Submission guide)
+├── APP_STORE_LISTING.md (App Store description - NEW)
 ├── TROUBLESHOOTING.md (Common issues)
 ├── build-and-install.sh (Automated build script)
-└── fix-xcode-license.sh (License fix script)
+├── fix-xcode-license.sh (License fix script)
+└── Various reload scripts (simple-reload.sh, etc.)
 ```
 
 ### 4. Key Implementation Details
@@ -393,6 +409,61 @@ Consider these for future updates:
 - [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
 - [Glass Morphism Design](https://uxdesign.cc/glassmorphism-in-user-interfaces-1f39bb1308c9)
 
+## Current Status & Next Steps
+
+### Just Completed
+1. **UI/UX Improvements (Latest Session)**
+   - Enhanced help overlay readability with better contrast and color opacity
+   - Renamed "CERT MODE" to "CERTIFICATION MODE" for consistency
+   - Updated Process Transaction button to match Get Secure Token styling
+   - Fixed token card width to prevent text cutoff
+   - Added proper padding and constraints for token display
+   
+2. **Previously Completed**
+   - Added TransactionViewController.swift to Xcode project
+   - Fixed "SavedToken not found" compilation error
+   - Moved SavedToken struct to DatacapTokenService.swift
+   - Manually edited project.pbxproj to include TransactionViewController
+
+### App Features Now Implemented
+1. **Three operation modes**: Demo, Certification, Production
+2. **Token saving**: Automatically saves generated tokens for reuse
+3. **Transaction processing**: Complete Pay API v2 integration
+4. **Help system**: Comprehensive help overlay explaining modes
+5. **App Store ready**: Complete listing and asset requirements
+
+### To Resume Development
+1. **Build and run the app**:
+   ```bash
+   cd DatacapMobileTokenDemo
+   xcodebuild -project DatacapMobileTokenDemo.xcodeproj \
+     -scheme DatacapMobileTokenDemo \
+     -sdk iphonesimulator \
+     -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+     build
+   ```
+
+2. **Install to simulator**:
+   ```bash
+   # Find built app
+   APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "DatacapMobileTokenDemo.app" | head -1)
+   
+   # Install and launch
+   xcrun simctl install booted "$APP_PATH"
+   xcrun simctl launch booted com.datacapsystems.DatacapMobileTokenDemo
+   ```
+
+3. **Or open in Xcode**:
+   ```bash
+   open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
+   # Press ⌘+R to build and run
+   ```
+
+### Known Issues
+- Build scripts having issues with bash shell context
+- Simulator detection in scripts sometimes fails
+- May need to manually open Xcode and run
+
 ## Notes for AI Assistants
 
 ### DO's
@@ -405,6 +476,7 @@ Consider these for future updates:
 7. **Update documentation** when adding features
 8. **Check visual hierarchy** for button prominence
 9. **Test all user flows** end-to-end
+10. **Build and push to simulator** when requested by user
 
 ### DON'Ts
 1. **Don't create new storyboard files** - use programmatic UI
