@@ -780,9 +780,9 @@ class ModernViewController: UIViewController {
             // Card
             card.centerXAnchor.constraint(equalTo: helpView.centerXAnchor),
             card.centerYAnchor.constraint(equalTo: helpView.centerYAnchor),
-            card.leadingAnchor.constraint(greaterThanOrEqualTo: helpView.leadingAnchor, constant: 20),
-            card.trailingAnchor.constraint(lessThanOrEqualTo: helpView.trailingAnchor, constant: -20),
-            card.widthAnchor.constraint(lessThanOrEqualToConstant: 500),
+            card.leadingAnchor.constraint(equalTo: helpView.leadingAnchor, constant: 20),
+            card.trailingAnchor.constraint(equalTo: helpView.trailingAnchor, constant: -20),
+            card.widthAnchor.constraint(lessThanOrEqualToConstant: 600), // Max width for iPad
             card.heightAnchor.constraint(equalToConstant: 600), // Fixed height
             
             // Stack view
