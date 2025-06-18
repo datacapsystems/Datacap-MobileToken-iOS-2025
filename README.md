@@ -43,20 +43,20 @@ Datacap-MobileToken-iOS-2025/
 
 ```mermaid
 graph TB
-    subgraph "Your iOS App"
+    subgraph YourApp["Your iOS App"]
         APP[Your App] --> SDK[DatacapTokenService]
         SDK --> |"Option 1"| UI[Built-in Card UI]
         SDK --> |"Option 2"| CUSTOM[Your Custom UI]
     end
     
-    subgraph "Datacap API"
+    subgraph DatacapAPI["Datacap API"]
         SDK --> AUTH[Authorization Header]
-        AUTH --> |"POST"| OTU[/v1/otu Endpoint]
+        AUTH --> |"POST"| OTU["/v1/otu Endpoint"]
         OTU --> TOKEN[Secure Token]
     end
     
-    subgraph "Response"
-        TOKEN --> |"Success"| RESP[Token + Card Details]
+    subgraph Response["Response"]
+        TOKEN --> |"Success"| RESP["Token + Card Details"]
         TOKEN --> |"Error"| ERR[Error Message]
     end
     
@@ -77,8 +77,8 @@ sequenceDiagram
     App->>SDK: Initialize with API Key
     App->>SDK: requestToken() or generateTokenDirect()
     SDK->>SDK: Validate Card (Luhn)
-    SDK->>API: POST /v1/otu<br/>Auth: Token Key<br/>Body: {Account, ExpirationMonth, ExpirationYear, CVV}
-    API-->>SDK: {Token, Brand, Last4, ExpirationMonth, ExpirationYear}
+    SDK->>API: POST /v1/otu<br/>Auth: Token Key<br/>Body: Card Data
+    API-->>SDK: Token Response
     SDK-->>App: DatacapToken object
     App->>Server: Send token for payment processing
     Server->>Server: Process payment with token
@@ -88,12 +88,12 @@ sequenceDiagram
 
 ```mermaid
 graph LR
-    subgraph "API Key Management"
-        CERT[Certification Key] --> CERTENV[Cert Environment<br/>token-cert.dcap.com]
-        PROD[Production Key] --> PRODENV[Prod Environment<br/>token.dcap.com]
+    subgraph KeyMgmt["API Key Management"]
+        CERT[Certification Key] --> CERTENV["Cert Environment<br/>token-cert.dcap.com"]
+        PROD[Production Key] --> PRODENV["Prod Environment<br/>token.dcap.com"]
     end
     
-    subgraph "Settings Storage"
+    subgraph Storage["Settings Storage"]
         CERT -.-> CS[DatacapCertificationPublicKey]
         PROD -.-> PS[DatacapProductionPublicKey]
         MODE[Current Mode] --> ACTIVE[Active Environment]

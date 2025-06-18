@@ -36,6 +36,13 @@ This file contains important information for AI assistants (like Claude) working
 - **Native date picker**: Wheel-style expiration selection
 - **Settings management**: Separate keys for each environment
 
+### ✅ Repository Cleanup (June 2025)
+- **Public-facing structure**: Cleaned for open source distribution
+- **MIT License**: Added for broad usage rights
+- **Private files moved**: All internal scripts and docs in `.backup-private/`
+- **Professional documentation**: README with working Mermaid diagrams
+- **Clean git history**: Ready for public repository
+
 ## Repository Structure
 
 ```
@@ -48,8 +55,7 @@ Datacap-MobileToken-iOS-2025/
 │   ├── Tests/                        # Unit tests
 │   ├── Package.swift                 # SPM configuration
 │   ├── DatacapTokenLibrary.podspec  # CocoaPods spec
-│   ├── README.md                     # Library documentation
-│   └── LICENSE                       # Commercial license
+│   └── README.md                     # Library documentation
 │
 ├── DatacapMobileTokenDemo/           # 📱 DEMO APPLICATION
 │   ├── DatacapMobileDemo/
@@ -60,9 +66,14 @@ Datacap-MobileToken-iOS-2025/
 │   │   └── GlassMorphismExtensions.swift   # UI styling
 │   └── DatacapMobileTokenDemo.xcodeproj
 │
-└── Documentation/
-    ├── README.md                     # Main repository docs
-    └── CLAUDE.md                     # This file
+├── docs/                             # 📚 PUBLIC DOCUMENTATION
+│   └── images/                       # Screenshots and diagrams
+│
+├── README.md                         # Main repository documentation
+├── INTEGRATION_GUIDE.md              # Detailed integration guide
+├── LICENSE                           # MIT License
+├── CLAUDE.md                         # This file (AI assistant guide)
+└── .gitignore                        # Excludes private files
 ```
 
 ## Architecture Overview
@@ -257,7 +268,7 @@ When helping integrators:
 - ✅ Real API integration
 - ✅ SPM and CocoaPods ready
 - ✅ Documentation complete
-- ✅ Commercial license
+- ✅ MIT License (entire repository)
 
 ### Demo App (`/DatacapMobileTokenDemo/`)
 - ✅ Shows library integration
@@ -265,6 +276,13 @@ When helping integrators:
 - ✅ Glass morphism UI
 - ✅ Help documentation
 - ✅ Ready for App Store
+
+### Repository Status
+- ✅ Public-facing structure
+- ✅ Professional documentation
+- ✅ Clean commit history
+- ✅ Private files backed up in `.backup-private/`
+- ✅ Ready for GitHub public repository
 
 ## Notes for AI Assistants
 
