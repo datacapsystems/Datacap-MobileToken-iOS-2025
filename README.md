@@ -12,7 +12,7 @@
 
 ## 🚀 Overview
 
-A modern iOS application showcasing Datacap's payment tokenization technology with iOS 26 Liquid Glass design system. This demo app provides a secure, elegant interface for converting sensitive payment card data into secure tokens for PCI-compliant payment processing.
+A modern iOS application demonstrating Datacap's payment gateway integration for brick-and-mortar merchants. This demo app showcases manual card entry as used at physical point-of-sale locations, featuring iOS 26 Liquid Glass design system. Perfect for demonstrating how physical retailers can securely process card-present transactions through our third-party payment gateway.
 
 ## 🎨 Features
 
@@ -49,9 +49,36 @@ A modern iOS application showcasing Datacap's payment tokenization technology wi
 ## 📱 Screenshots
 
 <div align="center">
-  <img src="docs/screenshot1.png" alt="Home Screen" width="250"/>
-  <img src="docs/screenshot2.png" alt="Token Generation" width="250"/>
-  <img src="docs/screenshot3.png" alt="Success Screen" width="250"/>
+  <table>
+    <tr>
+      <td align="center">
+        <img src="docs/screenshots/1_Home_67.png" alt="Home Screen" width="250"/>
+        <br><b>Home Screen</b>
+      </td>
+      <td align="center">
+        <img src="docs/screenshots/2_Token_67.png" alt="Token Generation" width="250"/>
+        <br><b>Token Generation</b>
+      </td>
+      <td align="center">
+        <img src="docs/screenshots/3_Transaction_67.png" alt="Transaction Processing" width="250"/>
+        <br><b>Transaction Processing</b>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="docs/screenshots/4_Settings_67.png" alt="API Settings" width="250"/>
+        <br><b>API Configuration</b>
+      </td>
+      <td align="center">
+        <img src="docs/screenshots/5_Help_67.png" alt="Help Guide" width="250"/>
+        <br><b>In-App Help</b>
+      </td>
+      <td align="center">
+        <img src="docs/screenshots/1_Home_67.png" alt="Success State" width="250"/>
+        <br><b>Token Success</b>
+      </td>
+    </tr>
+  </table>
 </div>
 
 ## 🏗️ Architecture
