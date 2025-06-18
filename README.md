@@ -1,4 +1,4 @@
-# Datacap MobileToken iOS Demo 2025 🚀
+# Datacap MobileToken iOS Library 🚀
 
 <div align="center">
   <img src="DatacapMobileTokenDemo/DatacapMobileDemo/logo.png" alt="Datacap Logo" width="300"/>
@@ -6,45 +6,163 @@
   [![iOS](https://img.shields.io/badge/iOS-15.6+-black.svg)](https://www.apple.com/ios/)
   [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org/)
   [![Xcode](https://img.shields.io/badge/Xcode-16.0+-blue.svg)](https://developer.apple.com/xcode/)
-  [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![App Store Ready](https://img.shields.io/badge/App%20Store-Ready-green.svg)](APP_STORE_SUBMISSION.md)
+  [![License](https://img.shields.io/badge/License-Commercial-yellow.svg)](LICENSE)
 </div>
 
 ## 🚀 Overview
 
-A modern iOS application demonstrating Datacap's payment gateway integration for brick-and-mortar merchants. This demo app showcases manual card entry as used at physical point-of-sale locations, featuring iOS 26 Liquid Glass design system. Perfect for demonstrating how physical retailers can securely process card-present transactions through our third-party payment gateway.
+This repository contains both a **production-ready iOS tokenization library** and a **demo application** showcasing Datacap's payment tokenization capabilities. The library provides secure payment card tokenization for iOS applications, perfect for merchants integrating with Datacap's payment gateway.
 
-## 🎨 Features
+## 📁 Repository Structure
 
-### Core Functionality
-- **Secure Payment Tokenization**: Convert credit/debit card numbers into secure tokens
-- **Real-time Card Type Detection**: Automatically identifies Visa, Mastercard, Amex, Discover, and more
-- **Smart Input Formatting**: Dynamic card number formatting based on card type
-- **Three Operation Modes**: Demo, Certification, and Production environments
-- **Token Saving**: Automatically saves generated tokens for one-click reuse
-- **Transaction Processing**: Process payments using saved tokens with Pay API v2
-- **Configurable Amounts**: Built-in number pad for entering USD transaction amounts
-- **API Configuration**: Built-in settings for API key and endpoint management
-- **In-App Help**: Comprehensive help overlay with improved readability and contrast
+```
+Datacap-MobileToken-iOS-2025/
+├── DatacapTokenLibrary/        # 📦 Distributable library for integrators
+│   ├── Sources/                # Core library code
+│   ├── Example/                # Integration examples
+│   └── README.md               # Library-specific documentation
+├── DatacapMobileTokenDemo/     # 📱 Demo application
+│   ├── DatacapMobileDemo/      # Demo app source code
+│   └── *.xcodeproj             # Xcode project
+└── Documentation/              # 📚 Additional docs
+```
 
-### UI/UX Excellence
-- **iOS 26 Liquid Glass Design**: Modern glass morphism with blur effects and specular highlights
-- **Date Picker for Expiry**: Native iOS date selector wheel for card expiration
-- **Smooth Animations**: Spring animations and haptic feedback
-- **Responsive Layout**: Adapts to all iPhone and iPad sizes
-- **Custom Alerts**: Beautiful success/error notifications with glass morphism
-- **Dynamic Button States**: Visual feedback with scale animations
-- **Enhanced Readability**: Improved help overlay with 0.15 opacity and thicker borders
-- **Consistent Button Styling**: Bold red CTA buttons with matching typography
-- **Token Card Display**: Expanded width (180px) prevents text cutoff
-- **Professional Polish**: "CERTIFICATION MODE" label for clarity
+## 🎯 What's Included
 
-### Security Features
-- **No Sensitive Data Storage**: Card details are never persisted
-- **Secure API Communication**: HTTPS-only connections
-- **Input Validation**: Luhn algorithm and format verification
-- **PCI Compliance**: Follows industry security standards
-- **Demo/Production Isolation**: Clear visual indicators for mode
+### 1. DatacapTokenLibrary (For Integrators)
+
+A clean, reusable library that integrators can add to their iOS apps:
+
+```mermaid
+graph TB
+    subgraph "Integrator's App"
+        APP[Their App] --> LIB[DatacapTokenLibrary]
+        LIB --> UI[Card Input UI]
+        LIB --> API[Datacap API]
+    end
+    
+    subgraph "Token Flow"
+        UI --> VAL[Validation]
+        VAL --> TOK[Tokenization]
+        TOK --> RES[Token Response]
+    end
+    
+    APP -.-> RES
+    
+    style LIB fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+    style API fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+**Quick Integration:**
+```swift
+// Initialize with merchant's public key
+let tokenService = DatacapTokenService(
+    publicKey: "MERCHANT_PUBLIC_KEY",
+    isCertification: true
+)
+
+// Request token
+tokenService.requestToken(from: self)
+```
+
+### 2. Demo Application
+
+A complete iOS app demonstrating the library in action:
+
+```mermaid
+graph LR
+    subgraph "Demo App Structure"
+        HOME[Home Screen] --> SETTINGS[API Settings]
+        HOME --> TOKEN[Token Generation]
+        TOKEN --> SUCCESS[Success Display]
+        
+        SETTINGS --> CERT{Certification Mode?}
+        CERT -->|Yes| CERTAPI[Cert API]
+        CERT -->|No| PRODAPI[Prod API]
+    end
+    
+    style HOME fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+    style TOKEN fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+## 🏗️ Architecture
+
+### Library Architecture
+
+```mermaid
+graph TB
+    subgraph "Public API"
+        DTS[DatacapTokenService]
+        DEL[DatacapTokenServiceDelegate]
+        TOK[DatacapToken]
+        ERR[DatacapTokenError]
+    end
+    
+    subgraph "Internal Components"
+        DTVC[DatacapTokenViewController]
+        CARD[Card Input UI]
+        VAL[Validation Logic]
+        NET[Network Layer]
+    end
+    
+    subgraph "Integration Points"
+        APP[Merchant's App]
+        API[Datacap API]
+    end
+    
+    APP --> DTS
+    DTS --> DTVC
+    DTVC --> CARD
+    CARD --> VAL
+    DTS --> NET
+    NET --> API
+    API --> TOK
+    TOK --> DEL
+    DEL --> APP
+    
+    style DTS fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+    style APP fill:#228b22,stroke:#fff,stroke-width:2px,color:#fff
+    style API fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+### Token Generation Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant MerchantApp
+    participant TokenLibrary
+    participant CardUI
+    participant DatacapAPI
+    
+    User->>MerchantApp: Initiate Payment
+    MerchantApp->>TokenLibrary: requestToken()
+    TokenLibrary->>CardUI: Present Input Screen
+    User->>CardUI: Enter Card Details
+    CardUI->>CardUI: Validate Input
+    CardUI->>TokenLibrary: Card Data Collected
+    TokenLibrary->>DatacapAPI: POST /tokenize
+    DatacapAPI->>DatacapAPI: Generate Token
+    DatacapAPI->>TokenLibrary: Token Response
+    TokenLibrary->>MerchantApp: tokenRequestDidSucceed()
+    MerchantApp->>MerchantApp: Process with Token
+```
+
+## 🎨 Key Features
+
+### For Integrators (Library)
+- 🔐 **Secure Tokenization**: PCI-compliant card tokenization
+- 📱 **Pre-built UI**: Complete card input interface
+- ✅ **Smart Validation**: Real-time card validation
+- 🎯 **Simple Integration**: Just 3 lines to get started
+- 🌐 **Dual Environment**: Certification and production modes
+
+### For Developers (Demo App)
+- 🎨 **iOS 26 Liquid Glass Design**: Modern glass morphism UI
+- ⚙️ **API Configuration**: Easy setup for testing
+- 💳 **Card Type Detection**: Automatic card brand identification
+- 📅 **Date Picker**: Native iOS date selection
+- 🔄 **Real-time Formatting**: Dynamic card number formatting
 
 ## 📱 Screenshots
 
@@ -56,263 +174,148 @@ A modern iOS application demonstrating Datacap's payment gateway integration for
         <br><b>Home Screen</b>
       </td>
       <td align="center">
-        <img src="docs/screenshots/2_Token_67.png" alt="Token Generation" width="250"/>
-        <br><b>Token Generation</b>
-      </td>
-      <td align="center">
-        <img src="docs/screenshots/3_Transaction_67.png" alt="Transaction Processing" width="250"/>
-        <br><b>Transaction Processing</b>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
         <img src="docs/screenshots/4_Settings_67.png" alt="API Settings" width="250"/>
         <br><b>API Configuration</b>
       </td>
       <td align="center">
-        <img src="docs/screenshots/5_Help_67.png" alt="Help Guide" width="250"/>
-        <br><b>In-App Help</b>
-      </td>
-      <td align="center">
-        <img src="docs/screenshots/1_Home_67.png" alt="Success State" width="250"/>
-        <br><b>Token Success</b>
+        <img src="docs/screenshots/2_Token_67.png" alt="Card Input" width="250"/>
+        <br><b>Card Input UI</b>
       </td>
     </tr>
   </table>
 </div>
 
-## 🏗️ Architecture
+## 🛠️ Installation
 
-### High-Level Architecture
+### For Integrators (Using the Library)
 
-```mermaid
-graph TB
-    subgraph "iOS App"
-        A[ModernViewController<br/>Swift UI Layer] --> B[DatacapTokenService<br/>Pure Swift]
-        A --> C[GlassMorphism<br/>UI Extensions]
-        A --> T[TransactionViewController<br/>Payment Processing]
-        B --> D[DatacapTokenViewController<br/>Card Input UI]
-        T --> B
-    end
-    
-    subgraph "Business Logic"
-        B --> E[Card Validation<br/>Luhn Algorithm]
-        B --> F[Token Generation<br/>Mock/API Service]
-        E --> G[Card Type Detection]
-        B --> S[SavedToken<br/>Storage]
-        T --> P[Pay API v2<br/>Integration]
-    end
-    
-    subgraph "UI Components"
-        C --> H[Liquid Glass<br/>Effects]
-        C --> I[Custom Alerts]
-        C --> J[Loading States]
-        H --> K[Blur Effects]
-        H --> L[Specular Highlights]
-        H --> M[Shimmer Animation]
-        T --> N[Number Pad<br/>Amount Entry]
-    end
-    
-    style A fill:#941a25,stroke:#fff,stroke-width:4px,color:#fff
-    style B fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
-    style C fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
-    style T fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+#### Swift Package Manager
+```swift
+dependencies: [
+    .package(url: "https://github.com/datacapsystems/DatacapTokenLibrary-iOS.git", from: "1.0.0")
+]
 ```
 
-### Component Architecture
-
-```mermaid
-classDiagram
-    class ModernViewController {
-        -tokenService: DatacapTokenService
-        -backgroundGradient: CAGradientLayer
-        +viewDidLoad()
-        +getTokenTapped()
-        +showTransactionView()
-        +showHelp()
-    }
-    
-    class DatacapTokenService {
-        -publicKey: String
-        -isCertification: Bool
-        +delegate: DatacapTokenServiceDelegate
-        +requestToken(from: UIViewController)
-        -validateCardNumber(String): Bool
-        -detectCardType(String): String
-        -generateToken(CardData): DatacapToken
-    }
-    
-    class TransactionViewController {
-        -savedTokens: [DatacapToken]
-        -currentAmount: Double
-        -selectedToken: DatacapToken?
-        +processTapped()
-        +numberPadTapped()
-    }
-    
-    class DatacapTokenViewController {
-        -cardNumberField: UITextField
-        -expirationField: UITextField
-        -cvvField: UITextField
-        -expirationDatePicker: UIDatePicker
-        +delegate: DatacapTokenViewControllerDelegate
-    }
-    
-    class GlassMorphismExtensions {
-        <<extension>>
-        +applyLiquidGlass()
-        +applyDatacapGlassStyle()
-        +darker(): UIColor
-    }
-    
-    class DatacapToken {
-        +token: String
-        +maskedCardNumber: String
-        +cardType: String
-        +expirationDate: String
-    }
-    
-    class SavedToken {
-        +token: String
-        +maskedCardNumber: String
-        +cardType: String
-        +expirationDate: String
-        +timestamp: Date
-    }
-    
-    ModernViewController --> DatacapTokenService
-    ModernViewController ..> GlassMorphismExtensions
-    DatacapTokenService --> DatacapTokenViewController
-    DatacapTokenService --> DatacapToken
-    DatacapTokenViewController --> CardData
+#### CocoaPods
+```ruby
+pod 'DatacapTokenLibrary', '~> 1.0'
 ```
 
-### Tokenization Flow
+#### Manual Installation
+1. Copy `DatacapTokenLibrary/Sources/` to your project
+2. Add files to your target
+3. Import and use
 
-```mermaid
-sequenceDiagram
-    participant User
-    participant UI as ModernViewController
-    participant Service as DatacapTokenService
-    participant Input as DatacapTokenViewController
-    participant Validator as Card Validator
-    
-    User->>UI: Tap "Get Secure Token"
-    UI->>Service: requestToken(from: self)
-    Service->>Input: Present card input form
-    Input->>User: Show input fields
-    User->>Input: Enter card details
-    Input->>Input: Format card number
-    Input->>Input: Format expiry date
-    User->>Input: Tap Submit
-    Input->>Validator: Validate card (Luhn)
-    alt Valid Card
-        Validator->>Service: Card is valid
-        Service->>Service: Generate token
-        Service->>UI: tokenRequestDidSucceed
-        UI->>User: Show success alert
-    else Invalid Card
-        Validator->>Service: Validation failed
-        Service->>UI: tokenRequestDidFail
-        UI->>User: Show error alert
-    end
-```
-
-## 🛠️ Technical Stack
-
-- **Language**: Swift 5.0+ & Objective-C
-- **UI Framework**: UIKit with programmatic UI
-- **Design Pattern**: MVC with Extensions
-- **Minimum iOS**: 15.6
-- **Architecture**: arm64, x86_64 (Simulator)
-
-## 🎨 Asset Generation
-
-### App Store Assets
-Generate all required assets using included scripts:
+### For Developers (Running the Demo)
 
 ```bash
-# Generate app icons (all sizes)
-./create-app-icon.swift
+# Clone the repository
+git clone git@github.com:datacapsystems/Datacap-MobileToken-iOS-2025.git
+cd Datacap-MobileToken-iOS-2025
 
-# Generate App Store asset structure
-./generate-app-store-assets.sh
+# Open in Xcode
+open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 
-# Capture screenshots interactively
-./capture-screenshots-interactive.sh
-
-# Resize screenshots for App Store
-./resize-screenshots.sh
+# Build and run (⌘+R)
 ```
 
-**Generated Files:**
-- `AppIcons/` - All app icon sizes with Contents.json
-- `AppStoreAssets/Screenshots/Resized_AppStore/` - Properly sized screenshots (1290×2796px)
-- `APP_STORE_ASSETS_SUMMARY.md` - Complete asset checklist
+## 💻 Integration Guide
 
-## 📦 Installation
+### Basic Usage
 
-### Prerequisites
+```swift
+import DatacapTokenLibrary
 
-- Xcode 15.0 or later
-- iOS 15.6+ deployment target
-- Apple Developer account (for device testing)
+class PaymentViewController: UIViewController {
+    
+    let tokenService = DatacapTokenService(
+        publicKey: "YOUR_MERCHANT_PUBLIC_KEY",
+        isCertification: true  // false for production
+    )
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tokenService.delegate = self
+    }
+    
+    @IBAction func addCardTapped() {
+        tokenService.requestToken(from: self)
+    }
+}
 
-### Setup
+extension PaymentViewController: DatacapTokenServiceDelegate {
+    func tokenRequestDidSucceed(_ token: DatacapToken) {
+        // Success! Send token to your backend
+        print("Token: \(token.token)")
+    }
+    
+    func tokenRequestDidFail(error: DatacapTokenError) {
+        // Handle error
+        print("Error: \(error.localizedDescription)")
+    }
+    
+    func tokenRequestDidCancel() {
+        // User cancelled
+    }
+}
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone git@github.com:datacapsystems/Datacap-MobileToken-iOS-2025.git
-   cd Datacap-MobileToken-iOS-2025
-   ```
+## 🔧 Configuration
 
-2. **Open in Xcode**
-   ```bash
-   open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
-   ```
+### API Credentials
 
-3. **Configure signing**
-   - Select the project in Xcode
-   - Go to "Signing & Capabilities"
-   - Select your team
-   - Update bundle identifier if needed
+1. Get your merchant account at [dsidevportal.com](https://www.dsidevportal.com)
+2. Obtain your public API key
+3. Initialize the library with your key
+4. Start with certification mode for testing
 
-4. **Build and run**
-   - Select a simulator or device
-   - Press ⌘+R to build and run
+### Supported Card Types
 
-## 🚀 Quick Start
+| Card Type | Length | Starting Digits | CVV Length |
+|-----------|--------|----------------|------------|
+| Visa | 16 | 4 | 3 |
+| Mastercard | 16 | 51-55, 2221-2720 | 3 |
+| American Express | 15 | 34, 37 | 4 |
+| Discover | 16 | 6011, 65, 644-649 | 3 |
+| Diners Club | 14 | 36, 38, 300-305 | 3 |
 
-### Using the Build Script
+## 💳 Testing
 
-For a streamlined build process, use our automated script:
+### Test Card Numbers
 
+Use these in certification mode:
+
+```
+Visa:         4111111111111111  CVV: 123
+Mastercard:   5555555555554444  CVV: 123
+Amex:         378282246310005   CVV: 1234
+Discover:     6011111111111117  CVV: 123
+```
+
+## 🔐 Security
+
+- **No Card Storage**: Card data is never persisted
+- **HTTPS Only**: All API calls use TLS encryption
+- **PCI Compliant**: Follows all security best practices
+- **Input Validation**: Real-time Luhn validation
+- **Secure Entry**: CVV field is always masked
+
+## 📚 Documentation
+
+- [Library Integration Guide](DatacapTokenLibrary/README.md)
+- [API Documentation](https://docs.datacapsystems.com)
+- [Developer Portal](https://www.dsidevportal.com)
+- [Support](mailto:support@datacapsystems.com)
+
+## 🚀 Building & Deployment
+
+### Build Library
 ```bash
-./build-and-install.sh
+cd DatacapTokenLibrary
+swift build
 ```
 
-This interactive script will:
-- List available simulators
-- Build the project
-- Install on selected simulator
-- Launch the app automatically
-
-### Deploy to Physical iPhone
-
-To install on your connected iPhone:
-
-```bash
-./deploy-to-phone.sh
-```
-
-This will guide you through:
-- Setting up code signing
-- Selecting your device
-- Building and installing the app
-- Trusting developer certificate
-
-### Manual Build
-
+### Build Demo App
 ```bash
 xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
   -scheme DatacapMobileTokenDemo \
@@ -320,155 +323,18 @@ xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
   build
 ```
 
-### Troubleshooting Installation
+## 📄 License
 
-If you're having issues installing:
-
-```bash
-./diagnose-install.sh
-```
-
-## 💳 Testing
-
-### Test Card Numbers
-
-| Card Type | Number | CVV | Max Length | Formatting |
-| Visa | 4111111111111111 | 123 | 16 | 4-4-4-4 |
-| Mastercard | 5555555555554444 | 123 | 16 | 4-4-4-4 |
-| Amex | 378282246310005 | 1234 | 15 | 4-6-5 |
-| Discover | 6011111111111117 | 123 | 16 | 4-4-4-4 |
-| Diners Club | 36700102000000 | 123 | 14 | 4-6-4 |
-
-### Card Detection Logic
-
-The app automatically detects card types based on BIN (Bank Identification Number):
-
-- **Visa**: Starts with 4
-- **Mastercard**: Starts with 51-55 or 2221-2720
-- **Amex**: Starts with 34 or 37
-- **Discover**: Starts with 6011, 65, or 644-649
-- **Diners Club**: Starts with 36, 38, or 300-305
-
-## 🔧 Project Structure
-
-```
-DatacapMobileTokenDemo/
-├── DatacapMobileDemo/
-│   ├── ModernViewController.swift      # Main UI controller
-│   ├── DatacapTokenService.swift       # Token service logic
-│   ├── GlassMorphismExtensions.swift   # UI extensions
-│   ├── AppDelegate.m/h                 # App lifecycle
-│   ├── ViewController.m/h              # Legacy support
-│   └── Assets.xcassets/                # Images and colors
-├── DatacapMobileToken.xcframework/     # Legacy framework (unused)
-└── DatacapMobileTokenDemo.xcodeproj/   # Xcode project
-```
-
-## 🎯 Key Components
-
-### DatacapTokenService
-Pure Swift implementation providing:
-- Card number validation (Luhn algorithm)
-- Card type detection (Visa, MC, Amex, etc.)
-- Mock token generation
-- Delegate pattern for async callbacks
-
-### ModernViewController
-Main UI featuring:
-- iOS 26 Liquid Glass design
-- Animated gradient backgrounds
-- Glass morphism effects
-- Custom success/error alerts
-
-### GlassMorphismExtensions
-Reusable UI components:
-- `applyLiquidGlass()` - Glass morphism effects
-- `applyDatacapGlassStyle()` - Branded buttons
-- `LiquidGlassLoadingView` - Loading animations
-
-## 🔐 Security
-
-- No sensitive data logging
-- Secure text entry for CVV
-- Card numbers masked in display
-- Demo mode with test keys
-- PCI compliance ready
-
-## 📱 App Store Submission
-
-**Status**: 🎉 **Submitted for Review!**
-
-### Submission Progress
-- ✅ Bundle ID: `dsi.dcap.demo`
-- ✅ All assets generated and properly sized
-- ✅ App Store Connect listing completed
-- ✅ Archive built and uploaded successfully
-- ✅ Build 1.1 selected and approved
-- ✅ Screenshots uploaded (iPhone & iPad)
-- ✅ App icon uploaded (1024x1024)
-- ✅ Categories set (Finance / Developer Tools)
-- ✅ Age rating: 4+
-- ✅ Privacy policy configured
-- ✅ Submitted for App Store review
-
-### Generated Assets
-- **App Icons**: All 19 sizes (20x20 to 1024x1024) in `AppIcons/`
-- **iPhone Screenshots**: 6.7" display (1290×2796px) in `AppStoreAssets/Screenshots/Resized_AppStore/`
-- **iPad Screenshots**: 13" display (2048×2732px) in `~/Desktop/iPad_Screenshots/`
-- **Marketing Text**: Condensed to ~2400 characters in [APP_STORE_LISTING.md](APP_STORE_LISTING.md)
-
-### Quick Submission Guide
-1. **App Name**: Datacap Token
-2. **Bundle ID**: `dsi.dcap.demo` (using existing App ID)
-3. **SKU**: DATACAP-TOKEN-2025
-4. **Primary Category**: Finance
-5. **Secondary Category**: Developer Tools
-6. **Screenshots**: Upload from `AppStoreAssets/Screenshots/Resized_AppStore/` in order:
-   - 1_Home_67.png
-   - 2_Token_67.png
-   - 3_Transaction_67.png
-   - 4_Settings_67.png
-   - 5_Help_67.png
-
-### Build for App Store
-```bash
-# As regular user (not root!)
-./quick-app-store-build.sh
-
-# Or use Xcode GUI:
-open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
-# Product → Archive → Distribute App
-```
-
-See [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) for detailed guidelines.
-
-## 🐛 Troubleshooting
-
-See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues and solutions.
-
-### Common Issues
-
-1. **MinimumOSVersion Error**: Update Info.plist to match your device iOS version
-2. **Code Signing**: Enable automatic signing in Xcode
-3. **ThreatLocker Blocking**: Add exception for Xcode and the app
-4. **Device Not Found**: Reconnect USB and trust computer on device
-
-## 📚 Documentation
-
-- [CLAUDE.md](CLAUDE.md) - AI assistant guide
-- [APP_STORE_SUBMISSION.md](APP_STORE_SUBMISSION.md) - Submission checklist
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common issues
+This project contains both commercial and demo components:
+- **Library**: Commercial license (see [DatacapTokenLibrary/LICENSE](DatacapTokenLibrary/LICENSE))
+- **Demo App**: MIT license for reference implementation
 
 ## 🤝 Support
 
 For technical support and questions:
 - Email: support@datacapsystems.com
 - Documentation: https://docs.datacapsystems.com
-- Issues: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues
-
-## 📄 License
-
-This project is proprietary software. See LICENSE file for details.
+- Issues: [GitHub Issues](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues)
 
 ---
 

@@ -11,7 +11,6 @@
 		2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */; };
 		2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */; };
 		2637A06F2DFCBE210075A9A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */; };
-		2637A0702DFCBE210075A9A2 /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06E2DFCBCB60075A9A2 /* TransactionViewController.swift */; };
 		ACD3210F242D3C9100694A06 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210B242D3C9100694A06 /* ViewController.m */; };
 		ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD3210C242D3C9100694A06 /* AppDelegate.m */; };
 		ACD32118242D3D3900694A06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACD32117242D3D3900694A06 /* Assets.xcassets */; };
@@ -39,7 +38,6 @@
 		2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GlassMorphismExtensions.swift; path = ../DatacapMobileDemo/GlassMorphismExtensions.swift; sourceTree = "<group>"; };
 		2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ModernViewController.swift; path = ../DatacapMobileDemo/ModernViewController.swift; sourceTree = "<group>"; };
 		2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ../DatacapMobileDemo/SettingsViewController.swift; sourceTree = "<group>"; };
-		2637A06E2DFCBCB60075A9A2 /* TransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TransactionViewController.swift; path = ../DatacapMobileDemo/TransactionViewController.swift; sourceTree = "<group>"; };
 		ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.xcframework; sourceTree = "<group>"; };
 		ACD3210B242D3C9100694A06 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../DatacapMobileDemo/ViewController.m; sourceTree = "<group>"; };
 		ACD3210C242D3C9100694A06 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../DatacapMobileDemo/AppDelegate.m; sourceTree = "<group>"; };
@@ -90,7 +88,6 @@
 				ACD3210B242D3C9100694A06 /* ViewController.m */,
 				2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */,
 				2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */,
-				2637A06E2DFCBCB60075A9A2 /* TransactionViewController.swift */,
 				60E7713CD663491AB32149D6 /* DatacapTokenService.swift */,
 				2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */,
 				ACD32117242D3D3900694A06 /* Assets.xcassets */,
@@ -198,7 +195,6 @@
 				2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */,
 				2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */,
 				2637A06F2DFCBE210075A9A1 /* SettingsViewController.swift in Sources */,
-				2637A0702DFCBE210075A9A2 /* TransactionViewController.swift in Sources */,
 				ACD3210F242D3C9100694A06 /* ViewController.m in Sources */,
 				ACD32125242D3E1100694A06 /* main.m in Sources */,
 				ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */,

@@ -2,16 +2,20 @@
 //  SettingsViewController.swift
 //  DatacapMobileTokenDemo
 //
-//  Copyright © 2025 Datacap Systems, Inc. All rights reserved.
+//  Clean version for tokenization library - Certification/Production only
 //
 
 import UIKit
+
+protocol SettingsViewControllerDelegate: AnyObject {
+    func settingsDidUpdate()
+}
 
 class SettingsViewController: UIViewController {
     
     // MARK: - Properties
     
-    var onSettingsChanged: ((String, String?) -> Void)?
+    weak var delegate: SettingsViewControllerDelegate?
     
     private let scrollView = UIScrollView()
     private let contentView = UIView()
@@ -20,7 +24,7 @@ class SettingsViewController: UIViewController {
     private let titleLabel = UILabel()
     private let closeButton = UIButton(type: .system)
     
-    private let modeSegmentedControl = UISegmentedControl(items: ["Demo Mode", "Certification", "Production"])
+    private let modeSegmentedControl = UISegmentedControl(items: ["Certification", "Production"])
     private let modeDescriptionLabel = UILabel()
     
     private let apiKeyContainerView = UIView()
@@ -77,11 +81,11 @@ class SettingsViewController: UIViewController {
         closeButton.tintColor = UIColor.Datacap.darkGray
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         
-        // Mode selector - use lighter red for selected segment
+        // Mode selector
         modeSegmentedControl.selectedSegmentIndex = 0
         modeSegmentedControl.addTarget(self, action: #selector(modeChanged), for: .valueChanged)
         modeSegmentedControl.backgroundColor = UIColor.Datacap.lightBackground
-        modeSegmentedControl.selectedSegmentTintColor = UIColor.Datacap.primaryRed.withAlphaComponent(0.8) // Lighter red
+        modeSegmentedControl.selectedSegmentTintColor = UIColor.Datacap.primaryRed.withAlphaComponent(0.8)
         let normalTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.Datacap.darkGray]
         let selectedTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         modeSegmentedControl.setTitleTextAttributes(normalTextAttributes, for: .normal)
@@ -90,7 +94,7 @@ class SettingsViewController: UIViewController {
         modeDescriptionLabel.font = .systemFont(ofSize: 14, weight: .regular)
         modeDescriptionLabel.textColor = UIColor.Datacap.darkGray
         modeDescriptionLabel.numberOfLines = 0
-        modeDescriptionLabel.text = "Demo mode uses mock tokenization for testing"
+        modeDescriptionLabel.text = "Certification mode for testing, Production for live transactions"
         
         // API Key section
         apiKeyContainerView.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.05)
@@ -132,9 +136,9 @@ class SettingsViewController: UIViewController {
         endpointHelpLabel.textColor = UIColor.Datacap.blueGray
         endpointHelpLabel.numberOfLines = 0
         
-        // Save button - use darker red like the main CTA
+        // Save button
         saveButton.setTitle("Save Configuration", for: .normal)
-        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0) // Same dark red as main CTA
+        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
         saveButton.backgroundColor = darkRed
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
@@ -198,11 +202,10 @@ class SettingsViewController: UIViewController {
         
         // Setup keyboard handling
         setupKeyboardHandling()
-    }
-    
-    private func setupConstraints() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Translates autoresizing mask into constraints
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         headerView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         closeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -221,7 +224,9 @@ class SettingsViewController: UIViewController {
         infoIconView.translatesAutoresizingMaskIntoConstraints = false
         infoTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         infoTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+    }
+    
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
             // Content view
             contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -236,21 +241,21 @@ class SettingsViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             
             // Header
-            headerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 80),
+            headerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            headerView.heightAnchor.constraint(equalToConstant: 50),
             
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 24),
             
+            closeButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             closeButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            closeButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -24),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
             
-            // Mode selector
-            modeSegmentedControl.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 8),
+            // Mode control
+            modeSegmentedControl.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 24),
             modeSegmentedControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             modeSegmentedControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             modeSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
@@ -265,16 +270,18 @@ class SettingsViewController: UIViewController {
             apiKeyContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             apiKeyContainerView.heightAnchor.constraint(equalToConstant: 80),
             
-            apiKeyLabel.topAnchor.constraint(equalTo: apiKeyContainerView.topAnchor, constant: 12),
+            apiKeyLabel.topAnchor.constraint(equalTo: apiKeyContainerView.topAnchor, constant: 16),
             apiKeyLabel.leadingAnchor.constraint(equalTo: apiKeyContainerView.leadingAnchor, constant: 16),
             
             apiKeyInfoButton.centerYAnchor.constraint(equalTo: apiKeyLabel.centerYAnchor),
             apiKeyInfoButton.leadingAnchor.constraint(equalTo: apiKeyLabel.trailingAnchor, constant: 8),
+            apiKeyInfoButton.widthAnchor.constraint(equalToConstant: 20),
+            apiKeyInfoButton.heightAnchor.constraint(equalToConstant: 20),
             
             apiKeyTextField.topAnchor.constraint(equalTo: apiKeyLabel.bottomAnchor, constant: 8),
             apiKeyTextField.leadingAnchor.constraint(equalTo: apiKeyContainerView.leadingAnchor, constant: 16),
             apiKeyTextField.trailingAnchor.constraint(equalTo: apiKeyContainerView.trailingAnchor, constant: -16),
-            apiKeyTextField.bottomAnchor.constraint(equalTo: apiKeyContainerView.bottomAnchor, constant: -12),
+            apiKeyTextField.bottomAnchor.constraint(equalTo: apiKeyContainerView.bottomAnchor, constant: -16),
             
             // Endpoint container
             endpointContainerView.topAnchor.constraint(equalTo: apiKeyContainerView.bottomAnchor, constant: 16),
@@ -282,7 +289,7 @@ class SettingsViewController: UIViewController {
             endpointContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             endpointContainerView.heightAnchor.constraint(equalToConstant: 100),
             
-            endpointLabel.topAnchor.constraint(equalTo: endpointContainerView.topAnchor, constant: 12),
+            endpointLabel.topAnchor.constraint(equalTo: endpointContainerView.topAnchor, constant: 16),
             endpointLabel.leadingAnchor.constraint(equalTo: endpointContainerView.leadingAnchor, constant: 16),
             
             endpointTextField.topAnchor.constraint(equalTo: endpointLabel.bottomAnchor, constant: 8),
@@ -290,28 +297,28 @@ class SettingsViewController: UIViewController {
             endpointTextField.trailingAnchor.constraint(equalTo: endpointContainerView.trailingAnchor, constant: -16),
             
             endpointHelpLabel.topAnchor.constraint(equalTo: endpointTextField.bottomAnchor, constant: 4),
-            endpointHelpLabel.leadingAnchor.constraint(equalTo: endpointContainerView.leadingAnchor, constant: 16),
-            endpointHelpLabel.trailingAnchor.constraint(equalTo: endpointContainerView.trailingAnchor, constant: -16),
-            endpointHelpLabel.bottomAnchor.constraint(equalTo: endpointContainerView.bottomAnchor, constant: -8),
+            endpointHelpLabel.leadingAnchor.constraint(equalTo: endpointTextField.leadingAnchor),
+            endpointHelpLabel.trailingAnchor.constraint(equalTo: endpointTextField.trailingAnchor),
+            endpointHelpLabel.bottomAnchor.constraint(lessThanOrEqualTo: endpointContainerView.bottomAnchor, constant: -8),
             
             // Save button
             saveButton.topAnchor.constraint(equalTo: endpointContainerView.bottomAnchor, constant: 32),
-            saveButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            saveButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            saveButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             saveButton.heightAnchor.constraint(equalToConstant: 56),
+            saveButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
             
             // Info card
             infoCardView.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 32),
             infoCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             infoCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            infoCardView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -24),
+            infoCardView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -32),
             
             infoIconView.topAnchor.constraint(equalTo: infoCardView.topAnchor, constant: 16),
             infoIconView.leadingAnchor.constraint(equalTo: infoCardView.leadingAnchor, constant: 16),
             infoIconView.widthAnchor.constraint(equalToConstant: 24),
             infoIconView.heightAnchor.constraint(equalToConstant: 24),
             
-            infoTitleLabel.topAnchor.constraint(equalTo: infoCardView.topAnchor, constant: 16),
+            infoTitleLabel.topAnchor.constraint(equalTo: infoIconView.topAnchor),
             infoTitleLabel.leadingAnchor.constraint(equalTo: infoIconView.trailingAnchor, constant: 12),
             infoTitleLabel.trailingAnchor.constraint(equalTo: infoCardView.trailingAnchor, constant: -16),
             
@@ -326,98 +333,95 @@ class SettingsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
+        // Add tap gesture to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapGesture)
+        tapGesture.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(tapGesture)
+    }
+    
+    // MARK: - Configuration
+    
+    private func loadCurrentSettings() {
+        let publicKey = UserDefaults.standard.string(forKey: "DatacapPublicKey") ?? ""
+        let endpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint") ?? "https://api.datacapsystems.com/v1/tokenize"
+        let isCertification = UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
+        
+        apiKeyTextField.text = publicKey
+        endpointTextField.text = endpoint
+        modeSegmentedControl.selectedSegmentIndex = isCertification ? 0 : 1
+    }
+    
+    private func updateUIForMode() {
+        let isCertification = modeSegmentedControl.selectedSegmentIndex == 0
+        
+        if isCertification {
+            modeDescriptionLabel.text = "Certification mode for testing your integration"
+        } else {
+            modeDescriptionLabel.text = "Production mode for processing live transactions"
+        }
+        
+        // API key is always required
+        apiKeyContainerView.alpha = 1.0
+        endpointContainerView.alpha = 1.0
+        apiKeyTextField.isEnabled = true
+        endpointTextField.isEnabled = true
     }
     
     // MARK: - Actions
     
     @objc private func closeTapped() {
-        dismissKeyboard()
-        animateOut()
+        dismiss(animated: true)
     }
     
     @objc private func modeChanged() {
         updateUIForMode()
         
+        // Haptic feedback
         let impact = UIImpactFeedbackGenerator(style: .light)
         impact.impactOccurred()
     }
     
     @objc private func saveTapped() {
-        dismissKeyboard()
-        
-        let publicKey = apiKeyTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        let endpoint = endpointTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        // Validate inputs in certification and production modes
-        if modeSegmentedControl.selectedSegmentIndex > 0 {
-            if publicKey.isEmpty {
-                showError("Please enter your API public key")
-                return
-            }
-            
-            // Validate API key format (should be 32 characters for Datacap)
-            if publicKey.count < 32 {
-                showError("API key should be at least 32 characters")
-                return
-            }
-            
-            if endpoint?.isEmpty == true {
-                showError("Please enter the API endpoint URL")
-                return
-            }
-            
-            // Validate URL format
-            if let urlString = endpoint, !urlString.starts(with: "https://") && !urlString.starts(with: "http://") {
-                showError("API endpoint must start with https:// or http://")
-                return
-            }
+        // Validate inputs
+        guard let publicKey = apiKeyTextField.text, !publicKey.isEmpty else {
+            showAlert(title: "Missing API Key", message: "Please enter your API public key")
+            return
         }
         
-        // Disable button during save
-        saveButton.isEnabled = false
-        saveButton.alpha = 0.6
-        
-        // Save to UserDefaults
-        let mode: String
-        switch modeSegmentedControl.selectedSegmentIndex {
-        case 0:
-            mode = "demo"
-        case 1:
-            mode = "certification"
-        case 2:
-            mode = "production"
-        default:
-            mode = "demo"
+        guard let endpoint = endpointTextField.text, !endpoint.isEmpty else {
+            showAlert(title: "Missing Endpoint", message: "Please enter the API endpoint URL")
+            return
         }
         
-        UserDefaults.standard.set(mode, forKey: "DatacapOperationMode")
+        // Validate endpoint URL
+        guard URL(string: endpoint) != nil else {
+            showAlert(title: "Invalid Endpoint", message: "Please enter a valid URL")
+            return
+        }
+        
+        // Save settings
+        let isCertification = modeSegmentedControl.selectedSegmentIndex == 0
         UserDefaults.standard.set(publicKey, forKey: "DatacapPublicKey")
         UserDefaults.standard.set(endpoint, forKey: "DatacapAPIEndpoint")
+        UserDefaults.standard.set(isCertification, forKey: "DatacapCertificationMode")
         
-        // Haptic feedback
-        let impact = UIImpactFeedbackGenerator(style: .medium)
-        impact.impactOccurred()
+        // Notify delegate
+        delegate?.settingsDidUpdate()
         
         // Show success animation
-        showSuccess()
-        
-        // Notify delegate and close after delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.onSettingsChanged?(publicKey, endpoint)
-            self.animateOut()
-        }
+        showSuccessAndDismiss()
     }
     
     @objc private func apiKeyInfoTapped() {
-        let alert = UIAlertController(title: "API Public Key", message: "Your public key is provided by Datacap Systems when you register for API access. It's used to authenticate your tokenization requests.", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+        showAlert(
+            title: "API Public Key",
+            message: "Your unique public key for authenticating with the Datacap API. Get yours at dsidevportal.com"
+        )
     }
     
     @objc private func infoCardTapped() {
-        if let url = URL(string: "https://www.dsidevportal.com/") {
+        // Open dev portal in Safari
+        if let url = URL(string: "https://www.dsidevportal.com") {
             UIApplication.shared.open(url)
         }
     }
@@ -427,157 +431,88 @@ class SettingsViewController: UIViewController {
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
+        
+        let keyboardHeight = keyboardFrame.height
+        scrollView.contentInset.bottom = keyboardHeight
+        scrollView.scrollIndicatorInsets.bottom = keyboardHeight
     }
     
     @objc private func keyboardWillHide(notification: NSNotification) {
-        scrollView.contentInset = .zero
-        scrollView.scrollIndicatorInsets = .zero
+        scrollView.contentInset.bottom = 0
+        scrollView.scrollIndicatorInsets.bottom = 0
     }
     
-    // MARK: - Helper Methods
+    // MARK: - Helpers
     
-    private func loadCurrentSettings() {
-        let mode = UserDefaults.standard.string(forKey: "DatacapOperationMode") ?? "demo"
-        let publicKey = UserDefaults.standard.string(forKey: "DatacapPublicKey") ?? ""
-        let endpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint")
-        
-        switch mode {
-        case "demo":
-            modeSegmentedControl.selectedSegmentIndex = 0
-            endpointTextField.text = ""
-        case "certification":
-            modeSegmentedControl.selectedSegmentIndex = 1
-            endpointTextField.text = endpoint ?? "https://pay-cert.dcap.com/v2/"
-        case "production":
-            modeSegmentedControl.selectedSegmentIndex = 2
-            endpointTextField.text = endpoint ?? "https://pay.dcap.com/v2/"
-        default:
-            modeSegmentedControl.selectedSegmentIndex = 0
-        }
-        
-        apiKeyTextField.text = publicKey
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
     
-    private func updateUIForMode() {
-        let selectedIndex = modeSegmentedControl.selectedSegmentIndex
-        let isDemoMode = selectedIndex == 0
+    private func showSuccessAndDismiss() {
+        // Create success overlay
+        let successView = UIView()
+        successView.backgroundColor = UIColor.Datacap.primaryRed
+        successView.alpha = 0
+        successView.translatesAutoresizingMaskIntoConstraints = false
         
-        UIView.animate(withDuration: 0.3) {
-            self.apiKeyContainerView.alpha = isDemoMode ? 0.5 : 1.0
-            self.endpointContainerView.alpha = isDemoMode ? 0.5 : 1.0
-            self.apiKeyTextField.isEnabled = !isDemoMode
-            self.endpointTextField.isEnabled = !isDemoMode
-            
-            switch selectedIndex {
-            case 0:
-                self.modeDescriptionLabel.text = "Demo mode uses mock tokenization for testing"
-                self.endpointTextField.text = ""
-            case 1:
-                self.modeDescriptionLabel.text = "Certification mode for testing with Datacap's test environment"
-                if self.endpointTextField.text?.isEmpty ?? true {
-                    self.endpointTextField.text = "https://pay-cert.dcap.com/v2/"
-                }
-            case 2:
-                self.modeDescriptionLabel.text = "Production mode uses real API for live transactions"
-                if self.endpointTextField.text?.isEmpty ?? true {
-                    self.endpointTextField.text = "https://pay.dcap.com/v2/"
-                }
-            default:
-                break
-            }
-        }
-    }
-    
-    private func showError(_ message: String) {
-        let errorView = UIView()
-        errorView.backgroundColor = UIColor.systemRed
-        errorView.layer.cornerRadius = 8
-        errorView.alpha = 0
+        let checkmarkImageView = UIImageView()
+        checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
+        checkmarkImageView.tintColor = .white
+        checkmarkImageView.contentMode = .scaleAspectFit
+        checkmarkImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        let label = UILabel()
-        label.text = message
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 14, weight: .medium)
-        label.textAlignment = .center
+        let successLabel = UILabel()
+        successLabel.text = "Settings Saved!"
+        successLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        successLabel.textColor = .white
+        successLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        errorView.addSubview(label)
-        view.addSubview(errorView)
-        
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(successView)
+        successView.addSubview(checkmarkImageView)
+        successView.addSubview(successLabel)
         
         NSLayoutConstraint.activate([
-            errorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            errorView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
-            errorView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+            successView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            successView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            successView.widthAnchor.constraint(equalToConstant: 200),
+            successView.heightAnchor.constraint(equalToConstant: 200),
             
-            label.topAnchor.constraint(equalTo: errorView.topAnchor, constant: 12),
-            label.bottomAnchor.constraint(equalTo: errorView.bottomAnchor, constant: -12),
-            label.leadingAnchor.constraint(equalTo: errorView.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: errorView.trailingAnchor, constant: -16)
+            checkmarkImageView.centerXAnchor.constraint(equalTo: successView.centerXAnchor),
+            checkmarkImageView.centerYAnchor.constraint(equalTo: successView.centerYAnchor, constant: -20),
+            checkmarkImageView.widthAnchor.constraint(equalToConstant: 60),
+            checkmarkImageView.heightAnchor.constraint(equalToConstant: 60),
+            
+            successLabel.topAnchor.constraint(equalTo: checkmarkImageView.bottomAnchor, constant: 16),
+            successLabel.centerXAnchor.constraint(equalTo: successView.centerXAnchor)
         ])
         
+        successView.layer.cornerRadius = 16
+        
+        // Animate
         UIView.animate(withDuration: 0.3, animations: {
-            errorView.alpha = 1
+            successView.alpha = 1.0
         }) { _ in
-            UIView.animate(withDuration: 0.3, delay: 2.0, options: [], animations: {
-                errorView.alpha = 0
+            UIView.animate(withDuration: 0.3, delay: 0.5, options: [], animations: {
+                successView.alpha = 0
             }) { _ in
-                errorView.removeFromSuperview()
+                self.dismiss(animated: true)
             }
         }
+        
+        // Haptic feedback
+        let notification = UINotificationFeedbackGenerator()
+        notification.notificationOccurred(.success)
     }
-    
-    private func showSuccess() {
-        let checkmark = UIImageView(image: UIImage(systemName: "checkmark.circle.fill"))
-        checkmark.tintColor = UIColor.systemGreen
-        checkmark.contentMode = .scaleAspectFit
-        checkmark.alpha = 0
-        checkmark.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        
-        view.addSubview(checkmark)
-        checkmark.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            checkmark.centerXAnchor.constraint(equalTo: saveButton.centerXAnchor),
-            checkmark.centerYAnchor.constraint(equalTo: saveButton.centerYAnchor),
-            checkmark.widthAnchor.constraint(equalToConstant: 60),
-            checkmark.heightAnchor.constraint(equalToConstant: 60)
-        ])
-        
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: [], animations: {
-            checkmark.alpha = 1
-            checkmark.transform = .identity
-        }) { _ in
-            UIView.animate(withDuration: 0.2, delay: 0.3, options: [], animations: {
-                checkmark.alpha = 0
-            }) { _ in
-                checkmark.removeFromSuperview()
-            }
-        }
-    }
-    
-    // MARK: - Animations
     
     private func animateIn() {
         contentView.transform = CGAffineTransform(translationX: 0, y: view.bounds.height)
         
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [], animations: {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5) {
             self.contentView.transform = .identity
-        })
-    }
-    
-    private func animateOut() {
-        UIView.animate(withDuration: 0.3, animations: {
-            self.contentView.transform = CGAffineTransform(translationX: 0, y: self.view.bounds.height)
-            self.view.backgroundColor = UIColor.black.withAlphaComponent(0)
-        }) { _ in
-            self.dismiss(animated: false)
         }
     }
 }
