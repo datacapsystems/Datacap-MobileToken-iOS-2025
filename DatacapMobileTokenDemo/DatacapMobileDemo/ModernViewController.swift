@@ -629,35 +629,78 @@ class ModernViewController: UIViewController {
         
         // Background overlay
         let overlay = UIView()
-        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         overlay.translatesAutoresizingMaskIntoConstraints = false
         overlay.alpha = 0
         
-        // Main card with improved contrast
+        // Main card container
         let card = UIView()
         card.translatesAutoresizingMaskIntoConstraints = false
-        let color = UIColor.Datacap.nearBlack
-        card.backgroundColor = color.withAlphaComponent(0.15)
+        card.backgroundColor = UIColor.white
         card.layer.cornerRadius = 24
-        card.layer.borderWidth = 2
-        card.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        card.layer.shadowColor = UIColor.black.cgColor
+        card.layer.shadowOpacity = 0.3
+        card.layer.shadowOffset = CGSize(width: 0, height: 10)
+        card.layer.shadowRadius = 20
         
-        // Title
+        // Stack view for content
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 20
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Title with close button container
+        let headerContainer = UIView()
+        headerContainer.translatesAutoresizingMaskIntoConstraints = false
+        
         let titleLabel = UILabel()
         titleLabel.text = "About This Demo"
-        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
-        titleLabel.textColor = .white
+        titleLabel.font = .systemFont(ofSize: 24, weight: .bold)
+        titleLabel.textColor = UIColor.Datacap.nearBlack
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // Content
-        let contentLabel = UILabel()
-        contentLabel.numberOfLines = 0
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentLabel.textAlignment = .left
+        let closeButton = UIButton(type: .system)
+        closeButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        closeButton.tintColor = UIColor.Datacap.darkGray
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(dismissHelp), for: .touchUpInside)
+        
+        headerContainer.addSubview(titleLabel)
+        headerContainer.addSubview(closeButton)
+        
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: headerContainer.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            titleLabel.topAnchor.constraint(equalTo: headerContainer.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: headerContainer.bottomAnchor),
+            
+            closeButton.centerYAnchor.constraint(equalTo: headerContainer.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: headerContainer.trailingAnchor),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
+            
+            headerContainer.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // Scroll view for content
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = true
+        
+        // Content text view
+        let contentTextView = UITextView()
+        contentTextView.isEditable = false
+        contentTextView.isSelectable = false
+        contentTextView.backgroundColor = .clear
+        contentTextView.translatesAutoresizingMaskIntoConstraints = false
+        contentTextView.textContainerInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6
+        paragraphStyle.paragraphSpacing = 10
         
         let modeText = """
         🚀 Datacap Token Library Demo
@@ -684,64 +727,85 @@ class ModernViewController: UIViewController {
         • No card data storage
         • Real-time validation
         • Secure API communication
+        
+        📱 Integration Example
+        let tokenService = DatacapTokenService(
+            publicKey: "YOUR_KEY",
+            isCertification: true
+        )
+        tokenService.requestToken(from: self)
+        
+        🌐 Resources
+        • Documentation: docs.datacapsystems.com
+        • Developer Portal: dsidevportal.com
+        • Support: devsupport@datacapsystems.com
         """
         
-        let attributedText = NSAttributedString(string: modeText, attributes: [
-            .font: UIFont.systemFont(ofSize: 16, weight: .medium),
-            .foregroundColor: UIColor.white,
+        contentTextView.attributedText = NSAttributedString(string: modeText, attributes: [
+            .font: UIFont.systemFont(ofSize: 15, weight: .regular),
+            .foregroundColor: UIColor.Datacap.nearBlack,
             .paragraphStyle: paragraphStyle
         ])
         
-        contentLabel.attributedText = attributedText
+        scrollView.addSubview(contentTextView)
         
-        // Dismiss button
+        // Got it button
         let dismissButton = UIButton(type: .system)
         dismissButton.setTitle("Got it!", for: .normal)
-        dismissButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        dismissButton.backgroundColor = UIColor.Datacap.primaryRed.darker(by: 0.2)
+        dismissButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        dismissButton.backgroundColor = UIColor.Datacap.primaryRed
         dismissButton.setTitleColor(.white, for: .normal)
         dismissButton.layer.cornerRadius = 12
         dismissButton.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton.addTarget(self, action: #selector(dismissHelp), for: .touchUpInside)
+        
+        // Add to stack view
+        stackView.addArrangedSubview(headerContainer)
+        stackView.addArrangedSubview(scrollView)
+        stackView.addArrangedSubview(dismissButton)
         
         // Add subviews
         helpView.addSubview(overlay)
         helpView.addSubview(card)
-        card.addSubview(titleLabel)
-        card.addSubview(contentLabel)
-        card.addSubview(dismissButton)
+        card.addSubview(stackView)
         
-        // Layout
+        // Layout constraints
         NSLayoutConstraint.activate([
+            // Overlay
             overlay.topAnchor.constraint(equalTo: helpView.topAnchor),
             overlay.leadingAnchor.constraint(equalTo: helpView.leadingAnchor),
             overlay.trailingAnchor.constraint(equalTo: helpView.trailingAnchor),
             overlay.bottomAnchor.constraint(equalTo: helpView.bottomAnchor),
             
+            // Card
             card.centerXAnchor.constraint(equalTo: helpView.centerXAnchor),
             card.centerYAnchor.constraint(equalTo: helpView.centerYAnchor),
-            card.leadingAnchor.constraint(equalTo: helpView.leadingAnchor, constant: 24),
-            card.trailingAnchor.constraint(equalTo: helpView.trailingAnchor, constant: -24),
+            card.leadingAnchor.constraint(greaterThanOrEqualTo: helpView.leadingAnchor, constant: 20),
+            card.trailingAnchor.constraint(lessThanOrEqualTo: helpView.trailingAnchor, constant: -20),
             card.widthAnchor.constraint(lessThanOrEqualToConstant: 500),
+            card.heightAnchor.constraint(equalToConstant: 600), // Fixed height
             
-            titleLabel.topAnchor.constraint(equalTo: card.topAnchor, constant: 32),
-            titleLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
+            // Stack view
+            stackView.topAnchor.constraint(equalTo: card.topAnchor, constant: 20),
+            stackView.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -20),
             
-            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 24),
-            contentLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 24),
-            contentLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
+            // Scroll view height
+            scrollView.heightAnchor.constraint(equalTo: stackView.heightAnchor, multiplier: 0.75),
             
-            dismissButton.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 32),
-            dismissButton.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 24),
-            dismissButton.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -24),
-            dismissButton.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -32),
+            // Content text view
+            contentTextView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentTextView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentTextView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentTextView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            // Button height
             dismissButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        // Dismiss action
-        dismissButton.addTarget(self, action: #selector(dismissHelp), for: .touchUpInside)
-        
-        // Add tap to dismiss
+        // Add tap to dismiss on overlay
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissHelp))
         overlay.addGestureRecognizer(tapGesture)
         

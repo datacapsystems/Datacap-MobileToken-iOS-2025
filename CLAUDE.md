@@ -20,6 +20,12 @@ This file contains important information for AI assistants (like Claude) working
 - ✅ **Enlarged Generate Token button** - Matches Save Configuration styling
 - ✅ **Updated App Store listings** - Repositioned as developer SDK demo
 - ✅ **Improved button consistency** - 56pt height, 200pt min width
+- ✅ **Completely redesigned help overlay** - Fixed content visibility issue
+  - Changed to white card design for better readability
+  - Implemented UIStackView for reliable layout
+  - Added UITextView with built-in scrolling
+  - Fixed height (600pt) to prevent collapse
+  - Multiple dismiss options (button, X, tap overlay)
 
 ### Major Library Refactoring
 - ✅ **Created distributable library package** in `/DatacapTokenLibrary/`
