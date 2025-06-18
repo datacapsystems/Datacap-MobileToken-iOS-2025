@@ -122,5 +122,3 @@ ExportOptions.plist
 # Backup files
 *.backup
 
-# Documentation images (if any)
-docs/screenshots/
