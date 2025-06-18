@@ -4,50 +4,37 @@ This file contains important information for AI assistants (like Claude) working
 
 ## Project Overview
 
-**Project Type**: iOS Library/SDK + Demo Application  
-**Languages**: Swift 5.0+ and Objective-C  
-**Purpose**: Production-ready tokenization library for merchant integrators  
+**Project Type**: iOS SDK + Demo Application  
+**Languages**: Swift 5.0+  
+**Framework**: Datacap Tokenization REST API  
 **UI Design**: iOS 26 Liquid Glass (Glass Morphism)  
-**Target**: Distributable library + demo app  
-**Status**: Library extracted and ready for distribution  
+**Target**: ISVs and Merchants integrating payment tokenization  
+**Status**: Production-ready with live API integration  
 **Repository**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025  
 
 ## Recent Updates (2025)
 
-### Latest UI/UX Updates (Current Session)
-- ✅ **Complete Help Overlay Rewrite** - Created HelpOverlayView.swift
-  - iOS 26 Liquid Glass design with blur effects
-  - Properly scrollable content sections
-  - SDK documentation, test cards, code examples
-  - Fixed all constraint issues and crashes
-  - Added to Xcode project via project.pbxproj
-- ✅ **Dark Red Generate Token Button** - RGB: 120/20/30
-  - Matches Save Configuration button exactly
-  - Removed deprecated contentEdgeInsets
-  - Enhanced shadow effects for depth
-- ✅ **Fixed Help Content Display** - All information now visible
-  - Sectioned content with headers
-  - Code blocks with proper formatting
-  - Resources and support information
-- ✅ **Updated App Store Positioning** - Developer Tools focus
-  - Revised all descriptions for SDK audience
-  - Updated keywords and categories
+### ✅ Production API Integration (Latest)
+- **Fixed tokenization endpoints**: Now using correct `/v1/otu` endpoints
+- **Proper authentication**: Token key in Authorization header
+- **Correct request format**: Capitalized field names (Account, ExpirationMonth, etc.)
+- **Dual key support**: Separate keys for certification and production environments
+- **Migration support**: Automatic upgrade from single-key to dual-key system
+- **Two integration modes**: Built-in UI or custom UI with `generateTokenDirect()`
 
-### Major Library Refactoring
-- ✅ **Created distributable library package** in `/DatacapTokenLibrary/`
-- ✅ **Extracted core tokenization logic** into standalone library
-- ✅ **Removed all mock/demo functionality** from library
-- ✅ **Created comprehensive library documentation**
-- ✅ **Added Swift Package Manager and CocoaPods support**
-- ✅ **Maintained demo app** for showcasing capabilities
+### ✅ SDK Architecture
+- **Single-file integration**: Just copy `DatacapTokenService.swift`
+- **Zero dependencies**: Pure Swift, no external libraries
+- **Delegate pattern**: Async responses via protocol
+- **Error handling**: Typed errors with clear descriptions
+- **Card validation**: Luhn algorithm, BIN detection, format validation
 
-### Previous Changes
-- ✅ Removed mock token generation - Real API only
-- ✅ Removed SavedToken storage - Stateless implementation
-- ✅ Removed Pay API v2 integration - Tokenization focus
-- ✅ Removed TransactionViewController - Core functionality only
-- ✅ Updated to library focus - Clean, reusable components
-- ✅ Certification/Production modes only - No demo mode
+### ✅ UI/UX Implementation
+- **iOS 26 Liquid Glass**: Modern glass morphism design
+- **Programmatic UI**: No storyboards for new features
+- **Smart card entry**: Auto-formatting, type detection
+- **Native date picker**: Wheel-style expiration selection
+- **Settings management**: Separate keys for each environment
 
 ## Repository Structure
 
@@ -325,3 +312,60 @@ swift build -c release
 - Developer Portal: dsidevportal.com
 
 Remember: The library is what merchants integrate. Keep it clean, secure, and simple. The demo app showcases capabilities but is not distributed to integrators.
+
+## API Integration Details
+
+### Tokenization Endpoints
+- **Certification**: `https://token-cert.dcap.com/v1/otu`
+- **Production**: `https://token.dcap.com/v1/otu`
+
+### Request Format
+```http
+POST /v1/otu
+Authorization: {token-key}
+Content-Type: application/json
+
+{
+    "Account": "4111111111111111",
+    "ExpirationMonth": "12",
+    "ExpirationYear": "25",
+    "CVV": "123"
+}
+```
+
+### Response Format
+```json
+{
+    "Token": "DC4:AAAMbdJpMn6wZYlx84etCekz...",
+    "Brand": "Visa",
+    "ExpirationMonth": "12",
+    "ExpirationYear": "2025",
+    "Last4": "1111",
+    "Bin": "411111"
+}
+```
+
+## Key Storage
+
+The app now manages separate API keys for each environment:
+
+```swift
+// Certification key
+UserDefaults.standard.string(forKey: "DatacapCertificationPublicKey")
+
+// Production key  
+UserDefaults.standard.string(forKey: "DatacapProductionPublicKey")
+
+// Legacy key (for backwards compatibility)
+UserDefaults.standard.string(forKey: "DatacapPublicKey")
+
+// Current mode
+UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
+```
+
+## Test Keys for Development
+
+- **Certification Key**: `40e5d3b53da64750937728d783e4b3d1`
+- **Production Key**: `6b8690b69c674b83927de02fdb4c5184`
+
+Note: These are example keys. ISVs must obtain their own keys from dsidevportal.com

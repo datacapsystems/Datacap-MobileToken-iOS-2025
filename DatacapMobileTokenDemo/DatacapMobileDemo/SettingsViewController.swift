@@ -120,7 +120,11 @@ class SettingsViewController: UIViewController {
         endpointLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         endpointLabel.textColor = UIColor.Datacap.nearBlack
         
-        endpointTextField.text = "https://api.datacapsystems.com/v1/tokenize"
+        // Tokenization endpoints are fixed based on mode
+        let isCertMode = UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
+        endpointTextField.text = isCertMode ? "https://token-cert.dcap.com/v1/tokenize" : "https://token.dcap.com/v1/tokenize"
+        endpointTextField.isEnabled = false // Endpoints are fixed for tokenization
+        endpointHelpLabel.text = "Tokenization endpoint (automatically set based on mode)"
         endpointTextField.placeholder = "API Endpoint URL"
         endpointTextField.borderStyle = .none
         endpointTextField.font = .monospacedSystemFont(ofSize: 14, weight: .regular)
@@ -227,12 +231,33 @@ class SettingsViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        // Determine if this is an iPad
+        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
+        
         NSLayoutConstraint.activate([
-            // Content view
-            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            // Content view - adapt for iPad
             contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.85),
+        ])
+        
+        // Add width constraints based on device
+        if isIPad {
+            // Center the content on iPad with max width
+            NSLayoutConstraint.activate([
+                contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                contentView.widthAnchor.constraint(lessThanOrEqualToConstant: 600),
+                contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
+                contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
+            ])
+        } else {
+            // Full width on iPhone
+            NSLayoutConstraint.activate([
+                contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
             
             // Scroll view
             scrollView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -342,29 +367,57 @@ class SettingsViewController: UIViewController {
     // MARK: - Configuration
     
     private func loadCurrentSettings() {
-        let publicKey = UserDefaults.standard.string(forKey: "DatacapPublicKey") ?? ""
-        let endpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint") ?? "https://api.datacapsystems.com/v1/tokenize"
         let isCertification = UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
         
-        apiKeyTextField.text = publicKey
-        endpointTextField.text = endpoint
+        // Migration: If using old single key system, migrate to separate keys
+        if let oldKey = UserDefaults.standard.string(forKey: "DatacapPublicKey"), !oldKey.isEmpty {
+            let certKey = UserDefaults.standard.string(forKey: "DatacapCertificationPublicKey") ?? ""
+            let prodKey = UserDefaults.standard.string(forKey: "DatacapProductionPublicKey") ?? ""
+            
+            // If the mode-specific keys are empty, migrate the old key
+            if certKey.isEmpty && prodKey.isEmpty {
+                if isCertification {
+                    UserDefaults.standard.set(oldKey, forKey: "DatacapCertificationPublicKey")
+                } else {
+                    UserDefaults.standard.set(oldKey, forKey: "DatacapProductionPublicKey")
+                }
+            }
+        }
+        
+        // Load the appropriate key based on current mode
+        let certKey = UserDefaults.standard.string(forKey: "DatacapCertificationPublicKey") ?? ""
+        let prodKey = UserDefaults.standard.string(forKey: "DatacapProductionPublicKey") ?? ""
+        
+        // Set the appropriate key based on mode
+        apiKeyTextField.text = isCertification ? certKey : prodKey
+        
+        // Set endpoint based on mode (now using v1/otu)
+        endpointTextField.text = isCertification ? "https://token-cert.dcap.com/v1/otu" : "https://token.dcap.com/v1/otu"
         modeSegmentedControl.selectedSegmentIndex = isCertification ? 0 : 1
     }
     
     private func updateUIForMode() {
         let isCertification = modeSegmentedControl.selectedSegmentIndex == 0
         
+        // Load the saved keys
+        let certKey = UserDefaults.standard.string(forKey: "DatacapCertificationPublicKey") ?? ""
+        let prodKey = UserDefaults.standard.string(forKey: "DatacapProductionPublicKey") ?? ""
+        
         if isCertification {
             modeDescriptionLabel.text = "Certification mode for testing your integration"
+            endpointTextField.text = "https://token-cert.dcap.com/v1/otu"
+            apiKeyTextField.text = certKey
         } else {
             modeDescriptionLabel.text = "Production mode for processing live transactions"
+            endpointTextField.text = "https://token.dcap.com/v1/otu"
+            apiKeyTextField.text = prodKey
         }
         
         // API key is always required
         apiKeyContainerView.alpha = 1.0
         endpointContainerView.alpha = 1.0
         apiKeyTextField.isEnabled = true
-        endpointTextField.isEnabled = true
+        endpointTextField.isEnabled = false // Endpoint is fixed based on mode
     }
     
     // MARK: - Actions
@@ -401,6 +454,15 @@ class SettingsViewController: UIViewController {
         
         // Save settings
         let isCertification = modeSegmentedControl.selectedSegmentIndex == 0
+        
+        // Save the key to the appropriate mode-specific key
+        if isCertification {
+            UserDefaults.standard.set(publicKey, forKey: "DatacapCertificationPublicKey")
+        } else {
+            UserDefaults.standard.set(publicKey, forKey: "DatacapProductionPublicKey")
+        }
+        
+        // Also save to the legacy key for backwards compatibility
         UserDefaults.standard.set(publicKey, forKey: "DatacapPublicKey")
         UserDefaults.standard.set(endpoint, forKey: "DatacapAPIEndpoint")
         UserDefaults.standard.set(isCertification, forKey: "DatacapCertificationMode")
