@@ -36,9 +36,10 @@ playground.xcworkspace
 
 # Swift Package Manager
 .build/
+.swiftpm/
 
 # CocoaPods
-# Pods/
+Pods/
 
 # Carthage
 Carthage/Build/
@@ -82,9 +83,44 @@ Temporary Items
 # Xcode user state
 *.xcuserstate
 
-# Code Injection
-#
-# After new code Injection tools there's a generated folder /iOSInjectionProject
-# https://github.com/johnno1962/injectionforxcode
+# =================
+# Private/Internal Files (Not for public repo)
+# =================
 
-iOSInjectionProject/
+# Backup folder with all internal documentation and scripts
+.backup-private/
+
+# Claude AI assistant files
+.claude/
+
+# Development scripts (keep them private)
+*.sh
+*.rb
+*.command
+
+# Internal documentation
+APP_REVIEW_RESPONSE.md
+APP_STORE_*.md
+BUILD_*.md
+MANUAL_*.md
+PROJECT_SETUP.md
+QUICK_START.md
+SWIFT_IMPLEMENTATION_SUMMARY.md
+TESTFLIGHT_*.md
+TROUBLESHOOTING.md
+XCODE_*.md
+xcode-*.md
+build_instructions.md
+
+# App Store assets and icons
+AppIcons/
+AppStoreAssets/
+
+# Export options
+ExportOptions.plist
+
+# Backup files
+*.backup
+
+# Documentation images (if any)
+docs/screenshots/
