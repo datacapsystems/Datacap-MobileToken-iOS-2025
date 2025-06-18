@@ -13,7 +13,7 @@ class ModernViewController: UIViewController {
     
     private var tokenService: DatacapTokenService!
     private var currentPublicKey: String = ""
-    private var currentEndpoint: String = "https://api.datacapsystems.com/v1/tokenize"
+    // Endpoint is determined by certification mode
     private var isCertification: Bool = true
     
     // MARK: - UI Components
@@ -55,9 +55,11 @@ class ModernViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Datacap Token Demo"
-        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textColor = UIColor.Datacap.nearBlack
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.7
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -246,9 +248,15 @@ class ModernViewController: UIViewController {
         impact.impactOccurred()
         
         // Load settings
-        let savedPublicKey = UserDefaults.standard.string(forKey: "DatacapPublicKey") ?? ""
-        let savedEndpoint = UserDefaults.standard.string(forKey: "DatacapAPIEndpoint") ?? "https://api.datacapsystems.com/v1/tokenize"
         let savedIsCertification = UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
+        
+        // Load the appropriate key based on mode
+        let savedPublicKey: String
+        if savedIsCertification {
+            savedPublicKey = UserDefaults.standard.string(forKey: "DatacapCertificationPublicKey") ?? ""
+        } else {
+            savedPublicKey = UserDefaults.standard.string(forKey: "DatacapProductionPublicKey") ?? ""
+        }
         
         if savedPublicKey.isEmpty {
             presentCustomAlert(
@@ -266,11 +274,11 @@ class ModernViewController: UIViewController {
         getTokenButton.isHidden = true
         loadingView.startAnimating()
         
-        // Create token service
+        // Create token service - endpoint is determined internally based on mode
         tokenService = DatacapTokenService(
             publicKey: savedPublicKey,
             isCertification: savedIsCertification,
-            apiEndpoint: savedEndpoint
+            apiEndpoint: "" // Not used anymore, endpoint is fixed based on mode
         )
         tokenService.delegate = self
         
@@ -497,10 +505,15 @@ extension ModernViewController: DatacapTokenServiceDelegate {
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Done", for: .normal)
         doneButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        doneButton.backgroundColor = UIColor.Datacap.primaryRed
+        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
+        doneButton.backgroundColor = darkRed
         doneButton.setTitleColor(.white, for: .normal)
-        doneButton.layer.cornerRadius = 12
-        // Style done button
+        doneButton.layer.cornerRadius = 16
+        doneButton.layer.shadowColor = darkRed.cgColor
+        doneButton.layer.shadowOpacity = 0.2
+        doneButton.layer.shadowOffset = CGSize(width: 0, height: 4)
+        doneButton.layer.shadowRadius = 8
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.addAction(UIAction { _ in
             UIView.animate(withDuration: 0.3, animations: {
                 successView.alpha = 0
@@ -550,7 +563,11 @@ extension ModernViewController: DatacapTokenServiceDelegate {
             tokenLabel.topAnchor.constraint(equalTo: tokenTitleLabel.bottomAnchor, constant: 8),
             tokenLabel.leadingAnchor.constraint(equalTo: tokenContainer.leadingAnchor, constant: 16),
             tokenLabel.trailingAnchor.constraint(equalTo: tokenContainer.trailingAnchor, constant: -16),
-            tokenLabel.bottomAnchor.constraint(equalTo: tokenContainer.bottomAnchor, constant: -12)
+            tokenLabel.bottomAnchor.constraint(equalTo: tokenContainer.bottomAnchor, constant: -12),
+            
+            // Done button constraints
+            doneButton.heightAnchor.constraint(equalToConstant: 56),
+            doneButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
         ])
         
         // Animate in

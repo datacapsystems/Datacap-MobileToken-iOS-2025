@@ -2,8 +2,21 @@
 //  DatacapTokenService.swift
 //  DatacapMobileTokenDemo
 //
-//  Clean Swift implementation of Datacap tokenization library
-//  Focused on production and certification API integration
+//  Production-ready implementation of Datacap tokenization
+//  
+//  API Documentation:
+//  - Certification endpoint: https://token-cert.dcap.com/v1/otu
+//  - Production endpoint: https://token.dcap.com/v1/otu
+//  - Method: POST with Authorization header containing token key
+//
+//  Integration Guide:
+//  1. Copy this file into your iOS project
+//  2. Initialize with your public key (token key)
+//  3. Call requestToken() to show UI or generateTokenDirect() for custom UI
+//  4. Handle delegate callbacks for success/failure
+//
+//  Version: 2.0
+//  Last Updated: 2025
 //
 
 import UIKit
@@ -17,6 +30,15 @@ struct DatacapToken {
     let expirationDate: String
     let responseCode: String
     let responseMessage: String
+    let timestamp: Date
+}
+
+// MARK: - Saved Token Model
+struct SavedToken: Codable {
+    let token: String
+    let maskedCardNumber: String
+    let cardType: String
+    let expirationDate: String
     let timestamp: Date
 }
 
@@ -70,21 +92,21 @@ class DatacapTokenService {
     
     /// Initialize the token service
     /// - Parameters:
-    ///   - publicKey: Your Datacap API public key
+    ///   - publicKey: Your Datacap API public key (token key)
     ///   - isCertification: true for certification environment, false for production
-    ///   - apiEndpoint: API endpoint URL (required)
-    init(publicKey: String, isCertification: Bool = true, apiEndpoint: String) {
+    ///   - apiEndpoint: Not used - endpoint is automatically determined based on certification mode
+    init(publicKey: String, isCertification: Bool = true, apiEndpoint: String = "") {
         self.publicKey = publicKey
         self.isCertification = isCertification
-        self.apiEndpoint = apiEndpoint
+        self.apiEndpoint = apiEndpoint // Kept for backwards compatibility
     }
     
     // MARK: - Public Methods
     
     /// Request a token by presenting the card input UI
     func requestToken(from viewController: UIViewController) {
-        // Validate configuration
-        guard !publicKey.isEmpty && !apiEndpoint.isEmpty else {
+        // Validate configuration - only check publicKey since endpoint is determined by mode
+        guard !publicKey.isEmpty else {
             delegate?.tokenRequestDidFail(error: .missingAPIConfiguration)
             return
         }
@@ -93,6 +115,33 @@ class DatacapTokenService {
         tokenViewController.delegate = self
         tokenViewController.modalPresentationStyle = .fullScreen
         viewController.present(tokenViewController, animated: true)
+    }
+    
+    /// Generate a token directly without UI (for custom implementations)
+    /// - Parameter cardData: Card information to tokenize
+    /// - Returns: DatacapToken on success
+    /// - Throws: DatacapTokenError on failure
+    public func generateTokenDirect(for cardData: CardData) async throws -> DatacapToken {
+        // Validate configuration
+        guard !publicKey.isEmpty else {
+            throw DatacapTokenError.missingAPIConfiguration
+        }
+        
+        // Validate card data
+        let cleanedNumber = cardData.cardNumber.replacingOccurrences(of: " ", with: "")
+        guard validateCardNumber(cleanedNumber) else {
+            throw DatacapTokenError.invalidCardNumber
+        }
+        
+        // Generate token
+        let token = await generateToken(for: cardData)
+        
+        // Check if token generation failed
+        if token.responseCode != "00" && !token.responseCode.isEmpty {
+            throw DatacapTokenError.tokenizationFailed(token.responseMessage)
+        }
+        
+        return token
     }
     
     // MARK: - Private Methods
@@ -162,39 +211,60 @@ class DatacapTokenService {
     }
     
     private func generateToken(for cardData: CardData) async -> DatacapToken {
-        // Prepare API request
-        guard let url = URL(string: apiEndpoint) else {
+        // Check if we should use demo mode for testing
+        if publicKey == "demo" {
+            // Demo mode - generate a fake token
+            let demoToken = "tok_demo_\(UUID().uuidString.replacingOccurrences(of: "-", with: "").prefix(16))"
+            return DatacapToken(
+                token: demoToken,
+                maskedCardNumber: maskCardNumber(cardData.cardNumber),
+                cardType: detectCardType(cardData.cardNumber),
+                expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                responseCode: "00",
+                responseMessage: "Demo token generated successfully",
+                timestamp: Date()
+            )
+        }
+        
+        // Datacap tokenization endpoints - using the actual OTU (One Time Use) endpoint from WebToken
+        // For certification: https://token-cert.dcap.com/v1/otu
+        // For production: https://token.dcap.com/v1/otu
+        let endpoint = isCertification ? "https://token-cert.dcap.com/v1/otu" : "https://token.dcap.com/v1/otu"
+        
+        guard let url = URL(string: endpoint) else {
             return DatacapToken(
                 token: "",
                 maskedCardNumber: maskCardNumber(cardData.cardNumber),
                 cardType: detectCardType(cardData.cardNumber),
                 expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
                 responseCode: "999",
-                responseMessage: "Invalid API endpoint",
+                responseMessage: "Invalid API endpoint: \(endpoint)",
                 timestamp: Date()
             )
         }
         
+        print("[DatacapTokenService] Using endpoint: \(endpoint)")
+        print("[DatacapTokenService] Public key: \(publicKey.prefix(8))...")
+        print("[DatacapTokenService] Is Certification: \(isCertification)")
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(publicKey, forHTTPHeaderField: "Authorization")
+        request.setValue(publicKey, forHTTPHeaderField: "Authorization") // Token key goes in Authorization header
         
-        // Add certification header if needed
-        if isCertification {
-            request.setValue("true", forHTTPHeaderField: "X-Certification-Mode")
-        }
-        
-        // Prepare request body
+        // Prepare request body for Datacap tokenization - based on WebToken client
+        // The API expects: ExpirationMonth and ExpirationYear (capitalized)
         let body: [String: Any] = [
-            "cardNumber": cardData.cardNumber.replacingOccurrences(of: " ", with: ""),
-            "expirationMonth": cardData.expirationMonth,
-            "expirationYear": cardData.expirationYear,
-            "cvv": cardData.cvv
+            "Account": cardData.cardNumber.replacingOccurrences(of: " ", with: ""),
+            "ExpirationMonth": cardData.expirationMonth,
+            "ExpirationYear": cardData.expirationYear,
+            "CVV": cardData.cvv
         ]
         
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            
+            print("[DatacapTokenService] Request body: \(String(data: request.httpBody!, encoding: .utf8) ?? "nil")")
             
             let (data, response) = try await URLSession.shared.data(for: request)
             
@@ -202,32 +272,49 @@ class DatacapTokenService {
                 throw DatacapTokenError.networkError("Invalid response")
             }
             
-            if httpResponse.statusCode != 200 {
-                if let errorData = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                   let errorMessage = errorData["error"] as? String {
-                    throw DatacapTokenError.tokenizationFailed(errorMessage)
+            print("[DatacapTokenService] Response status: \(httpResponse.statusCode)")
+            print("[DatacapTokenService] Response data: \(String(data: data, encoding: .utf8) ?? "nil")")
+            
+            // Datacap tokenization returns 200 for success
+            if httpResponse.statusCode == 200 {
+                guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                    throw DatacapTokenError.tokenizationFailed("Invalid response format")
+                }
+                
+                // Check for errors in response
+                if let errors = json["Errors"] as? [String], !errors.isEmpty {
+                    throw DatacapTokenError.tokenizationFailed(errors.joined(separator: ", "))
+                }
+                
+                // Parse successful response - exact format from working implementation
+                guard let token = json["Token"] as? String, !token.isEmpty else {
+                    throw DatacapTokenError.tokenizationFailed("No token in response")
+                }
+                
+                let brand = json["Brand"] as? String ?? detectCardType(cardData.cardNumber)
+                let last4 = json["Last4"] as? String ?? String(cardData.cardNumber.suffix(4).replacingOccurrences(of: " ", with: ""))
+                
+                return DatacapToken(
+                    token: token,
+                    maskedCardNumber: "**** \(last4)",
+                    cardType: brand,
+                    expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
+                    responseCode: "00",
+                    responseMessage: "Success",
+                    timestamp: Date()
+                )
+            } else {
+                // Handle error response
+                if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    if let errors = json["Errors"] as? [String] {
+                        throw DatacapTokenError.tokenizationFailed(errors.joined(separator: ", "))
+                    }
+                    if let message = json["Message"] as? String {
+                        throw DatacapTokenError.tokenizationFailed(message)
+                    }
                 }
                 throw DatacapTokenError.networkError("HTTP \(httpResponse.statusCode)")
             }
-            
-            guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                throw DatacapTokenError.tokenizationFailed("Invalid response format")
-            }
-            
-            // Parse successful response
-            let token = json["token"] as? String ?? ""
-            let brand = json["brand"] as? String ?? detectCardType(cardData.cardNumber)
-            let last4 = json["last4"] as? String ?? String(cardData.cardNumber.suffix(4))
-            
-            return DatacapToken(
-                token: token,
-                maskedCardNumber: "**** \(last4)",
-                cardType: brand,
-                expirationDate: "\(cardData.expirationMonth)/\(cardData.expirationYear)",
-                responseCode: json["responseCode"] as? String ?? "00",
-                responseMessage: json["responseMessage"] as? String ?? "Success",
-                timestamp: Date()
-            )
             
         } catch let error as DatacapTokenError {
             return DatacapToken(
