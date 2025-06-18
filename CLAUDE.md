@@ -15,17 +15,23 @@ This file contains important information for AI assistants (like Claude) working
 ## Recent Updates (2025)
 
 ### Latest UI/UX Updates (Current Session)
-- ✅ **Fixed help overlay display** - Now properly shows when question mark tapped
-- ✅ **Updated help content** - Focused on SDK integration and library usage
-- ✅ **Enlarged Generate Token button** - Matches Save Configuration styling
-- ✅ **Updated App Store listings** - Repositioned as developer SDK demo
-- ✅ **Improved button consistency** - 56pt height, 200pt min width
-- ✅ **Completely redesigned help overlay** - Fixed content visibility issue
-  - Changed to white card design for better readability
-  - Implemented UIStackView for reliable layout
-  - Added UITextView with built-in scrolling
-  - Fixed height (600pt) to prevent collapse
-  - Multiple dismiss options (button, X, tap overlay)
+- ✅ **Complete Help Overlay Rewrite** - Created HelpOverlayView.swift
+  - iOS 26 Liquid Glass design with blur effects
+  - Properly scrollable content sections
+  - SDK documentation, test cards, code examples
+  - Fixed all constraint issues and crashes
+  - Added to Xcode project via project.pbxproj
+- ✅ **Dark Red Generate Token Button** - RGB: 120/20/30
+  - Matches Save Configuration button exactly
+  - Removed deprecated contentEdgeInsets
+  - Enhanced shadow effects for depth
+- ✅ **Fixed Help Content Display** - All information now visible
+  - Sectioned content with headers
+  - Code blocks with proper formatting
+  - Resources and support information
+- ✅ **Updated App Store Positioning** - Developer Tools focus
+  - Revised all descriptions for SDK audience
+  - Updated keywords and categories
 
 ### Major Library Refactoring
 - ✅ **Created distributable library package** in `/DatacapTokenLibrary/`
@@ -62,6 +68,7 @@ Datacap-MobileToken-iOS-2025/
 │   ├── DatacapMobileDemo/
 │   │   ├── ModernViewController.swift      # Demo main screen
 │   │   ├── SettingsViewController.swift    # API configuration
+│   │   ├── HelpOverlayView.swift          # iOS 26 help overlay
 │   │   ├── DatacapTokenService.swift       # Same as library
 │   │   └── GlassMorphismExtensions.swift   # UI styling
 │   └── DatacapMobileTokenDemo.xcodeproj

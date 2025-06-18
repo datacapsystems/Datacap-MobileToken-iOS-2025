@@ -16,10 +16,12 @@ This repository contains both a **production-ready iOS tokenization library** an
 **Latest Update (v2.0)**: Completely refactored as a clean, reusable SDK with no mock functionality. The demo app now serves as a reference implementation for developers.
 
 **Recent UI Improvements**:
-- Enhanced help overlay with scrollable content and better readability
-- Enlarged Generate Token button for better user experience
-- Updated App Store positioning as developer tool
-- Improved visual consistency across all UI elements
+- Complete redesign of help overlay with iOS 26 Liquid Glass styling
+- Custom HelpOverlayView component with proper content display
+- Dark red Generate Token button matching Save Configuration styling
+- Enhanced scrollable help content with SDK documentation
+- Fixed constraint issues for better stability
+- Improved visual consistency across iPhone and iPad
 
 ## 📁 Repository Structure
 
@@ -172,7 +174,7 @@ sequenceDiagram
 - 💳 **Smart Card Detection**: Automatic BIN-based card identification
 - 📅 **Native Date Picker**: iOS wheel-style expiration selection
 - 🔄 **Real-time Formatting**: Dynamic card number formatting by type
-- ❓ **Comprehensive Help System**: Scrollable overlay with SDK documentation, test cards, and code examples
+- ❓ **Comprehensive Help System**: iOS 26 styled overlay with SDK documentation, test cards, and code examples
 
 ## 📱 Screenshots
 
