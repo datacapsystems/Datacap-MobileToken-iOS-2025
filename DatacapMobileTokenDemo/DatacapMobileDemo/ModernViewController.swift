@@ -200,12 +200,11 @@ class ModernViewController: UIViewController {
         
         getTokenButton.backgroundColor = darkRed
         getTokenButton.setTitleColor(.white, for: .normal)
-        getTokenButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        getTokenButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         getTokenButton.layer.cornerRadius = 16
-        getTokenButton.contentEdgeInsets = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
         
         getTokenButton.layer.shadowColor = darkRed.cgColor
-        getTokenButton.layer.shadowOpacity = 0.3
+        getTokenButton.layer.shadowOpacity = 0.2
         getTokenButton.layer.shadowOffset = CGSize(width: 0, height: 4)
         getTokenButton.layer.shadowRadius = 8
         
@@ -336,6 +335,7 @@ class ModernViewController: UIViewController {
             getTokenButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             getTokenButton.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             getTokenButton.heightAnchor.constraint(equalToConstant: 56),
+            getTokenButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
             
             // Loading view
             loadingView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
@@ -461,22 +461,15 @@ class ModernViewController: UIViewController {
     }
     
     private func presentCustomAlert(view: UIView) {
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.alpha = 0
-        
-        view.addSubview(containerView)
+        // Add the view directly to the main view controller's view
+        self.view.addSubview(view)
         
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: view.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            view.topAnchor.constraint(equalTo: self.view.topAnchor),
+            view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
-        
-        UIView.animate(withDuration: 0.3) {
-            containerView.alpha = 1
-        }
     }
     
     private func presentSuccessAlert(token: DatacapToken) {
@@ -532,10 +525,10 @@ class ModernViewController: UIViewController {
         // Done button
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Done", for: .normal)
-        doneButton.applyDatacapGlassStyle(
-            backgroundColor: UIColor.Datacap.primaryRed,
-            titleColor: .white
-        )
+        doneButton.backgroundColor = UIColor.Datacap.primaryRed
+        doneButton.setTitleColor(.white, for: .normal)
+        doneButton.layer.cornerRadius = 12
+        doneButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         
         // Add subviews
@@ -651,7 +644,7 @@ class ModernViewController: UIViewController {
         
         // Title
         let titleLabel = UILabel()
-        titleLabel.text = "Datacap Token Demo"
+        titleLabel.text = "About This Demo"
         titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
@@ -667,20 +660,30 @@ class ModernViewController: UIViewController {
         paragraphStyle.lineSpacing = 6
         
         let modeText = """
-        🔧 Production & Certification Modes
-        Configure your API settings to test real tokenization in certification or production environments.
+        🚀 Datacap Token Library Demo
+        This app demonstrates the Datacap Token Library - a clean, reusable iOS library for payment tokenization.
         
-        🔐 Secure Token Generation
-        Enter card details to generate secure payment tokens for testing your integration.
+        📦 Library Integration
+        Integrators can add our library to their apps with just a few lines of code:
+        • Initialize with merchant public key
+        • Call requestToken() to show card input
+        • Receive secure tokens via delegate callbacks
         
-        💳 Test Card Numbers
+        🔧 Configuration Modes
+        • Certification: Test integration with sandbox environment
+        • Production: Live tokenization for real payments
+        
+        💳 Test Card Numbers (Certification Mode)
         • Visa: 4111 1111 1111 1111
         • Mastercard: 5555 5555 5555 4444
         • Amex: 3782 822463 10005
         • Discover: 6011 1111 1111 1117
         
-        📱 Integration Testing
-        Perfect for developers building payment solutions with Datacap's tokenization API.
+        🔐 Security Features
+        • PCI-compliant tokenization
+        • No card data storage
+        • Real-time validation
+        • Secure API communication
         """
         
         let attributedText = NSAttributedString(string: modeText, attributes: [

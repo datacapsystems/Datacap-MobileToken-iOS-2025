@@ -11,7 +11,9 @@
 
 ## 🚀 Overview
 
-This repository contains both a **production-ready iOS tokenization library** and a **demo application** showcasing Datacap's payment tokenization capabilities. The library provides secure payment card tokenization for iOS applications, perfect for merchants integrating with Datacap's payment gateway.
+This repository contains both a **production-ready iOS tokenization library** and a **demo application** showcasing Datacap's payment tokenization capabilities. The library provides secure payment card tokenization for iOS applications, perfect for developers integrating payment processing into their apps.
+
+**Latest Update (v2.0)**: Completely refactored as a clean, reusable SDK with no mock functionality. The demo app now serves as a reference implementation for developers.
 
 ## 📁 Repository Structure
 
@@ -150,19 +152,21 @@ sequenceDiagram
 
 ## 🎨 Key Features
 
-### For Integrators (Library)
-- 🔐 **Secure Tokenization**: PCI-compliant card tokenization
-- 📱 **Pre-built UI**: Complete card input interface
-- ✅ **Smart Validation**: Real-time card validation
-- 🎯 **Simple Integration**: Just 3 lines to get started
-- 🌐 **Dual Environment**: Certification and production modes
+### For Integrators (Library) - v2.0
+- 🔐 **Production-Ready**: No mock data, real API integration only
+- 📱 **Complete UI Package**: Pre-built card input with validation
+- ✅ **Zero Dependencies**: Standalone library with no external requirements
+- 🎯 **Simple Integration**: Initialize, present, receive token
+- 🌐 **Dual Environment**: Certification (testing) and production modes
+- 📦 **Multiple Distribution**: SPM, CocoaPods, or manual integration
 
 ### For Developers (Demo App)
-- 🎨 **iOS 26 Liquid Glass Design**: Modern glass morphism UI
-- ⚙️ **API Configuration**: Easy setup for testing
-- 💳 **Card Type Detection**: Automatic card brand identification
-- 📅 **Date Picker**: Native iOS date selection
-- 🔄 **Real-time Formatting**: Dynamic card number formatting
+- 🎨 **Reference Implementation**: See exactly how to integrate the SDK
+- ⚙️ **API Configuration**: Test with your merchant credentials
+- 💳 **Smart Card Detection**: Automatic BIN-based card identification
+- 📅 **Native Date Picker**: iOS wheel-style expiration selection
+- 🔄 **Real-time Formatting**: Dynamic card number formatting by type
+- ❓ **SDK Documentation**: In-app help explains integration
 
 ## 📱 Screenshots
 

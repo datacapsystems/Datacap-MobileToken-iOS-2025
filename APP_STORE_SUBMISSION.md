@@ -1,38 +1,52 @@
-# Datacap Token - App Store Submission Guide
+# Datacap Token SDK Demo - App Store Submission Guide
 
 ## App Overview
 
-**App Name:** Datacap Token  
+**App Name:** Datacap Token SDK Demo  
 **Bundle ID:** com.datacapsystems.mobiletoken  
-**Version:** 1.1  
-**Category:** Business / Finance  
+**Version:** 2.0  
+**Category:** Developer Tools / Business  
 
 ## App Description
 
 ### Short Description (up to 170 characters)
-Secure payment tokenization for businesses. Transform sensitive payment data into secure tokens instantly with bank-level encryption.
+Demo app showcasing Datacap's iOS tokenization SDK. Test payment tokenization integration with production-ready library components.
 
 ### Full Description
-Datacap Token revolutionizes payment security for businesses by converting sensitive payment card information into secure, one-time-use tokens. Built with iOS 26's stunning Liquid Glass design, our app delivers enterprise-grade tokenization with an elegant, modern interface.
+Datacap Token SDK Demo showcases our powerful iOS payment tokenization library, designed for developers integrating secure payment processing into their applications. This demo app provides a hands-on experience with our production-ready SDK that transforms sensitive payment card data into secure tokens.
+
+**For Developers:**
+• **Ready-to-Use SDK** - Drop-in tokenization library for iOS apps
+• **Simple Integration** - Just 3 lines of code to get started
+• **Complete UI Components** - Pre-built card input interface included
+• **Dual Environment Support** - Test in certification or production mode
+• **Real-time Validation** - Built-in card number and format validation
 
 **Key Features:**
-• **Bank-Level Security** - Advanced encryption protects all payment data
+• **PCI-Compliant Tokenization** - Bank-level security without the complexity
 • **Lightning Fast** - Get secure tokens in milliseconds
-• **PCI Compliant** - Meet all regulatory requirements effortlessly
-• **Beautiful Design** - Experience iOS 26's glass morphism UI
-• **Simple Integration** - Easy to implement in any payment workflow
+• **Smart Card Detection** - Automatic card type identification
+• **Beautiful UI** - iOS 26 Liquid Glass design system
+• **Comprehensive Testing** - Built-in test card numbers for development
+
+**SDK Integration Example:**
+```swift
+let tokenService = DatacapTokenService(publicKey: "YOUR_KEY")
+tokenService.requestToken(from: self)
+// Receive token via delegate callback
+```
 
 Perfect for:
-- Retail businesses
-- E-commerce platforms
-- Payment processors
-- Financial institutions
-- Any business handling payment data
+- iOS developers building payment features
+- E-commerce app development teams
+- Financial technology companies
+- Payment gateway integrators
+- Mobile app agencies
 
-Datacap Token uses industry-standard tokenization to replace sensitive payment information with unique identification symbols that retain all essential information without compromising security.
+This demo app includes everything needed to evaluate and test Datacap's tokenization capabilities before integrating the SDK into your production applications.
 
 ## Keywords
-payment, tokenization, security, PCI, encryption, business, finance, secure, token, datacap
+SDK, payment, tokenization, API, developer, iOS, library, integration, secure, datacap
 
 ## App Store Screenshots
 
@@ -42,11 +56,11 @@ Required sizes for iPhone:
 3. 5.5" Display (1242 x 2208 pixels) - iPhone 8 Plus
 
 Recommended screenshot content:
-1. Home screen with glass morphism UI
-2. Token creation in progress
-3. Successful token generation
-4. Feature highlights
-5. Security badge showcase
+1. Home screen showing "Generate Token" button
+2. API configuration settings screen
+3. Card input interface with validation
+4. Successful token generation display
+5. Help overlay showing SDK features
 
 ## App Icon
 
@@ -55,11 +69,12 @@ The app includes all required icon sizes in Assets.xcassets/AppIcon.appiconset/
 ## Privacy Policy
 
 Required for App Store submission. Should include:
-- What data is collected (payment card numbers for tokenization)
-- How data is used (converted to secure tokens)
-- Data retention (no storage of sensitive data)
-- Security measures
-- User rights
+- What data is collected (payment card numbers for tokenization only)
+- How data is used (converted to secure tokens via API)
+- Data retention (no storage of sensitive data - cards are tokenized and discarded)
+- Security measures (TLS encryption, PCI compliance)
+- User rights (data is never stored or shared)
+- SDK usage (this is a demo app for testing SDK integration)
 
 ## Support Information
 
@@ -69,18 +84,26 @@ Required for App Store submission. Should include:
 
 ## Technical Requirements
 
-- **Minimum iOS Version:** 13.0
+- **Minimum iOS Version:** 15.6
 - **Supported Devices:** iPhone, iPad
-- **Architectures:** arm64, armv7
+- **Architectures:** arm64
 - **Primary Language:** English
+- **SDK Requirements:** Datacap MobileToken SDK included
 
 ## App Review Information
 
 ### Demo Account
-Not required - app uses test mode for demonstration
+Not required - app includes built-in test configuration
 
 ### Notes for Reviewer
-This app demonstrates Datacap's payment tokenization technology. In demo mode, it uses test credentials and does not process real payment information. The tokenization service connects to Datacap's certification environment for safe testing.
+This is a developer demo app showcasing Datacap's iOS tokenization SDK. The app demonstrates how developers can integrate our payment tokenization library into their own applications. 
+
+Key points:
+- This is a demo/reference implementation for developers
+- Includes full source code and SDK documentation
+- Supports both certification (testing) and production modes
+- No real payment processing occurs in certification mode
+- Test card numbers are provided in the help section
 
 ## Export Compliance
 
@@ -90,10 +113,11 @@ This app demonstrates Datacap's payment tokenization technology. In demo mode, i
 ## Build Settings Checklist
 
 - [ ] Ensure Swift bridging header is properly configured
-- [ ] Set deployment target to iOS 13.0
-- [ ] Enable bitcode
+- [ ] Set deployment target to iOS 15.6
+- [ ] Include DatacapTokenLibrary sources
 - [ ] Archive with Release configuration
 - [ ] Validate archive before submission
+- [ ] Ensure SDK documentation is included
 
 ## Pre-Submission Checklist
 
