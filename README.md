@@ -7,7 +7,7 @@
   [![Swift](https://img.shields.io/badge/Swift-5.0+-orange.svg)](https://swift.org/)
   [![Xcode](https://img.shields.io/badge/Xcode-16.0+-blue.svg)](https://developer.apple.com/xcode/)
   [![API](https://img.shields.io/badge/API-REST-green.svg)](https://docs.datacapsystems.com)
-  [![License](https://img.shields.io/badge/License-Commercial-yellow.svg)](LICENSE)
+  [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 </div>
 
 ## 🎯 Overview
@@ -21,6 +21,14 @@ Production-ready iOS SDK for Datacap payment tokenization. This repository provi
 - **📱 Modern UI**: iOS 26 Liquid Glass design system with programmatic UI
 - **🛠️ ISV Ready**: Clean, self-contained service class for easy integration
 - **✅ Production Tested**: Verified against live Datacap tokenization endpoints
+
+## 📱 Screenshots
+
+<div align="center">
+  <img src="docs/screenshots/screenshot1.png" alt="Home Screen" width="250"/>
+  <img src="docs/screenshots/screenshot2.png" alt="Card Entry" width="250"/>
+  <img src="docs/screenshots/screenshot3.png" alt="Settings" width="250"/>
+</div>
 
 ## 📁 Repository Structure
 
@@ -283,7 +291,7 @@ open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 
 ## 📄 License
 
-This is commercial software. Contact Datacap Systems for licensing information.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
