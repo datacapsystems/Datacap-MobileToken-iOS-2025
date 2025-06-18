@@ -14,7 +14,14 @@ This file contains important information for AI assistants (like Claude) working
 
 ## Recent Updates (2025)
 
-### Latest Major Changes
+### Latest UI/UX Updates (Current Session)
+- ✅ **Fixed help overlay display** - Now properly shows when question mark tapped
+- ✅ **Updated help content** - Focused on SDK integration and library usage
+- ✅ **Enlarged Generate Token button** - Matches Save Configuration styling
+- ✅ **Updated App Store listings** - Repositioned as developer SDK demo
+- ✅ **Improved button consistency** - 56pt height, 200pt min width
+
+### Major Library Refactoring
 - ✅ **Created distributable library package** in `/DatacapTokenLibrary/`
 - ✅ **Extracted core tokenization logic** into standalone library
 - ✅ **Removed all mock/demo functionality** from library
@@ -22,7 +29,7 @@ This file contains important information for AI assistants (like Claude) working
 - ✅ **Added Swift Package Manager and CocoaPods support**
 - ✅ **Maintained demo app** for showcasing capabilities
 
-### Previous Refactoring
+### Previous Changes
 - ✅ Removed mock token generation - Real API only
 - ✅ Removed SavedToken storage - Stateless implementation
 - ✅ Removed Pay API v2 integration - Tokenization focus

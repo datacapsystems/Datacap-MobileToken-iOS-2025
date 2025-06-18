@@ -1,152 +1,171 @@
-# App Store Listing - Datacap Token Demo
+# App Store Listing - Datacap Token SDK Demo
 
 ## App Information
 
 ### App Name
-**Datacap Token Demo**
+**Datacap Token SDK Demo**
 
 ### Subtitle (30 characters max)
-Test Your API Integration
+iOS Payment SDK Showcase
 
 ### Promotional Text (170 characters max)
-Experience secure payment tokenization by Datacap. Test our API, generate tokens, and see why thousands trust us for payment processing. Free demo mode - no signup needed!
+Test Datacap's iOS tokenization SDK. Drop-in payment library with complete UI, real-time validation, and PCI compliance. Perfect for developers building payment features.
 
 ## App Description
 
 ### Primary Description (4000 characters max)
 
-**Discover Secure Payment Processing with Datacap**
+**Production-Ready iOS Payment SDK**
 
-Datacap Token Demo showcases our enterprise-grade payment tokenization technology while serving as the official testing tool for developers and merchants. Whether you're exploring payment solutions or actively integrating Datacap's API, this app demonstrates how easy and secure payment processing can be.
+Datacap Token SDK Demo showcases our powerful iOS payment tokenization library, designed for developers who need to add secure payment processing to their applications. This demo app provides a complete reference implementation of our SDK, demonstrating best practices and integration patterns.
 
-**What is Payment Tokenization?**
+**What You Get with Datacap's iOS SDK:**
 
-Tokenization replaces sensitive credit card numbers with secure tokens, allowing you to process payments without storing card data. This reduces PCI compliance scope, prevents data breaches, and enables features like one-click checkout and recurring billing. See it in action with this demo app.
+Our SDK transforms complex payment processing into just a few lines of code. The library includes pre-built UI components, handles all card validation, and manages secure API communication - allowing you to focus on building great apps instead of payment infrastructure.
 
-**For New Users: Explore Datacap's Capabilities**
+**For iOS Developers:**
 
-Not yet a Datacap customer? This app lets you experience our payment technology firsthand. Start in Demo Mode to see how tokenization works, understand the payment flow, and discover why thousands of businesses trust Datacap for their payment processing needs.
+See exactly how to integrate payment tokenization into your app. This demo shows the complete implementation, from initialization to token callbacks. The included source code serves as a reference for your own integration.
 
-**For Existing Customers: Test Your Integration**
+**For Technical Evaluators:**
 
-Developers and merchants can validate their API integration, generate test tokens, and run demo transactions using their Datacap credentials. Perfect for testing before going live.
+Evaluate our SDK's capabilities hands-on. Test the user experience, explore the API integration, and see how our library handles edge cases, validation, and error scenarios.
 
-**Key Features:**
+**SDK Features Demonstrated:**
 
-• **Test Token Generation** - Generate tokens using your Datacap API credentials and validate the response
+• **Drop-In UI Components** - Pre-built card input interface with native iOS design
 
-• **Run Test Transactions** - Process demo charges using generated tokens to test your complete payment flow
+• **Smart Card Detection** - Automatic identification of Visa, Mastercard, Amex, Discover, and Diners
 
-• **Three Testing Environments** - Seamlessly switch between Demo (no API needed), Certification (sandbox), and Production modes
+• **Real-Time Validation** - Luhn algorithm and format validation as users type
 
-• **API Integration Testing** - Validate your API key, endpoints, and tokenization workflow before deployment
+• **Complete API Integration** - Full tokenization flow with production-ready error handling
 
-• **Transaction Processing** - Test the full payment cycle: tokenize → save token → process payment
+• **Dual Environment Support** - Switch between certification and production modes
 
-• **Real Implementation Preview** - See exactly how tokenization works in a production app
+• **iOS 26 Liquid Glass UI** - Beautiful glass morphism design that matches modern iOS aesthetics
 
-• **Saved Token Management** - Test token storage and reuse functionality for recurring payments
+• **Delegate Pattern** - Clean callbacks for token success, failure, and cancellation
 
-• **Complete API Response Data** - View full tokenization responses to debug your integration
+• **Date Picker Integration** - Native iOS date selection for card expiration
 
-• **In-App Documentation** - Built-in help explains API modes, endpoints, and integration steps
+• **Security Best Practices** - No card storage, secure API communication, PCI compliance
 
 **Who Should Use This App:**
 
-• **Businesses Exploring Payment Solutions** - See how modern payment tokenization works
-• **Developers Evaluating APIs** - Test drive Datacap's integration before committing
-• **Existing Datacap Customers** - Validate your API credentials and test transactions
-• **Payment Consultants** - Demonstrate secure payment processing to clients
-• **Technical Teams** - Debug API responses and test payment workflows
-• **Anyone Interested in Payment Security** - Learn about PCI-compliant tokenization
+• **iOS Developers** - Building payment features for e-commerce, subscription, or marketplace apps
+• **Mobile App Agencies** - Evaluating payment SDKs for client projects
+• **Technical Architects** - Assessing integration complexity and user experience
+• **Product Managers** - Understanding the payment flow and user interface
+• **Existing Datacap Partners** - Testing SDK integration with your merchant credentials
+• **FinTech Companies** - Exploring white-label payment solutions
 
-**Testing Workflow:**
+**SDK Integration Example:**
 
-1. **Start in Demo Mode** - No credentials needed, explore the app functionality
-2. **Configure Your API** - Enter your Datacap API key and select your environment
-3. **Generate Test Tokens** - Use test cards to create tokens and validate responses
-4. **Save Generated Tokens** - Test token storage for recurring payment scenarios
-5. **Run Test Transactions** - Process demo charges using your saved tokens
-6. **Validate Integration** - Confirm your API is working correctly before production
+```swift
+// Initialize the SDK
+let tokenService = DatacapTokenService(
+    publicKey: "YOUR_MERCHANT_PUBLIC_KEY",
+    isCertification: true
+)
 
-**Three Testing Environments:**
+// Set delegate for callbacks
+tokenService.delegate = self
 
-**Demo Mode** - Explore app features without API credentials. Perfect for initial evaluation.
+// Present card input UI
+tokenService.requestToken(from: self)
 
-**Certification Mode** - Test with Datacap's sandbox environment using your test API credentials. Full API integration without real transactions.
+// Handle callbacks
+func tokenRequestDidSucceed(_ token: DatacapToken) {
+    // Use token for payment processing
+}
+```
 
-**Production Mode** - Validate your live API credentials and test real tokenization (charges are not processed in demo).
+**Testing Environments:**
 
-**Integration Testing Features:**
+**Certification Mode** - Safe sandbox environment for development and testing. Use test card numbers without processing real payments.
 
-• View complete API request/response data
-• Test different card types and validation scenarios  
-• Simulate success and failure conditions
-• Validate token format and response codes
-• Test transaction processing with Pay API
-• Verify webhook and callback functionality
+**Production Mode** - Live tokenization with your production API credentials. Generates real tokens for payment processing.
 
-**Security:**
+**What's Included in the SDK:**
 
-All test transactions are clearly marked. Production mode generates real tokens but the demo app cannot process actual charges for safety. Your API credentials are stored securely on device only.
+• Complete source code for card input UI
+• Network layer with retry logic
+• Card validation algorithms  
+• Secure API communication
+• Error handling and user feedback
+• Customizable UI components
 
-**Why Choose Datacap?**
+**Security & Compliance:**
 
-• **30+ Years of Experience** - Trusted by thousands of businesses since 1990
-• **Universal Gateway** - One integration for 30+ payment processors
-• **Advanced Features** - Tokenization, recurring billing, Level 3 processing
-• **Industry Expertise** - Specialized solutions for retail, restaurant, B2B, and more
-• **Flexible Integration** - REST API, SDKs, and pre-built integrations
-• **Competitive Rates** - Processor-agnostic to get you the best pricing
+• PCI DSS compliant tokenization
+• No sensitive card data stored on device
+• TLS 1.2+ encrypted API communication
+• Real-time Luhn validation
+• Automatic BIN validation
+• Secure keychain storage for API credentials
+
+**SDK Distribution Options:**
+
+• **Swift Package Manager** - Recommended for modern iOS projects
+• **CocoaPods** - Traditional dependency management
+• **Manual Integration** - Copy source files directly
+• **GitHub Repository** - Full source code access
+
+**Test Card Numbers (Certification Mode):**
+
+• Visa: 4111 1111 1111 1111
+• Mastercard: 5555 5555 5555 4444
+• Amex: 3782 822463 10005
+• Discover: 6011 1111 1111 1117
 
 **Getting Started:**
 
-**New to Datacap?**
-1. Download the app and explore Demo Mode
-2. See how tokenization secures payments
-3. Test the complete payment flow
-4. Visit datacapsystems.com to learn more
-5. Contact sales for a free consultation
+**For Developers:**
+1. Download the demo app
+2. Explore the SDK implementation
+3. Get API credentials from dsidevportal.com
+4. Test in certification mode
+5. Integrate SDK into your app
 
-**Existing Customer?**
-1. Get your API credentials from dsidevportal.com
-2. Configure your environment (Certification or Production)
-3. Test your integration thoroughly
-4. Validate tokens and transactions
-5. Go live with confidence
+**For Businesses:**
+1. See the payment flow in action
+2. Test with your API credentials
+3. Evaluate the user experience
+4. Contact sales for integration support
 
 **Resources:**
 
-• **Learn More**: datacapsystems.com
-• **API Documentation**: docs.datacapsystems.com
+• **SDK Documentation**: docs.datacapsystems.com/ios-sdk
+• **GitHub Repository**: github.com/datacapsystems/ios-sdk
 • **Developer Portal**: dsidevportal.com  
+• **Technical Support**: devsupport@datacapsystems.com
 • **Sales**: sales@datacapsystems.com
-• **Support**: support@datacapsystems.com
 
-Download now to discover how Datacap can transform your payment processing!
+Download now to see how easy payment integration can be with Datacap's iOS SDK!
 
-### What's New (Version 1.0)
+### What's New (Version 2.0)
 
-• Official Datacap API testing tool
-• Test token generation with your API credentials
-• Run demo transactions using generated tokens
-• Three environments: Demo, Certification, and Production
-• Full API response validation
-• Save and reuse tokens for testing
-• Complete integration workflow testing
-• Built-in API documentation and help
+• Complete SDK demonstration app
+• Clean, reusable tokenization library
+• Removed mock functionality - real API only
+• Simplified to focus on core tokenization
+• Enhanced help documentation for developers
+• Improved button styling and UI polish
+• Production-ready code examples
+• Library distribution via SPM and CocoaPods
 
 ## Keywords (100 characters total)
 
-datacap,api,test,integration,payment,token,developer,validate,demo,sandbox
+SDK,iOS,payment,tokenization,library,API,developer,swift,integration,datacap
 
 ## App Information
 
 ### Primary Category
-Finance
+Developer Tools
 
 ### Secondary Category
-Developer Tools
+Finance
 
 ### Age Rating
 4+ (No objectionable content)
@@ -165,12 +184,12 @@ https://docs.datacapsystems.com
 ### iPhone 6.7" Display (1290 × 2796 pixels)
 Required for iPhone 16 Pro Max, 15 Pro Max, 14 Pro Max
 
-1. **Home Screen** - Show main screen with "Get Secure Token" button
-2. **Card Entry** - Show card input form with keyboard visible
+1. **Home Screen** - Show main screen with "Generate Token" button
+2. **Card Entry** - Show card input form with smart formatting
 3. **Token Success** - Display successful token generation
 4. **Settings** - Show API configuration screen
-5. **Help Screen** - Display help overlay
-6. **Transaction** - Show transaction processing screen
+5. **Help Screen** - Display SDK integration help overlay
+6. **Date Picker** - Show expiration date selection
 
 ### iPhone 6.5" Display (1242 × 2688 pixels) or 6.7" Display
 Required for iPhone 14 Plus, 13 Pro Max, 12 Pro Max, 11 Pro Max, XS Max
@@ -239,7 +258,7 @@ Password: Not required
 Note: App works in demo mode by default. No login required.
 
 ### Notes for Reviewer
-This is a demonstration app showcasing Datacap's payment tokenization technology. The app operates in demo mode by default, generating mock tokens for testing. Real tokenization requires API credentials available at dsidevportal.com. All test card numbers provided in the app are standard test numbers used industry-wide for payment testing.
+This is a developer demonstration app showcasing Datacap's iOS payment tokenization SDK. The app serves as a reference implementation for developers integrating our SDK into their applications. Real tokenization requires API credentials from dsidevportal.com. The app demonstrates proper SDK integration patterns and includes complete source code examples. All test card numbers are industry-standard test numbers.
 
 ### Contact Information
 - Name: Datacap Systems Development Team
