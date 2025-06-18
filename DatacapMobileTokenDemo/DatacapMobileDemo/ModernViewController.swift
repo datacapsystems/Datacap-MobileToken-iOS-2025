@@ -296,8 +296,8 @@ class ModernViewController: UIViewController {
     }
     
     @objc private func helpTapped() {
-        let helpView = HelpOverlayView()
-        helpView.translatesAutoresizingMaskIntoConstraints = false
+        // Create a simple help overlay for now
+        let helpView = createSimpleHelpOverlay()
         view.addSubview(helpView)
         
         NSLayoutConstraint.activate([
@@ -306,8 +306,6 @@ class ModernViewController: UIViewController {
             helpView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             helpView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-        
-        helpView.show()
     }
     
     // MARK: - Helpers
@@ -363,11 +361,14 @@ class ModernViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle(actionTitle, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        button.backgroundColor = UIColor.Datacap.primaryRed
+        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
+        button.backgroundColor = darkRed
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 12
-        // Style button
-        button.layer.cornerRadius = 12
+        button.layer.cornerRadius = 16
+        button.layer.shadowColor = darkRed.cgColor
+        button.layer.shadowOpacity = 0.2
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowRadius = 8
         
         button.addAction(UIAction { _ in
             UIView.animate(withDuration: 0.3, animations: {
@@ -402,7 +403,11 @@ class ModernViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: alertCard.topAnchor, constant: 30),
             stackView.leadingAnchor.constraint(equalTo: alertCard.leadingAnchor, constant: 30),
             stackView.trailingAnchor.constraint(equalTo: alertCard.trailingAnchor, constant: -30),
-            stackView.bottomAnchor.constraint(equalTo: alertCard.bottomAnchor, constant: -30)
+            stackView.bottomAnchor.constraint(equalTo: alertCard.bottomAnchor, constant: -30),
+            
+            // Make button bigger
+            button.heightAnchor.constraint(equalToConstant: 56),
+            button.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
         ])
         
         alertCard.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -581,6 +586,119 @@ extension ModernViewController: DatacapTokenServiceDelegate {
     private func resetTokenButton() {
         loadingView.stopAnimating()
         getTokenButton.isHidden = false
+    }
+    
+    private func createSimpleHelpOverlay() -> UIView {
+        let helpView = UIView()
+        helpView.translatesAutoresizingMaskIntoConstraints = false
+        helpView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        helpView.alpha = 0
+        
+        let card = UIView()
+        card.translatesAutoresizingMaskIntoConstraints = false
+        card.backgroundColor = .white
+        card.layer.cornerRadius = 24
+        card.applyLiquidGlass(intensity: 0.95, cornerRadius: 24, shadowOpacity: 0.2)
+        
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = true
+        
+        let contentLabel = UILabel()
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.numberOfLines = 0
+        contentLabel.font = .systemFont(ofSize: 16)
+        contentLabel.textColor = UIColor.Datacap.nearBlack
+        contentLabel.text = """
+        🚀 Datacap Token Library Demo
+        
+        📦 SDK Integration
+        Swift Package Manager:
+        .package(url: "github.com/datacapsystems/ios-sdk", from: "2.0.0")
+        
+        💳 Test Cards (Certification Mode)
+        Visa: 4111 1111 1111 1111
+        Mastercard: 5555 5555 5555 4444
+        Amex: 3782 822463 10005
+        Discover: 6011 1111 1111 1117
+        
+        🔐 Security Features
+        • PCI DSS Level 1 Compliant
+        • Zero Card Storage
+        • Real-time Validation
+        
+        📱 Quick Implementation
+        let tokenService = DatacapTokenService(
+            publicKey: "pk_live_abc123",
+            isCertification: false
+        )
+        tokenService.requestToken(from: self)
+        
+        🌐 Resources
+        docs.datacapsystems.com
+        dsidevportal.com
+        """
+        
+        let dismissButton = UIButton(type: .system)
+        dismissButton.setTitle("Got it!", for: .normal)
+        dismissButton.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        dismissButton.backgroundColor = UIColor.Datacap.primaryRed
+        dismissButton.setTitleColor(.white, for: .normal)
+        dismissButton.layer.cornerRadius = 12
+        dismissButton.translatesAutoresizingMaskIntoConstraints = false
+        dismissButton.addTarget(self, action: #selector(dismissSimpleHelp), for: .touchUpInside)
+        
+        scrollView.addSubview(contentLabel)
+        card.addSubview(scrollView)
+        card.addSubview(dismissButton)
+        helpView.addSubview(card)
+        
+        NSLayoutConstraint.activate([
+            card.centerXAnchor.constraint(equalTo: helpView.centerXAnchor),
+            card.centerYAnchor.constraint(equalTo: helpView.centerYAnchor),
+            card.leadingAnchor.constraint(equalTo: helpView.leadingAnchor, constant: 20),
+            card.trailingAnchor.constraint(equalTo: helpView.trailingAnchor, constant: -20),
+            card.widthAnchor.constraint(lessThanOrEqualToConstant: 600),
+            card.heightAnchor.constraint(equalToConstant: 500),
+            
+            scrollView.topAnchor.constraint(equalTo: card.topAnchor, constant: 20),
+            scrollView.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 20),
+            scrollView.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -20),
+            scrollView.bottomAnchor.constraint(equalTo: dismissButton.topAnchor, constant: -20),
+            
+            contentLabel.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentLabel.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            dismissButton.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 20),
+            dismissButton.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -20),
+            dismissButton.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -20),
+            dismissButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
+        // Add tap to dismiss
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissSimpleHelp))
+        helpView.addGestureRecognizer(tapGesture)
+        helpView.tag = 2001
+        
+        // Animate in
+        UIView.animate(withDuration: 0.3) {
+            helpView.alpha = 1
+        }
+        
+        return helpView
+    }
+    
+    @objc private func dismissSimpleHelp() {
+        if let helpView = view.viewWithTag(2001) {
+            UIView.animate(withDuration: 0.3, animations: {
+                helpView.alpha = 0
+            }) { _ in
+                helpView.removeFromSuperview()
+            }
+        }
     }
 }
 
