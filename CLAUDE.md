@@ -223,10 +223,10 @@ cd DatacapTokenLibrary
 swift test
 ```
 
-#### For Demo App
+#### For App Testing
 ```bash
 xcodebuild test -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
-  -scheme DatacapMobileTokenDemo \
+  -scheme DatacapMobileToken \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
 ```
 
@@ -258,7 +258,7 @@ xcodebuild test -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 cd DatacapTokenLibrary
 swift test
 
-# 2. Test demo app
+# 2. Test app
 cd ..
 xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj build
 
@@ -291,7 +291,7 @@ When helping integrators:
 - ✅ Documentation complete
 - ✅ MIT License (entire repository)
 
-### Demo App (`/DatacapMobileTokenDemo/`)
+### Mobile Token App (`/DatacapMobileTokenDemo/`)
 - ✅ Shows library integration
 - ✅ Settings for API configuration
 - ✅ Glass morphism UI
@@ -337,7 +337,7 @@ cd DatacapTokenLibrary && swift build
 
 # Run demo
 xcodebuild -project DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj \
-  -scheme DatacapMobileTokenDemo \
+  -scheme DatacapMobileToken \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
   build
 
@@ -353,7 +353,7 @@ swift build -c release
 - Documentation: docs.datacapsystems.com
 - Developer Portal: dsidevportal.com
 
-Remember: The library is what merchants integrate. Keep it clean, secure, and simple. The demo app showcases capabilities but is not distributed to integrators.
+Remember: The library is what merchants integrate. Keep it clean, secure, and simple. The app showcases capabilities and serves as a reference implementation for integrators.
 
 ## API Integration Details
 
