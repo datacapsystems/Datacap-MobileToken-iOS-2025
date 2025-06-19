@@ -234,7 +234,7 @@ extension PaymentViewController: DatacapTokenServiceDelegate {
 - **🎯 Zero Dependencies**: Pure Swift, no external libraries
 - **📦 Easy Integration**: Single file to add to your project
 
-### Demo App Features
+### App Features
 - **🎨 Modern UI**: iOS 26 Liquid Glass design system
 - **⚙️ Settings Management**: Configure and test both environments
 - **💳 Smart Card Entry**: Auto-formatting, type detection
@@ -294,7 +294,7 @@ Use these in certification mode:
 - **Secure Entry**: Masked CVV input
 - **One-Time Tokens**: Tokens are single-use only
 
-## 🚀 Running the Demo
+## 🚀 Running the App
 
 ```bash
 # Clone repository
@@ -307,7 +307,7 @@ open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 # Build and run (⌘+R)
 ```
 
-### Demo Configuration
+### App Configuration
 1. Launch app
 2. Tap Settings (gear icon)
 3. Select Certification mode
