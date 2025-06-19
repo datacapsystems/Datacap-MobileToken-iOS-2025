@@ -4,17 +4,26 @@ This file contains important information for AI assistants (like Claude) working
 
 ## Project Overview
 
-**Project Type**: iOS SDK + Demo Application  
+**Project Type**: iOS Mobile Token App + SDK Library  
 **Languages**: Swift 5.0+  
 **Framework**: Datacap Tokenization REST API  
 **UI Design**: iOS 26 Liquid Glass (Glass Morphism)  
-**Target**: ISVs and Merchants integrating payment tokenization  
-**Status**: Production-ready with live API integration  
+**Target**: Enterprises, ISVs, and Merchants requiring PCI compliance  
+**Status**: Production app (v1.2) - Not a demo  
 **Repository**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025  
+**App Store**: Datacap Mobile Token (pending approval)  
 
 ## Recent Updates (2025)
 
-### ✅ Production API Integration (Latest)
+### ✅ App Store Positioning (v1.2 - June 2025)
+- **Removed all "demo" references**: Now "Datacap Mobile Token" 
+- **Enterprise focus**: Emphasizes PCI compliance benefits (90% reduction)
+- **Professional messaging**: Highlights 35+ years of payment innovation
+- **Dual environment positioning**: Certification and production for real-world use
+- **Value propositions**: Cross-platform tokenization, processor independence
+- **Updated help content**: Enterprise-focused documentation
+
+### ✅ Production API Integration
 - **Fixed tokenization endpoints**: Now using correct `/v1/otu` endpoints
 - **Proper authentication**: Token key in Authorization header
 - **Correct request format**: Capitalized field names (Account, ExpirationMonth, etc.)
@@ -35,6 +44,7 @@ This file contains important information for AI assistants (like Claude) working
 - **Smart card entry**: Auto-formatting, type detection
 - **Native date picker**: Wheel-style expiration selection
 - **Settings management**: Separate keys for each environment
+- **Professional UI text**: No testing/demo language
 
 ### ✅ Repository Cleanup (June 2025)
 - **Public-facing structure**: Cleaned for open source distribution

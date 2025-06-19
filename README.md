@@ -1,4 +1,4 @@
-# Datacap MobileToken iOS SDK 🚀
+# Datacap Mobile Token for iOS 🚀
 
 <div align="center">
   <img src="DatacapMobileTokenDemo/DatacapMobileDemo/logo.png" alt="Datacap Logo" width="300"/>
@@ -12,15 +12,23 @@
 
 ## 🎯 Overview
 
-Production-ready iOS SDK for Datacap payment tokenization. This repository provides everything ISVs and merchants need to integrate secure, PCI-compliant payment tokenization into their iOS applications.
+Enterprise payment tokenization for iOS. Reduce PCI compliance scope by 90% with Datacap's cross-platform tokenization solution. This production-ready app and SDK enable merchants and ISVs to integrate secure payment tokenization with support for both certification and production environments.
 
-### ✨ Latest Updates (v2.0 - 2025)
+### ✨ Key Benefits
 
-- **🔐 Real API Integration**: Direct REST API implementation using Datacap's OTU (One-Time-Use) endpoints
-- **🔑 Dual Key Support**: Separate API keys for certification and production environments
-- **📱 Modern UI**: iOS 26 Liquid Glass design system with programmatic UI
-- **🛠️ ISV Ready**: Clean, self-contained service class for easy integration
-- **✅ Production Tested**: Verified against live Datacap tokenization endpoints
+- **🏢 Enterprise Security**: Reduce PCI DSS scope by up to 90%
+- **🔄 Processor Independence**: Switch payment processors without retokenization
+- **🔐 P2PE Validated**: Point-to-point encryption certified solutions
+- **🌐 Cross-Platform**: Use tokens across all sales channels
+- **📊 35+ Years of Innovation**: Datacap's proven payment technology
+
+### 🚀 Latest Features (v1.2 - 2025)
+
+- **🔑 Dual Environment Support**: Separate keys for certification and production
+- **📱 Professional UI**: iOS 26 Liquid Glass design system
+- **🛠️ Production Ready**: Not a demo - real tokenization for enterprises
+- **✅ Live API Integration**: Direct connection to Datacap's OTU endpoints
+- **🎯 Zero Dependencies**: Pure Swift implementation
 
 ## 📱 Screenshots
 

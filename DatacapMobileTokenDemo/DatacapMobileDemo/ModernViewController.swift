@@ -54,7 +54,7 @@ class ModernViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Datacap Token Demo"
+        label.text = "Datacap Mobile Token"
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textColor = UIColor.Datacap.nearBlack
         label.textAlignment = .center
@@ -66,7 +66,7 @@ class ModernViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Test your payment tokenization integration"
+        label.text = "Enterprise tokenization for certification and production"
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.textColor = UIColor.Datacap.darkGray
         label.textAlignment = .center
@@ -80,6 +80,25 @@ class ModernViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.isUserInteractionEnabled = true
         return view
+    }()
+    
+    private let valuePropView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor(red: 246/255, green: 249/255, blue: 252/255, alpha: 1.0)
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
+    private let valuePropLabel: UILabel = {
+        let label = UILabel()
+        label.text = "• Reduce PCI scope by 90%\n• Cross-platform tokenization\n• Processor independence\n• 35+ years of innovation"
+        label.font = .systemFont(ofSize: 15, weight: .regular)
+        label.textColor = UIColor.Datacap.darkGray
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let getTokenButton: UIButton = {
@@ -170,6 +189,8 @@ class ModernViewController: UIViewController {
         containerView.addSubview(logoImageView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(subtitleLabel)
+        containerView.addSubview(valuePropView)
+        valuePropView.addSubview(valuePropLabel)
         containerView.addSubview(getTokenButton)
         containerView.addSubview(loadingView)
     }
@@ -220,8 +241,18 @@ class ModernViewController: UIViewController {
             subtitleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 32),
             subtitleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -32),
             
+            // Value Proposition
+            valuePropView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 24),
+            valuePropView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 32),
+            valuePropView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -32),
+            
+            valuePropLabel.topAnchor.constraint(equalTo: valuePropView.topAnchor, constant: 16),
+            valuePropLabel.leadingAnchor.constraint(equalTo: valuePropView.leadingAnchor, constant: 16),
+            valuePropLabel.trailingAnchor.constraint(equalTo: valuePropView.trailingAnchor, constant: -16),
+            valuePropLabel.bottomAnchor.constraint(equalTo: valuePropView.bottomAnchor, constant: -16),
+            
             // Get Token Button
-            getTokenButton.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 48),
+            getTokenButton.topAnchor.constraint(equalTo: valuePropView.bottomAnchor, constant: 32),
             getTokenButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             getTokenButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
             getTokenButton.heightAnchor.constraint(equalToConstant: 56),
