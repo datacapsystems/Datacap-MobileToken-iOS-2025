@@ -51,7 +51,7 @@ class HelpOverlayView: UIView {
         card.addSubview(headerView)
         
         let titleLabel = UILabel()
-        titleLabel.text = "SDK Integration Guide"
+        titleLabel.text = "Quick Start Guide"
         titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
         titleLabel.textColor = UIColor(red: 35/255, green: 31/255, blue: 32/255, alpha: 1.0)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -77,13 +77,11 @@ class HelpOverlayView: UIView {
         // Add content sections
         var previousView: UIView? = nil
         let sections = [
-            ("🏆 Why Datacap Tokenization?", "With 35+ years in payment innovation, Datacap's cross-platform tokenization reduces PCI scope by 90%, enables processor mobility, and works with any POS system—making it the industry's most flexible solution.", false),
-            ("🔒 PCI Compliance Simplified", "• Reduce PCI DSS scope by up to 90%\n• Never store sensitive card data\n• Eligible for SAQ-A compliance\n• Visa Technology Innovation Program qualified\n• P2PE validated solutions available", false),
-            ("🎯 Dual Environment Support", "Certification Mode: Safe testing with real API integration\nProduction Mode: Live tokenization for payment processing\n\nBoth environments use the same secure infrastructure, ensuring seamless transition from development to production.", false),
-            ("💳 Universal Card Support", "Process all major card brands: Visa, Mastercard, American Express, Discover, Diners Club, JCB, and UnionPay. Our processor-agnostic platform works with virtually any payment processor in North America.", false),
-            ("🚀 Enterprise Features", "• Cross-platform tokenization\n• Processor independence\n• Recurring billing support\n• Omnichannel ready\n• Real-time fraud screening\n• EMV & contactless ready", false),
-            ("💻 Integration Code", "// Initialize for production\nlet tokenService = DatacapTokenService(\n    publicKey: \"your_production_key\",\n    isCertification: false\n)\n\n// Generate secure token\ntokenService.requestToken(from: self)", true),
-            ("📡 Get Started", "1. Visit dsidevportal.com for API keys\n2. Test in certification environment\n3. Switch to production when ready\n\nSupport: support@datacapsystems.com\nDocs: docs.datacapsystems.com", false)
+            ("What is this?", "Official Datacap tool for instant payment tokenization. Transform card data into secure tokens without writing code.", false),
+            ("Key Features", "• Generate tokens in seconds\n• Switch environments instantly\n• Enterprise-grade security\n• PCI compliance ready\n• All major card brands", false),
+            ("Two Environments", "Certification: Development testing\nProduction: Live transactions\n\nBoth use real Datacap infrastructure.", false),
+            ("Simple Process", "1. Add API key in Settings\n2. Choose environment\n3. Tap Generate Token\n4. Enter card details\n5. Copy & use token", false),
+            ("Get Started", "Get your API keys at:\ndsidevportal.com\n\nQuestions? Contact:\nsupport@datacapsystems.com", false)
         ]
         
         for (title, content, isCode) in sections {
@@ -120,6 +118,9 @@ class HelpOverlayView: UIView {
         dismissButton.addTarget(self, action: #selector(dismiss), for: .touchUpInside)
         card.addSubview(dismissButton)
         
+        // Determine if this is an iPad
+        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
+        
         // Constraints
         NSLayoutConstraint.activate([
             // Blur view
@@ -131,11 +132,24 @@ class HelpOverlayView: UIView {
             // Card
             card.centerXAnchor.constraint(equalTo: centerXAnchor),
             card.centerYAnchor.constraint(equalTo: centerYAnchor),
-            card.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            card.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
-            card.widthAnchor.constraint(lessThanOrEqualToConstant: 700),
             card.heightAnchor.constraint(equalToConstant: 600),
-            
+        ])
+        
+        // Width constraints based on device
+        if isIPad {
+            NSLayoutConstraint.activate([
+                card.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 60),
+                card.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -60),
+                card.widthAnchor.constraint(lessThanOrEqualToConstant: 800)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                card.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+                card.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
             // Header
             headerView.topAnchor.constraint(equalTo: card.topAnchor, constant: 24),
             headerView.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 24),

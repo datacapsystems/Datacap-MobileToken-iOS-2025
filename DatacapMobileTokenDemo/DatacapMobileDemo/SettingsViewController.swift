@@ -52,6 +52,11 @@ class SettingsViewController: UIViewController {
         setupConstraints()
         loadCurrentSettings()
         updateUIForMode()
+        
+        // Add navigation bar for iPad full screen
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
+            setupIPadNavigationBar()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,8 +66,61 @@ class SettingsViewController: UIViewController {
     
     // MARK: - Setup
     
+    private func setupIPadNavigationBar() {
+        // Create a custom navigation bar for iPad
+        let navBar = UIView()
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        navBar.backgroundColor = UIColor.Datacap.lightBackground.withAlphaComponent(0.95)
+        navBar.applyLiquidGlass(intensity: 0.9, cornerRadius: 0, shadowOpacity: 0.1)
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "API Configuration"
+        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
+        titleLabel.textColor = UIColor.Datacap.nearBlack
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let closeButton = UIButton(type: .system)
+        closeButton.setTitle("Done", for: .normal)
+        closeButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        closeButton.setTitleColor(UIColor.Datacap.primaryRed, for: .normal)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
+        
+        navBar.addSubview(titleLabel)
+        navBar.addSubview(closeButton)
+        view.addSubview(navBar)
+        
+        NSLayoutConstraint.activate([
+            navBar.topAnchor.constraint(equalTo: view.topAnchor),
+            navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navBar.heightAnchor.constraint(equalToConstant: 100),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 32),
+            titleLabel.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -16),
+            
+            closeButton.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -32),
+            closeButton.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -16),
+        ])
+        
+        // Adjust content view top constraint
+        contentView.backgroundColor = UIColor.Datacap.lightBackground
+        contentView.layer.cornerRadius = 0
+        
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: navBar.bottomAnchor),
+            contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+    }
+    
     private func setupUI() {
-        view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
+            view.backgroundColor = UIColor.Datacap.lightBackground
+        } else {
+            view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        }
         
         // Content container
         contentView.backgroundColor = UIColor.Datacap.lightBackground
@@ -166,7 +224,7 @@ class SettingsViewController: UIViewController {
         infoTitleLabel.font = .systemFont(ofSize: 16, weight: .semibold)
         infoTitleLabel.textColor = UIColor.Datacap.nearBlack
         
-        infoTextLabel.text = "Register at dsidevportal.com to get your public key and API endpoint for production tokenization."
+        infoTextLabel.text = "Register at dsidevportal.com to get your public key for generating real tokens in both certification and production environments."
         infoTextLabel.font = .systemFont(ofSize: 14, weight: .regular)
         infoTextLabel.textColor = UIColor.Datacap.darkGray
         infoTextLabel.numberOfLines = 0
@@ -231,29 +289,14 @@ class SettingsViewController: UIViewController {
     }
     
     private func setupConstraints() {
-        // Determine if this is an iPad
-        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
-        
-        NSLayoutConstraint.activate([
-            // Content view - adapt for iPad
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.85),
-        ])
-        
-        // Add width constraints based on device
-        if isIPad {
-            // Center the content on iPad with max width
+        // Skip content view constraints for iPad full screen (handled in setupIPadNavigationBar)
+        if !(UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen) {
             NSLayoutConstraint.activate([
-                contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                contentView.widthAnchor.constraint(lessThanOrEqualToConstant: 600),
-                contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 40),
-                contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -40),
-            ])
-        } else {
-            // Full width on iPhone
-            NSLayoutConstraint.activate([
+                // Content view - full width for both iPhone and non-fullscreen iPad
                 contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                contentView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.85),
             ])
         }
         
@@ -267,8 +310,9 @@ class SettingsViewController: UIViewController {
             
             // Header
             headerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            headerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
+            headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+            headerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+            headerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
             headerView.heightAnchor.constraint(equalToConstant: 50),
             
             titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
@@ -281,9 +325,24 @@ class SettingsViewController: UIViewController {
             
             // Mode control
             modeSegmentedControl.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 24),
-            modeSegmentedControl.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            modeSegmentedControl.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             modeSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
+        ])
+        
+        // Adjust constraints based on device
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
+            NSLayoutConstraint.activate([
+                modeSegmentedControl.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                modeSegmentedControl.widthAnchor.constraint(equalToConstant: 600),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                modeSegmentedControl.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+                modeSegmentedControl.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+                modeSegmentedControl.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
             
             modeDescriptionLabel.topAnchor.constraint(equalTo: modeSegmentedControl.bottomAnchor, constant: 8),
             modeDescriptionLabel.leadingAnchor.constraint(equalTo: modeSegmentedControl.leadingAnchor),
@@ -291,9 +350,24 @@ class SettingsViewController: UIViewController {
             
             // API Key container
             apiKeyContainerView.topAnchor.constraint(equalTo: modeDescriptionLabel.bottomAnchor, constant: 24),
-            apiKeyContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            apiKeyContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             apiKeyContainerView.heightAnchor.constraint(equalToConstant: 80),
+        ])
+        
+        // API Key container width constraints
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
+            NSLayoutConstraint.activate([
+                apiKeyContainerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                apiKeyContainerView.widthAnchor.constraint(equalToConstant: 600),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                apiKeyContainerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+                apiKeyContainerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+                apiKeyContainerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
             
             apiKeyLabel.topAnchor.constraint(equalTo: apiKeyContainerView.topAnchor, constant: 16),
             apiKeyLabel.leadingAnchor.constraint(equalTo: apiKeyContainerView.leadingAnchor, constant: 16),
@@ -310,9 +384,24 @@ class SettingsViewController: UIViewController {
             
             // Endpoint container
             endpointContainerView.topAnchor.constraint(equalTo: apiKeyContainerView.bottomAnchor, constant: 16),
-            endpointContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            endpointContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             endpointContainerView.heightAnchor.constraint(equalToConstant: 100),
+        ])
+        
+        // Endpoint container width constraints
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
+            NSLayoutConstraint.activate([
+                endpointContainerView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                endpointContainerView.widthAnchor.constraint(equalToConstant: 600),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                endpointContainerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+                endpointContainerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+                endpointContainerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
             
             endpointLabel.topAnchor.constraint(equalTo: endpointContainerView.topAnchor, constant: 16),
             endpointLabel.leadingAnchor.constraint(equalTo: endpointContainerView.leadingAnchor, constant: 16),
@@ -334,9 +423,24 @@ class SettingsViewController: UIViewController {
             
             // Info card
             infoCardView.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 32),
-            infoCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
-            infoCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             infoCardView.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: -32),
+        ])
+        
+        // Info card width constraints
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
+            NSLayoutConstraint.activate([
+                infoCardView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                infoCardView.widthAnchor.constraint(equalToConstant: 600),
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                infoCardView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 24),
+                infoCardView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -24),
+                infoCardView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
             
             infoIconView.topAnchor.constraint(equalTo: infoCardView.topAnchor, constant: 16),
             infoIconView.leadingAnchor.constraint(equalTo: infoCardView.leadingAnchor, constant: 16),

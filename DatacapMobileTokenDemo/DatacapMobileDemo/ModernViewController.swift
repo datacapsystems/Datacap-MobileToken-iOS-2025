@@ -19,30 +19,7 @@ class ModernViewController: UIViewController {
     // MARK: - UI Components
     
     private let backgroundGradient = CAGradientLayer()
-    
-    private let settingsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-        button.tintColor = UIColor.Datacap.darkGray
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let modeIndicator: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 12
-        view.backgroundColor = .black
-        return view
-    }()
-    
-    private let modeLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 13, weight: .bold)
-        label.textColor = .white
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private let floatingMenu = FloatingMenuPill()
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -54,7 +31,7 @@ class ModernViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Datacap Mobile Token"
+        label.text = "Datacap Token Generator"
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textColor = UIColor.Datacap.nearBlack
         label.textAlignment = .center
@@ -66,7 +43,7 @@ class ModernViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Enterprise tokenization for certification and production"
+        label.text = "Generate secure payment tokens instantly"
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.textColor = UIColor.Datacap.darkGray
         label.textAlignment = .center
@@ -92,7 +69,7 @@ class ModernViewController: UIViewController {
     
     private let valuePropLabel: UILabel = {
         let label = UILabel()
-        label.text = "• Reduce PCI scope by 90%\n• Cross-platform tokenization\n• Processor independence\n• 35+ years of innovation"
+        label.text = "✓ Instant tokenization\n✓ PCI compliance ready\n✓ Dual environment support\n✓ Enterprise security"
         label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = UIColor.Datacap.darkGray
         label.textAlignment = .left
@@ -116,13 +93,8 @@ class ModernViewController: UIViewController {
         return loading
     }()
     
-    private let helpButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "questionmark.circle.fill"), for: .normal)
-        button.tintColor = UIColor.Datacap.darkGray
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let scrollView = UIScrollView()
+    private let contentStackView = UIStackView()
     
     // MARK: - Lifecycle
     
@@ -130,7 +102,7 @@ class ModernViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
-        updateModeIndicator()
+        floatingMenu.updateModeAppearance()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -172,20 +144,26 @@ class ModernViewController: UIViewController {
         getTokenButton.layer.shadowRadius = 8
         getTokenButton.addTarget(self, action: #selector(getTokenTapped), for: .touchUpInside)
         
-        // Settings button
-        settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
+        // Setup floating menu
+        floatingMenu.delegate = self
+        floatingMenu.translatesAutoresizingMaskIntoConstraints = false
         
-        // Help button
-        helpButton.addTarget(self, action: #selector(helpTapped), for: .touchUpInside)
+        // Setup scroll view for better iPad support
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.alwaysBounceVertical = false
         
-        // Add mode indicator
-        modeIndicator.addSubview(modeLabel)
+        // Setup content stack
+        contentStackView.axis = .vertical
+        contentStackView.alignment = .center
+        contentStackView.spacing = 0
+        contentStackView.translatesAutoresizingMaskIntoConstraints = false
         
         // Add subviews
-        view.addSubview(modeIndicator)
-        view.addSubview(settingsButton)
-        view.addSubview(helpButton)
-        view.addSubview(containerView)
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentStackView)
+        view.addSubview(floatingMenu)
+        contentStackView.addArrangedSubview(containerView)
         containerView.addSubview(logoImageView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(subtitleLabel)
@@ -197,33 +175,29 @@ class ModernViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            // Mode indicator
-            modeIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            modeIndicator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            modeIndicator.heightAnchor.constraint(equalToConstant: 30),
+            // Scroll view
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: floatingMenu.topAnchor, constant: -20),
             
-            modeLabel.leadingAnchor.constraint(equalTo: modeIndicator.leadingAnchor, constant: 12),
-            modeLabel.trailingAnchor.constraint(equalTo: modeIndicator.trailingAnchor, constant: -12),
-            modeLabel.centerYAnchor.constraint(equalTo: modeIndicator.centerYAnchor),
+            // Content stack view - center vertically on iPad
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentStackView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
             
-            // Settings button
-            settingsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            settingsButton.widthAnchor.constraint(equalToConstant: 44),
-            settingsButton.heightAnchor.constraint(equalToConstant: 44),
-            
-            // Help button
-            helpButton.centerYAnchor.constraint(equalTo: settingsButton.centerYAnchor),
-            helpButton.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -8),
-            helpButton.widthAnchor.constraint(equalToConstant: 44),
-            helpButton.heightAnchor.constraint(equalToConstant: 44),
+            // Floating menu pill
+            floatingMenu.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            floatingMenu.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            floatingMenu.heightAnchor.constraint(equalToConstant: 56),
+            floatingMenu.widthAnchor.constraint(greaterThanOrEqualToConstant: 160),
             
             // Container
-            containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
-            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: 400),
+            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentStackView.leadingAnchor, constant: 20),
+            containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentStackView.trailingAnchor, constant: -20),
+            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: 600),
+            containerView.centerXAnchor.constraint(equalTo: contentStackView.centerXAnchor),
             
             // Logo
             logoImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 40),
@@ -320,23 +294,33 @@ class ModernViewController: UIViewController {
         }
     }
     
-    @objc private func settingsTapped() {
+    private func settingsTapped() {
         let settingsVC = SettingsViewController()
         settingsVC.delegate = self
-        settingsVC.modalPresentationStyle = .pageSheet
         
-        if let sheet = settingsVC.sheetPresentationController {
-            sheet.detents = [.large()]
-            sheet.prefersGrabberVisible = true
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+        // Check if iPad
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // Use full screen presentation for iPad with custom navigation
+            settingsVC.modalPresentationStyle = .fullScreen
+            settingsVC.modalTransitionStyle = .crossDissolve
+        } else {
+            // Use page sheet for iPhone
+            settingsVC.modalPresentationStyle = .pageSheet
+            
+            if let sheet = settingsVC.sheetPresentationController {
+                sheet.detents = [.large()]
+                sheet.prefersGrabberVisible = true
+                sheet.prefersScrollingExpandsWhenScrolledToEdge = false
+            }
         }
         
         present(settingsVC, animated: true)
     }
     
-    @objc private func helpTapped() {
-        // Create a simple help overlay for now
-        let helpView = createSimpleHelpOverlay()
+    private func helpTapped() {
+        // Use the HelpOverlayView for iOS 26 styled help
+        let helpView = HelpOverlayView()
+        helpView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(helpView)
         
         NSLayoutConstraint.activate([
@@ -345,13 +329,14 @@ class ModernViewController: UIViewController {
             helpView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             helpView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        helpView.show()
     }
     
     // MARK: - Helpers
     
     private func updateModeIndicator() {
-        let isCertification = UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
-        modeLabel.text = isCertification ? "CERTIFICATION MODE" : "PRODUCTION MODE"
+        floatingMenu.updateModeAppearance()
     }
     
     private func animateIn() {
@@ -658,32 +643,24 @@ extension ModernViewController: DatacapTokenServiceDelegate {
         contentLabel.font = .systemFont(ofSize: 16)
         contentLabel.textColor = UIColor.Datacap.nearBlack
         contentLabel.text = """
-        🚀 Datacap Token Library Demo
+        What is this?
+        Official Datacap tool for instant payment tokenization.
         
-        📦 SDK Integration
-        Swift Package Manager:
-        .package(url: "github.com/datacapsystems/ios-sdk", from: "2.0.0")
+        Key Features
+        • Generate tokens in seconds
+        • Switch environments instantly
+        • Reduce PCI scope by 90%
+        • Enterprise-grade security
         
-        💳 Test Cards (Certification Mode)
-        Visa: 4111 1111 1111 1111
-        Mastercard: 5555 5555 5555 4444
-        Amex: 3782 822463 10005
-        Discover: 6011 1111 1111 1117
+        Simple Process
+        1. Add API key in Settings
+        2. Choose environment
+        3. Tap Generate Token
+        4. Enter card details
+        5. Copy & use token
         
-        🔐 Security Features
-        • PCI DSS Level 1 Compliant
-        • Zero Card Storage
-        • Real-time Validation
-        
-        📱 Quick Implementation
-        let tokenService = DatacapTokenService(
-            publicKey: "pk_live_abc123",
-            isCertification: false
-        )
-        tokenService.requestToken(from: self)
-        
-        🌐 Resources
-        docs.datacapsystems.com
+        Get Started
+        Get your API keys at:
         dsidevportal.com
         """
         
@@ -755,5 +732,17 @@ extension ModernViewController: DatacapTokenServiceDelegate {
 extension ModernViewController: SettingsViewControllerDelegate {
     func settingsDidUpdate() {
         updateModeIndicator()
+    }
+}
+
+// MARK: - FloatingMenuPillDelegate
+
+extension ModernViewController: FloatingMenuPillDelegate {
+    func floatingMenuDidTapSettings() {
+        settingsTapped()
+    }
+    
+    func floatingMenuDidTapHelp() {
+        helpTapped()
     }
 }
