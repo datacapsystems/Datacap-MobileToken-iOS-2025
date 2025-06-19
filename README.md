@@ -326,7 +326,7 @@ open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 
 - **Documentation**: [docs.datacapsystems.com](https://docs.datacapsystems.com)
 - **Developer Portal**: [dsidevportal.com](https://www.dsidevportal.com)
-- **Email**: support@datacapsystems.com
+- **Support**: [datacapsystems.com/support](http://datacapsystems.com/support)
 - **GitHub Issues**: [Report bugs here](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues)
 
 ## 📄 License
