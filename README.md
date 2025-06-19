@@ -1,4 +1,4 @@
-# Datacap Mobile Token for iOS 🚀
+# Datacap Mobile Token for iOS
 
 <div align="center">
   <img src="DatacapMobileTokenDemo/DatacapMobileDemo/logo.png" alt="Datacap Logo" width="300"/>
@@ -10,29 +10,29 @@
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 </div>
 
-## 🎯 Overview
+## Overview
 
 Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap's cross-platform tokenization solution. This production-ready app and SDK enable merchants and ISVs to integrate secure payment tokenization with support for both certification and production environments.
 
-### ✨ Key Benefits
+### Key Benefits
 
-- **🏢 Enterprise Security**: PCI compliance ready for production use
-- **🔄 Processor Independence**: Switch payment processors without retokenization
-- **🔐 P2PE Validated**: Point-to-point encryption certified solutions
-- **🌐 Cross-Platform**: Use tokens across all sales channels
-- **📊 35+ Years of Innovation**: Datacap's proven payment technology
+- **Enterprise Security**: PCI compliance ready for production use
+- **Processor Independence**: Switch payment processors without retokenization
+- **P2PE Validated**: Point-to-point encryption certified solutions
+- **Cross-Platform**: Use tokens across all sales channels
+- **35+ Years of Innovation**: Datacap's proven payment technology
 
-### 🚀 Latest Features (v1.2 - 2025)
+### Latest Features (v1.2 - 2025)
 
-- **🔑 Dual Environment Support**: Separate keys for certification and production
-- **📱 Professional UI**: iOS 26 Liquid Glass design system with floating menu
-- **🛠️ Production Ready**: Enterprise-grade tokenization tool
-- **✅ Live API Integration**: Direct connection to Datacap's OTU endpoints
-- **🎯 Zero Dependencies**: Pure Swift implementation
-- **🎨 Modern Navigation**: iOS 26 floating pill with expandable actions
-- **📐 Responsive Design**: Optimized for iPhone and iPad
+- **Dual Environment Support**: Separate keys for certification and production
+- **Professional UI**: iOS 26 Liquid Glass design system with floating menu
+- **Production Ready**: Enterprise-grade tokenization tool
+- **Live API Integration**: Direct connection to Datacap's OTU endpoints
+- **Zero Dependencies**: Pure Swift implementation
+- **Modern Navigation**: iOS 26 floating pill with expandable actions
+- **Responsive Design**: Optimized for iPhone and iPad
 
-## 📱 Screenshots
+## Screenshots
 
 <div align="center">
   <img src="docs/screenshots/home.png" alt="Home Screen" width="250"/>
@@ -40,22 +40,22 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
   <img src="docs/screenshots/settings-cert.png" alt="Settings" width="250"/>
 </div>
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 Datacap-MobileToken-iOS-2025/
-├── DatacapTokenLibrary/        # 📦 Ready-to-use SDK for integrators
+├── DatacapTokenLibrary/        # Ready-to-use SDK for integrators
 │   ├── Sources/                # DatacapTokenService.swift
 │   └── README.md               # Quick integration guide
-├── DatacapMobileTokenDemo/     # 📱 Reference implementation
+├── DatacapMobileTokenDemo/     # Reference implementation
 │   ├── DatacapMobileDemo/      # Demo app with UI examples
 │   └── *.xcodeproj             # Xcode project
-├── INTEGRATION_GUIDE.md        # 📚 Detailed integration instructions
-├── CLAUDE.md                   # 🤖 AI assistant reference
-└── Scripts/                    # 🛠️ Build and deployment tools
+├── INTEGRATION_GUIDE.md        # Detailed integration instructions
+├── CLAUDE.md                   # AI assistant reference
+└── Scripts/                    # Build and deployment tools
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 ### SDK Architecture
 
@@ -153,7 +153,7 @@ graph TB
     style CARD fill:#2a2a2a,stroke:#444,stroke-width:1px,color:#fff
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Copy the SDK
 ```bash
@@ -224,25 +224,25 @@ extension PaymentViewController: DatacapTokenServiceDelegate {
 }
 ```
 
-## 🎨 Key Features
+## Key Features
 
 ### SDK Features
-- **🔐 Real API Integration**: Direct REST API calls to Datacap's OTU endpoints
-- **🔑 Dual Key Support**: Separate keys for certification and production
-- **📱 Two Integration Modes**: Built-in UI or bring your own
-- **✅ Card Validation**: Luhn algorithm, BIN detection, format validation
-- **🎯 Zero Dependencies**: Pure Swift, no external libraries
-- **📦 Easy Integration**: Single file to add to your project
+- **Real API Integration**: Direct REST API calls to Datacap's OTU endpoints
+- **Dual Key Support**: Separate keys for certification and production
+- **Two Integration Modes**: Built-in UI or bring your own
+- **Card Validation**: Luhn algorithm, BIN detection, format validation
+- **Zero Dependencies**: Pure Swift, no external libraries
+- **Easy Integration**: Single file to add to your project
 
 ### App Features
-- **🎨 Modern UI**: iOS 26 Liquid Glass design system
-- **⚙️ Settings Management**: Configure and test both environments
-- **💳 Smart Card Entry**: Auto-formatting, type detection
-- **📅 Native Date Picker**: Wheel-style expiration selection
-- **🔄 Live Validation**: Real-time feedback as you type
-- **📋 Token Display**: Copy token with one tap
+- **Modern UI**: iOS 26 Liquid Glass design system
+- **Settings Management**: Configure and test both environments
+- **Smart Card Entry**: Auto-formatting, type detection
+- **Native Date Picker**: Wheel-style expiration selection
+- **Live Validation**: Real-time feedback as you type
+- **Token Display**: Copy token with one tap
 
-## 🛠️ API Documentation
+## API Documentation
 
 ### Endpoints
 - **Certification**: `https://token-cert.dcap.com/v1/otu`
@@ -274,7 +274,7 @@ Content-Type: application/json
 }
 ```
 
-## 💳 Test Cards
+## Test Cards
 
 Use these in certification mode:
 
@@ -286,7 +286,7 @@ Use these in certification mode:
 | Discover | 6011111111111117 | 123 | Any future date |
 | Diners | 36700102000000 | 123 | Any future date |
 
-## 🔐 Security
+## Security
 
 - **PCI Compliant**: No card data storage, tokenization only
 - **TLS Encryption**: All API calls use HTTPS
@@ -294,7 +294,7 @@ Use these in certification mode:
 - **Secure Entry**: Masked CVV input
 - **One-Time Tokens**: Tokens are single-use only
 
-## 🚀 Running the App
+## Running the App
 
 ```bash
 # Clone repository
@@ -315,27 +315,27 @@ open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 5. Save configuration
 6. Tap "Generate Token"
 
-## 📱 Requirements
+## Requirements
 
 - iOS 15.6+
 - Xcode 16.0+
 - Swift 5.0+
 - Network connectivity
 
-## 🤝 Support
+## Support
 
 - **Documentation**: [docs.datacapsystems.com](https://docs.datacapsystems.com)
 - **Developer Portal**: [dsidevportal.com](https://www.dsidevportal.com)
 - **Support**: [datacapsystems.com/support](http://datacapsystems.com/support)
 - **GitHub Issues**: [Report bugs here](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues)
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-  <b>Built with ❤️ by Datacap Systems</b><br>
+  <b>Built with care by Datacap Systems</b><br>
   <i>Secure Payment Solutions Since 1983</i>
 </div>
