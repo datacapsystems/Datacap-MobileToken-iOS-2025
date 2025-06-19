@@ -12,11 +12,11 @@
 
 ## 🎯 Overview
 
-Enterprise payment tokenization for iOS. Reduce PCI compliance scope by 90% with Datacap's cross-platform tokenization solution. This production-ready app and SDK enable merchants and ISVs to integrate secure payment tokenization with support for both certification and production environments.
+Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap's cross-platform tokenization solution. This production-ready app and SDK enable merchants and ISVs to integrate secure payment tokenization with support for both certification and production environments.
 
 ### ✨ Key Benefits
 
-- **🏢 Enterprise Security**: Reduce PCI DSS scope by up to 90%
+- **🏢 Enterprise Security**: PCI compliance ready for production use
 - **🔄 Processor Independence**: Switch payment processors without retokenization
 - **🔐 P2PE Validated**: Point-to-point encryption certified solutions
 - **🌐 Cross-Platform**: Use tokens across all sales channels
@@ -25,10 +25,12 @@ Enterprise payment tokenization for iOS. Reduce PCI compliance scope by 90% with
 ### 🚀 Latest Features (v1.2 - 2025)
 
 - **🔑 Dual Environment Support**: Separate keys for certification and production
-- **📱 Professional UI**: iOS 26 Liquid Glass design system
-- **🛠️ Production Ready**: Not a demo - real tokenization for enterprises
+- **📱 Professional UI**: iOS 26 Liquid Glass design system with floating menu
+- **🛠️ Production Ready**: Enterprise-grade tokenization tool
 - **✅ Live API Integration**: Direct connection to Datacap's OTU endpoints
 - **🎯 Zero Dependencies**: Pure Swift implementation
+- **🎨 Modern Navigation**: iOS 26 floating pill with expandable actions
+- **📐 Responsive Design**: Optimized for iPhone and iPad
 
 ## 📱 Screenshots
 
@@ -119,6 +121,36 @@ graph LR
     style PROD fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
     style CERTENV fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
     style PRODENV fill:#228b22,stroke:#fff,stroke-width:2px,color:#fff
+```
+
+### iOS 26 UI Architecture
+
+```mermaid
+graph TB
+    subgraph "Floating Menu Pill"
+        MODE[Mode Toggle<br/>Cert/Prod]
+        SETTINGS[Settings<br/>Icon]
+        HELP[Help<br/>Icon]
+    end
+    
+    subgraph "Main Screen"
+        CARD[Card Entry Form]
+        TOKEN[Generate Token]
+        RESULT[Token Display]
+    end
+    
+    subgraph "Overlays"
+        SVIEW[Settings View]
+        HVIEW[Help View]
+    end
+    
+    MODE --> CARD
+    SETTINGS --> SVIEW
+    HELP --> HVIEW
+    TOKEN --> RESULT
+    
+    style MODE fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+    style CARD fill:#2a2a2a,stroke:#444,stroke-width:1px,color:#fff
 ```
 
 ## 🚀 Quick Start

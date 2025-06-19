@@ -45,6 +45,8 @@ This file contains important information for AI assistants (like Claude) working
 - **Native date picker**: Wheel-style expiration selection
 - **Settings management**: Separate keys for each environment
 - **Professional UI text**: No testing/demo language
+- **Floating Menu Pill**: iOS 26-style navigation with expandable actions
+- **Fixed-width design**: Consistent 260pt width for menu stability
 
 ### ✅ Repository Cleanup (June 2025)
 - **Public-facing structure**: Cleaned for open source distribution
@@ -52,6 +54,14 @@ This file contains important information for AI assistants (like Claude) working
 - **Private files moved**: All internal scripts and docs in `.backup-private/`
 - **Professional documentation**: README with working Mermaid diagrams
 - **Clean git history**: Ready for public repository
+
+### ✅ iOS 26 Redesign (December 2025)
+- **Floating Menu Pill**: Modern navigation with fixed 260pt width
+- **Dual Environment Toggle**: Visual mode switching in floating menu
+- **Enhanced Help System**: Full-screen overlay with professional content
+- **Permanent Expansion**: Menu always visible for better UX
+- **Glass Morphism**: Consistent visual effects throughout
+- **Responsive Layout**: Optimized for all iPhone and iPad sizes
 
 ## Repository Structure
 
@@ -72,6 +82,7 @@ Datacap-MobileToken-iOS-2025/
 │   │   ├── ModernViewController.swift      # Demo main screen
 │   │   ├── SettingsViewController.swift    # API configuration
 │   │   ├── HelpOverlayView.swift          # iOS 26 help overlay
+│   │   ├── FloatingMenuPill.swift          # iOS 26 floating navigation
 │   │   ├── DatacapTokenService.swift       # Same as library
 │   │   └── GlassMorphismExtensions.swift   # UI styling
 │   └── DatacapMobileTokenDemo.xcodeproj
@@ -286,6 +297,9 @@ When helping integrators:
 - ✅ Glass morphism UI
 - ✅ Help documentation
 - ✅ Ready for App Store
+- ✅ iOS 26 floating menu navigation
+- ✅ Fixed-width pill design (260pt)
+- ✅ Production positioning
 
 ### Repository Status
 - ✅ Public-facing structure

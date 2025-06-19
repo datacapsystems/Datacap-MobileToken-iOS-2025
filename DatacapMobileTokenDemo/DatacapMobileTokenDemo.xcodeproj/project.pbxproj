@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3B5871F3D8B54AF0AF2B5560 /* DatacapTokenService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E7713CD663491AB32149D6 /* DatacapTokenService.swift */; };
+		2637A0722DFCBE210075A9A4 /* FloatingMenuPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A0712DFCBE210075A9A3 /* FloatingMenuPill.swift */; };
 		2637A06D2DFCBE210075A9A0 /* GlassMorphismExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */; };
 		2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */; };
 		2637A06F2DFCBE210075A9A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */; };
@@ -41,6 +42,7 @@
 		2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = ../DatacapMobileDemo/SettingsViewController.swift; sourceTree = "<group>"; };
 		2637A06F2DFCBCB60075A9A2 /* HelpOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HelpOverlayView.swift; path = ../DatacapMobileDemo/HelpOverlayView.swift; sourceTree = "<group>"; };
 		ACD32106242D3ADB00694A06 /* DatacapMobileToken.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DatacapMobileToken.xcframework; sourceTree = "<group>"; };
+		2637A0712DFCBE210075A9A3 /* FloatingMenuPill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FloatingMenuPill.swift; path = ../DatacapMobileDemo/FloatingMenuPill.swift; sourceTree = "<group>"; };
 		ACD3210B242D3C9100694A06 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../DatacapMobileDemo/ViewController.m; sourceTree = "<group>"; };
 		ACD3210C242D3C9100694A06 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ../DatacapMobileDemo/AppDelegate.m; sourceTree = "<group>"; };
 		ACD3210D242D3C9100694A06 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../DatacapMobileDemo/AppDelegate.h; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				2637A06C2DFCBCB60075A9A0 /* ModernViewController.swift */,
 				2637A06D2DFCBCB60075A9A1 /* SettingsViewController.swift */,
 				2637A06F2DFCBCB60075A9A2 /* HelpOverlayView.swift */,
+				2637A0712DFCBE210075A9A3 /* FloatingMenuPill.swift */,
 				60E7713CD663491AB32149D6 /* DatacapTokenService.swift */,
 				2637A06B2DFCBCB60075A9A0 /* GlassMorphismExtensions.swift */,
 				ACD32117242D3D3900694A06 /* Assets.xcassets */,
@@ -199,6 +202,7 @@
 				2637A06E2DFCBE210075A9A0 /* ModernViewController.swift in Sources */,
 				2637A06F2DFCBE210075A9A1 /* SettingsViewController.swift in Sources */,
 				2637A0702DFCBE210075A9A2 /* HelpOverlayView.swift in Sources */,
+				2637A0722DFCBE210075A9A4 /* FloatingMenuPill.swift in Sources */,
 				ACD3210F242D3C9100694A06 /* ViewController.m in Sources */,
 				ACD32125242D3E1100694A06 /* main.m in Sources */,
 				ACD32110242D3C9100694A06 /* AppDelegate.m in Sources */,
