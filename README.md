@@ -35,11 +35,10 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 ## 📱 Screenshots
 
 <div align="center">
-  <img src="docs/screenshots/home.png" alt="Home Screen" width="200"/>
-  <img src="docs/screenshots/card-entry.png" alt="Card Entry" width="200"/>
-  <img src="docs/screenshots/settings-cert.png" alt="Settings - Certification" width="200"/>
-  <img src="docs/screenshots/settings-prod.png" alt="Settings - Production" width="200"/>
-  <img src="docs/screenshots/help.png" alt="Help Guide" width="200"/>
+  <img src="docs/screenshots/home.png" alt="Home Screen" width="250"/>
+  <img src="docs/screenshots/card-entry.png" alt="Card Entry" width="250"/>
+  <img src="docs/screenshots/settings-cert.png" alt="Settings - Certification" width="250"/>
+  <img src="docs/screenshots/settings-prod.png" alt="Settings - Production" width="250"/>
 </div>
 
 ## 📁 Repository Structure
