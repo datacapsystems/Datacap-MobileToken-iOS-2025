@@ -94,7 +94,7 @@ class SettingsViewController: UIViewController {
         modeDescriptionLabel.font = .systemFont(ofSize: 14, weight: .regular)
         modeDescriptionLabel.textColor = UIColor.Datacap.darkGray
         modeDescriptionLabel.numberOfLines = 0
-        modeDescriptionLabel.text = "Certification mode for testing, Production for live transactions"
+        modeDescriptionLabel.text = "Select environment for secure payment tokenization"
         
         // API Key section
         apiKeyContainerView.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.05)
@@ -404,11 +404,11 @@ class SettingsViewController: UIViewController {
         let prodKey = UserDefaults.standard.string(forKey: "DatacapProductionPublicKey") ?? ""
         
         if isCertification {
-            modeDescriptionLabel.text = "Certification mode for testing your integration"
+            modeDescriptionLabel.text = "Certification environment for merchant integration"
             endpointTextField.text = "https://token-cert.dcap.com/v1/otu"
             apiKeyTextField.text = certKey
         } else {
-            modeDescriptionLabel.text = "Production mode for processing live transactions"
+            modeDescriptionLabel.text = "Production environment for live payment processing"
             endpointTextField.text = "https://token.dcap.com/v1/otu"
             apiKeyTextField.text = prodKey
         }

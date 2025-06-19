@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>NSCameraUsageDescription</key>
 	<string>This app requires camera access to scan payment cards securely.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

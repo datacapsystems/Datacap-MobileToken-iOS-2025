@@ -77,13 +77,13 @@ class HelpOverlayView: UIView {
         // Add content sections
         var previousView: UIView? = nil
         let sections = [
-            ("🚀 Datacap Token Library Demo", "Experience iOS 26 Liquid Glass design with our production-ready tokenization SDK.", false),
-            ("📦 SDK Integration", "Swift Package Manager:\ndependencies: [\n    .package(url: \"https://github.com/datacapsystems/ios-sdk.git\", from: \"2.0.0\")\n]", true),
-            ("💳 Test Cards (Certification Mode)", "Visa                4111 1111 1111 1111\nMastercard          5555 5555 5555 4444\nAmerican Express    3782 822463 10005\nDiscover            6011 1111 1111 1117", true),
-            ("🔐 Security Features", "• PCI DSS Level 1 Compliant\n• TLS 1.3 Encrypted\n• Zero Card Storage\n• Real-time Validation\n• Secure Keychain Storage", false),
-            ("🎨 iOS 26 Features", "• Liquid Glass UI Components\n• Glass Morphism Effects\n• Dynamic Blur Layers\n• Haptic Feedback\n• Native Date Pickers\n• Adaptive Color System", false),
-            ("📱 Quick Implementation", "let tokenService = DatacapTokenService(\n    publicKey: \"pk_live_abc123\",\n    isCertification: false\n)\n\ntokenService.delegate = self\ntokenService.requestToken(from: self)", true),
-            ("🌐 Resources", "Documentation: docs.datacapsystems.com\nDeveloper Portal: dsidevportal.com\nGitHub: github.com/datacapsystems/ios-sdk\nSupport: devsupport@datacapsystems.com", false)
+            ("🏆 Why Datacap Tokenization?", "With 35+ years in payment innovation, Datacap's cross-platform tokenization reduces PCI scope by 90%, enables processor mobility, and works with any POS system—making it the industry's most flexible solution.", false),
+            ("🔒 PCI Compliance Simplified", "• Reduce PCI DSS scope by up to 90%\n• Never store sensitive card data\n• Eligible for SAQ-A compliance\n• Visa Technology Innovation Program qualified\n• P2PE validated solutions available", false),
+            ("🎯 Dual Environment Support", "Certification Mode: Safe testing with real API integration\nProduction Mode: Live tokenization for payment processing\n\nBoth environments use the same secure infrastructure, ensuring seamless transition from development to production.", false),
+            ("💳 Universal Card Support", "Process all major card brands: Visa, Mastercard, American Express, Discover, Diners Club, JCB, and UnionPay. Our processor-agnostic platform works with virtually any payment processor in North America.", false),
+            ("🚀 Enterprise Features", "• Cross-platform tokenization\n• Processor independence\n• Recurring billing support\n• Omnichannel ready\n• Real-time fraud screening\n• EMV & contactless ready", false),
+            ("💻 Integration Code", "// Initialize for production\nlet tokenService = DatacapTokenService(\n    publicKey: \"your_production_key\",\n    isCertification: false\n)\n\n// Generate secure token\ntokenService.requestToken(from: self)", true),
+            ("📡 Get Started", "1. Visit dsidevportal.com for API keys\n2. Test in certification environment\n3. Switch to production when ready\n\nSupport: support@datacapsystems.com\nDocs: docs.datacapsystems.com", false)
         ]
         
         for (title, content, isCode) in sections {
