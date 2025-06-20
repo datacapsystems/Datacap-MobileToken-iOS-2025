@@ -22,15 +22,14 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 - **Cross-Platform**: Use tokens across all sales channels
 - **35+ Years of Innovation**: Datacap's proven payment technology
 
-### Latest Features (v1.2 - 2025)
+### Latest Updates (v1.2)
 
-- **Dual Environment Support**: Separate keys for certification and production
-- **Professional UI**: iOS 26 Liquid Glass design system with floating menu
-- **Production Ready**: Enterprise-grade tokenization tool
-- **Live API Integration**: Direct connection to Datacap's OTU endpoints
-- **Zero Dependencies**: Pure Swift implementation
-- **Modern Navigation**: iOS 26 floating pill with expandable actions
-- **Responsive Design**: Optimized for iPhone and iPad
+- **Dual Environment Support**: Separate API keys for certification and production environments
+- **iOS 26 Design**: Modern Liquid Glass UI with floating navigation menu
+- **Production Integration**: Direct connection to Datacap's tokenization endpoints
+- **Enhanced Security**: Biometric authentication and secure credential storage
+- **Improved Navigation**: Floating menu pill for quick access to settings and help
+- **Universal Support**: Optimized for all iPhone and iPad devices
 
 ## Screenshots
 
@@ -51,8 +50,8 @@ Datacap-MobileToken-iOS-2025/
 │   ├── DatacapMobileDemo/      # Demo app with UI examples
 │   └── *.xcodeproj             # Xcode project
 ├── INTEGRATION_GUIDE.md        # Detailed integration instructions
-├── CLAUDE.md                   # AI assistant reference
-└── Scripts/                    # Build and deployment tools
+├── LICENSE                     # MIT License
+└── CLAUDE.md                   # Developer reference guide
 ```
 
 ## Architecture

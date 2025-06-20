@@ -15,7 +15,7 @@ This file contains important information for AI assistants (like Claude) working
 
 ## Recent Updates (2025)
 
-### ✅ App Store Positioning (v1.2 - June 2025)
+### App Store Positioning (v1.2 - June 2025)
 - **Removed all "demo" references**: Now "Datacap Mobile Token" 
 - **Enterprise focus**: Emphasizes PCI compliance benefits (90% reduction)
 - **Professional messaging**: Highlights 35+ years of payment innovation
@@ -23,7 +23,7 @@ This file contains important information for AI assistants (like Claude) working
 - **Value propositions**: Cross-platform tokenization, processor independence
 - **Updated help content**: Enterprise-focused documentation
 
-### ✅ Production API Integration
+### Production API Integration
 - **Fixed tokenization endpoints**: Now using correct `/v1/otu` endpoints
 - **Proper authentication**: Token key in Authorization header
 - **Correct request format**: Capitalized field names (Account, ExpirationMonth, etc.)
@@ -31,14 +31,14 @@ This file contains important information for AI assistants (like Claude) working
 - **Migration support**: Automatic upgrade from single-key to dual-key system
 - **Two integration modes**: Built-in UI or custom UI with `generateTokenDirect()`
 
-### ✅ SDK Architecture
+### SDK Architecture
 - **Single-file integration**: Just copy `DatacapTokenService.swift`
 - **Zero dependencies**: Pure Swift, no external libraries
 - **Delegate pattern**: Async responses via protocol
 - **Error handling**: Typed errors with clear descriptions
 - **Card validation**: Luhn algorithm, BIN detection, format validation
 
-### ✅ UI/UX Implementation
+### UI/UX Implementation
 - **iOS 26 Liquid Glass**: Modern glass morphism design
 - **Programmatic UI**: No storyboards for new features
 - **Smart card entry**: Auto-formatting, type detection
@@ -48,14 +48,14 @@ This file contains important information for AI assistants (like Claude) working
 - **Floating Menu Pill**: iOS 26-style navigation with expandable actions
 - **Fixed-width design**: Consistent 260pt width for menu stability
 
-### ✅ Repository Cleanup (June 2025)
+### Repository Cleanup (June 2025)
 - **Public-facing structure**: Cleaned for open source distribution
 - **MIT License**: Added for broad usage rights
 - **Private files moved**: All internal scripts and docs in `.backup-private/`
 - **Professional documentation**: README with working Mermaid diagrams
 - **Clean git history**: Ready for public repository
 
-### ✅ iOS 26 Redesign (December 2025)
+### iOS 26 Redesign (June 2025)
 - **Floating Menu Pill**: Modern navigation with fixed 260pt width
 - **Dual Environment Toggle**: Visual mode switching in floating menu
 - **Enhanced Help System**: Full-screen overlay with professional content
@@ -284,29 +284,29 @@ When helping integrators:
 ## Current Status
 
 ### Library Package (`/DatacapTokenLibrary/`)
-- ✅ Core tokenization service
-- ✅ Card input UI
-- ✅ Real API integration
-- ✅ SPM and CocoaPods ready
-- ✅ Documentation complete
-- ✅ MIT License (entire repository)
+- Core tokenization service
+- Card input UI
+- Real API integration
+- SPM and CocoaPods ready
+- Documentation complete
+- MIT License (entire repository)
 
 ### Mobile Token App (`/DatacapMobileTokenDemo/`)
-- ✅ Shows library integration
-- ✅ Settings for API configuration
-- ✅ Glass morphism UI
-- ✅ Help documentation
-- ✅ Ready for App Store
-- ✅ iOS 26 floating menu navigation
-- ✅ Fixed-width pill design (260pt)
-- ✅ Production positioning
+- Shows library integration
+- Settings for API configuration
+- Glass morphism UI
+- Help documentation
+- Ready for App Store
+- iOS 26 floating menu navigation
+- Fixed-width pill design (260pt)
+- Production positioning
 
 ### Repository Status
-- ✅ Public-facing structure
-- ✅ Professional documentation
-- ✅ Clean commit history
-- ✅ Private files backed up in `.backup-private/`
-- ✅ Ready for GitHub public repository
+- Public-facing structure
+- Professional documentation
+- Clean commit history
+- Private files backed up in `.backup-private/`
+- Ready for GitHub public repository
 
 ## Notes for AI Assistants
 
@@ -354,6 +354,18 @@ swift build -c release
 - Developer Portal: dsidevportal.com
 
 Remember: The library is what merchants integrate. Keep it clean, secure, and simple. The app showcases capabilities and serves as a reference implementation for integrators.
+
+## Private Files (.backup-private/)
+
+The `.backup-private/` directory contains internal Datacap tools and documentation that are NOT part of the public SDK:
+
+- App Store materials and descriptions
+- Screenshot generation tools
+- Build and deployment scripts
+- Internal documentation
+- Marketing assets
+
+This directory is gitignored and should never be included in the public repository.
 
 ## API Integration Details
 
