@@ -49,6 +49,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        configureForDevice()
         setupConstraints()
         loadCurrentSettings()
         updateUIForMode()
@@ -57,6 +58,30 @@ class SettingsViewController: UIViewController {
         if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {
             setupIPadNavigationBar()
         }
+    }
+    
+    private func configureForDevice() {
+        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
+        
+        // Mode segmented control font
+        let segmentedFont = isIPad ? UIFont.systemFont(ofSize: 20, weight: .medium) : UIFont.systemFont(ofSize: 17, weight: .regular)
+        modeSegmentedControl.setTitleTextAttributes([.font: segmentedFont], for: .normal)
+        modeSegmentedControl.setTitleTextAttributes([.font: segmentedFont], for: .selected)
+        
+        // Labels
+        modeDescriptionLabel.font = isIPad ? .systemFont(ofSize: 18, weight: .regular) : .systemFont(ofSize: 14, weight: .regular)
+        apiKeyLabel.font = isIPad ? .systemFont(ofSize: 20, weight: .semibold) : .systemFont(ofSize: 16, weight: .semibold)
+        apiKeyTextField.font = isIPad ? .monospacedSystemFont(ofSize: 18, weight: .regular) : .monospacedSystemFont(ofSize: 14, weight: .regular)
+        endpointLabel.font = isIPad ? .systemFont(ofSize: 20, weight: .semibold) : .systemFont(ofSize: 16, weight: .semibold)
+        endpointTextField.font = isIPad ? .monospacedSystemFont(ofSize: 18, weight: .regular) : .monospacedSystemFont(ofSize: 14, weight: .regular)
+        endpointHelpLabel.font = isIPad ? .systemFont(ofSize: 16, weight: .regular) : .systemFont(ofSize: 12, weight: .regular)
+        
+        // Save button
+        saveButton.titleLabel?.font = isIPad ? .systemFont(ofSize: 20, weight: .semibold) : .systemFont(ofSize: 17, weight: .semibold)
+        
+        // Info card
+        infoTitleLabel.font = isIPad ? .systemFont(ofSize: 20, weight: .semibold) : .systemFont(ofSize: 16, weight: .semibold)
+        infoTextLabel.font = isIPad ? .systemFont(ofSize: 18, weight: .regular) : .systemFont(ofSize: 14, weight: .regular)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,13 +100,13 @@ class SettingsViewController: UIViewController {
         
         let titleLabel = UILabel()
         titleLabel.text = "API Configuration"
-        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
+        titleLabel.font = .systemFont(ofSize: 48, weight: .bold)
         titleLabel.textColor = UIColor.Datacap.nearBlack
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let closeButton = UIButton(type: .system)
         closeButton.setTitle("Done", for: .normal)
-        closeButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        closeButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .semibold)
         closeButton.setTitleColor(UIColor.Datacap.primaryRed, for: .normal)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
@@ -94,7 +119,7 @@ class SettingsViewController: UIViewController {
             navBar.topAnchor.constraint(equalTo: view.topAnchor),
             navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navBar.heightAnchor.constraint(equalToConstant: 100),
+            navBar.heightAnchor.constraint(equalToConstant: 120),
             
             titleLabel.leadingAnchor.constraint(equalTo: navBar.leadingAnchor, constant: 32),
             titleLabel.bottomAnchor.constraint(equalTo: navBar.bottomAnchor, constant: -16),
@@ -207,7 +232,7 @@ class SettingsViewController: UIViewController {
         saveButton.backgroundColor = darkRed
         saveButton.setTitleColor(.white, for: .normal)
         saveButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        saveButton.layer.cornerRadius = 16
+        saveButton.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16
         saveButton.contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
         saveButton.layer.shadowColor = darkRed.cgColor
         saveButton.layer.shadowOpacity = 0.2
@@ -363,7 +388,7 @@ class SettingsViewController: UIViewController {
             
             // API Key container
             apiKeyContainerView.topAnchor.constraint(equalTo: modeDescriptionLabel.bottomAnchor, constant: 24),
-            apiKeyContainerView.heightAnchor.constraint(equalToConstant: 80),
+            apiKeyContainerView.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 100 : 80),
         ])
         
         // API Key container width constraints
@@ -397,7 +422,7 @@ class SettingsViewController: UIViewController {
             
             // Endpoint container
             endpointContainerView.topAnchor.constraint(equalTo: apiKeyContainerView.bottomAnchor, constant: 16),
-            endpointContainerView.heightAnchor.constraint(equalToConstant: 100),
+            endpointContainerView.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 120 : 100),
         ])
         
         // Endpoint container width constraints
@@ -431,8 +456,8 @@ class SettingsViewController: UIViewController {
             // Save button
             saveButton.topAnchor.constraint(equalTo: endpointContainerView.bottomAnchor, constant: 32),
             saveButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            saveButton.heightAnchor.constraint(equalToConstant: 56),
-            saveButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
+            saveButton.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 70 : 56),
+            saveButton.widthAnchor.constraint(greaterThanOrEqualToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 300 : 200),
             
             // Info card
             infoCardView.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 32),

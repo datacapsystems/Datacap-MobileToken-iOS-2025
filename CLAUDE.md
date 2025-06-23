@@ -71,6 +71,8 @@ This file contains important information for AI assistants (like Claude) working
 - **Device Detection**: `configureForDevice()` method adjusts UI based on device type
 - **Card Text Display**: Full descriptions visible without truncation on feature cards
 - **Professional Layout**: Makes effective use of iPad's larger screen real estate
+- **Settings Screen Typography**: API Configuration uses 48pt title, 20pt labels, 18pt text fields
+- **Consistent Font Scaling**: All screens now use proportionally larger fonts on iPad
 
 ## Repository Structure
 
