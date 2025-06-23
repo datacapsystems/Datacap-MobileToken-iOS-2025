@@ -30,6 +30,8 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 - **Enhanced Security**: Biometric authentication and secure credential storage
 - **Improved Navigation**: Floating menu pill for quick access to settings and help
 - **Universal Support**: Optimized for all iPhone and iPad devices
+- **iPad Optimization**: Full-screen layout with feature cards and dynamic typography
+- **Professional UI**: Larger fonts and improved spacing for better readability
 
 ## Screenshots
 
@@ -150,6 +152,32 @@ graph TB
     
     style MODE fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
     style CARD fill:#2a2a2a,stroke:#444,stroke-width:1px,color:#fff
+```
+
+### iPad Layout Architecture
+
+```mermaid
+graph TB
+    subgraph "iPad Optimizations"
+        DETECT[Device Detection] --> LAYOUT[Dynamic Layout]
+        LAYOUT --> CONTAINER[800pt Container]
+        LAYOUT --> TYPOGRAPHY[48pt Titles]
+        LAYOUT --> CARDS[Feature Cards]
+        
+        subgraph "Feature Cards"
+            SEC[Enterprise Security<br/>PCI DSS Level 1]
+            PROC[Instant Processing<br/>Sub-second Response]
+            ENV[Dual Environment<br/>Cert & Production]
+        end
+        
+        CARDS --> SEC
+        CARDS --> PROC
+        CARDS --> ENV
+    end
+    
+    style DETECT fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
+    style TYPOGRAPHY fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+    style CARDS fill:#228b22,stroke:#fff,stroke-width:2px,color:#fff
 ```
 
 ## Quick Start
