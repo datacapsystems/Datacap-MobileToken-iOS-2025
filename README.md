@@ -32,6 +32,8 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 - **Universal Support**: Optimized for all iPhone and iPad devices
 - **iPad Optimization**: Full-screen layout with feature cards and dynamic typography
 - **Professional UI**: Larger fonts and improved spacing for better readability
+- **Dark Mode Support**: Complete light/dark mode adaptation for all screens
+- **Accessibility**: High contrast text and adaptive colors for better visibility
 
 ## Screenshots
 
@@ -57,6 +59,50 @@ Datacap-MobileToken-iOS-2025/
 ```
 
 ## Architecture
+
+### Complete System Architecture
+
+```mermaid
+graph TB
+    subgraph "iOS App Layer"
+        UI[User Interface]
+        UI --> |iPhone| IPHONE[Compact Layout]
+        UI --> |iPad| IPAD[Feature Cards Layout]
+        
+        IPHONE --> DARK_I[Dark Mode]
+        IPHONE --> LIGHT_I[Light Mode]
+        IPAD --> DARK_P[Dark Mode]
+        IPAD --> LIGHT_P[Light Mode]
+    end
+    
+    subgraph "SDK Layer"
+        TOKEN[DatacapTokenService]
+        TOKEN --> VALIDATE[Card Validation]
+        TOKEN --> FORMAT[Auto-Formatting]
+        TOKEN --> NETWORK[Network Layer]
+    end
+    
+    subgraph "API Layer"
+        NETWORK --> |Cert Mode| CERT_API[token-cert.dcap.com]
+        NETWORK --> |Prod Mode| PROD_API[token.dcap.com]
+        CERT_API --> RESPONSE[Token Response]
+        PROD_API --> RESPONSE
+    end
+    
+    subgraph "Security Layer"
+        RESPONSE --> SECURE[Secure Storage]
+        SECURE --> PCI[PCI Compliance]
+        SECURE --> ENCRYPT[TLS Encryption]
+    end
+    
+    UI --> TOKEN
+    
+    style UI fill:#2a2a2a,stroke:#fff,stroke-width:2px,color:#fff
+    style TOKEN fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+    style CERT_API fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+    style PROD_API fill:#228b22,stroke:#fff,stroke-width:2px,color:#fff
+    style PCI fill:#54595f,stroke:#fff,stroke-width:2px,color:#fff
+```
 
 ### SDK Architecture
 
@@ -180,6 +226,40 @@ graph TB
     style CARDS fill:#228b22,stroke:#fff,stroke-width:2px,color:#fff
 ```
 
+### Dark Mode Architecture
+
+```mermaid
+graph LR
+    subgraph "Appearance Detection"
+        TRAIT[Trait Collection] --> DETECT{Light or Dark?}
+        DETECT -->|Light Mode| LIGHT[Light Colors]
+        DETECT -->|Dark Mode| DARK[Dark Colors]
+    end
+    
+    subgraph "Dynamic Color System"
+        LIGHT --> BG_L[Light Background<br/>#f6f9fc]
+        LIGHT --> TEXT_L[Dark Text<br/>#231f20]
+        LIGHT --> FORM_L[White Forms]
+        
+        DARK --> BG_D[Dark Background<br/>#1c1c1e]
+        DARK --> TEXT_D[Light Text<br/>#f0f0f2]
+        DARK --> FORM_D[Gray Forms<br/>#2c2c2e]
+    end
+    
+    subgraph "UI Components"
+        FORM_L --> UI[Adaptive UI]
+        FORM_D --> UI
+        UI --> GLASS[Glass Morphism]
+        UI --> CONTRAST[High Contrast]
+        UI --> ACCESS[Accessibility]
+    end
+    
+    style TRAIT fill:#778799,stroke:#fff,stroke-width:2px,color:#fff
+    style LIGHT fill:#f6f9fc,stroke:#333,stroke-width:2px,color:#333
+    style DARK fill:#1c1c1e,stroke:#fff,stroke-width:2px,color:#fff
+    style UI fill:#941a25,stroke:#fff,stroke-width:2px,color:#fff
+```
+
 ## Quick Start
 
 ### 1. Copy the SDK
@@ -268,6 +348,9 @@ extension PaymentViewController: DatacapTokenServiceDelegate {
 - **Native Date Picker**: Wheel-style expiration selection
 - **Live Validation**: Real-time feedback as you type
 - **Token Display**: Copy token with one tap
+- **Dark Mode**: Full support for light and dark appearance
+- **iPad Optimized**: Responsive layouts with feature cards
+- **Accessibility**: High contrast and dynamic type support
 
 ## API Documentation
 
