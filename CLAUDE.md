@@ -74,6 +74,16 @@ This file contains important information for AI assistants (like Claude) working
 - **Settings Screen Typography**: API Configuration uses 48pt title, 20pt labels, 18pt text fields
 - **Consistent Font Scaling**: All screens now use proportionally larger fonts on iPad
 
+### Dark Mode Support (June 2025)
+- **Dynamic Color System**: All colors adapt automatically to light/dark mode
+- **Trait Collection Handling**: `traitCollectionDidChange` updates UI when mode switches
+- **Adaptive Backgrounds**: Form backgrounds change from white to dark gray (#2c2c2e)
+- **Text Contrast**: Text colors invert for optimal readability in each mode
+- **Glass Morphism**: Blur effects adapt using appropriate styles for each mode
+- **No Hard-Coded Colors**: All UI uses dynamic colors from `UIColor.Datacap` extensions
+- **Accessibility**: High contrast maintained in both light and dark modes
+- **Smooth Transitions**: Colors update seamlessly when switching modes
+
 ## Repository Structure
 
 ```
@@ -318,6 +328,32 @@ When helping integrators:
 - Clean commit history
 - Private files backed up in `.backup-private/`
 - Ready for GitHub public repository
+
+## UI/UX Best Practices
+
+### Color Management
+1. **Always use dynamic colors** from `UIColor.Datacap` extensions
+2. **Never hardcode RGB values** except for brand colors (primaryRed)
+3. **Test in both light and dark modes** before committing
+4. **Use semantic naming** (formBackground, formText, etc.)
+
+### Responsive Design
+1. **Check device type** with `UIDevice.current.userInterfaceIdiom`
+2. **Use `configureForDevice()`** method pattern for dynamic sizing
+3. **Test on all device sizes**: iPhone SE, iPhone Pro Max, iPad Pro
+4. **Maintain touch targets**: Minimum 44pt for buttons
+
+### Typography Guidelines
+- **iPhone**: Base title 28pt, body 15-17pt
+- **iPad**: Base title 48pt, body 18-22pt
+- **Always scale proportionally** across all UI elements
+- **Use system fonts** with appropriate weights
+
+### Glass Morphism Rules
+1. **Adapt blur style** based on trait collection
+2. **Maintain readability** over aesthetic effects
+3. **Use subtle shadows** (0.05-0.2 opacity)
+4. **Keep corner radius consistent** (16-32pt)
 
 ## Notes for AI Assistants
 
