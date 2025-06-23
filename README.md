@@ -37,10 +37,23 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 
 ## Screenshots
 
+### iPhone Interface
 <div align="center">
-  <img src="docs/screenshots/home.png" alt="Home Screen" width="250"/>
-  <img src="docs/screenshots/card-entry.png" alt="Card Entry" width="250"/>
-  <img src="docs/screenshots/settings-cert.png" alt="Settings" width="250"/>
+  <img src="docs/screenshots/iphone-home-light.png" alt="iPhone Home" width="250"/>
+  <img src="docs/screenshots/iphone-card-entry.png" alt="iPhone Card Entry" width="250"/>
+  <img src="docs/screenshots/iphone-settings.png" alt="iPhone Settings" width="250"/>
+</div>
+
+### iPad Interface
+<div align="center">
+  <img src="docs/screenshots/ipad-home-light.png" alt="iPad Home" width="350"/>
+  <img src="docs/screenshots/ipad-settings.png" alt="iPad Settings" width="350"/>
+</div>
+
+### Dark Mode Support
+<div align="center">
+  <img src="docs/screenshots/iphone-dark-mode.png" alt="iPhone Dark Mode" width="250"/>
+  <img src="docs/screenshots/ipad-dark-mode.png" alt="iPad Dark Mode" width="350"/>
 </div>
 
 ## Repository Structure

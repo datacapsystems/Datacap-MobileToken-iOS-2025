@@ -62,7 +62,7 @@ class ModernViewController: UIViewController {
     private let valuePropView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(red: 246/255, green: 249/255, blue: 252/255, alpha: 1.0)
+        view.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.95)
         view.layer.cornerRadius = 16
         return view
     }()
@@ -203,6 +203,9 @@ class ModernViewController: UIViewController {
         valuePropView.addSubview(valuePropLabel)
         containerView.addSubview(getTokenButton)
         containerView.addSubview(loadingView)
+        
+        // Apply glass morphism to value prop view
+        valuePropView.applyLiquidGlass(intensity: 0.85, cornerRadius: 16, shadowOpacity: 0.05)
     }
     
     private func setupConstraints() {
