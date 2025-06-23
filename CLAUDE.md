@@ -63,6 +63,15 @@ This file contains important information for AI assistants (like Claude) working
 - **Glass Morphism**: Consistent visual effects throughout
 - **Responsive Layout**: Optimized for all iPhone and iPad sizes
 
+### iPad Optimization (June 2025)
+- **Full Screen Usage**: 800pt wide container on iPad vs narrower on iPhone
+- **Dynamic Typography**: Titles 48pt on iPad (28pt iPhone), subtitles 26pt (18pt iPhone)
+- **Feature Cards**: Three informational cards displayed on iPad below main content
+- **Improved Spacing**: Larger padding and margins throughout for better iPad layout
+- **Device Detection**: `configureForDevice()` method adjusts UI based on device type
+- **Card Text Display**: Full descriptions visible without truncation on feature cards
+- **Professional Layout**: Makes effective use of iPad's larger screen real estate
+
 ## Repository Structure
 
 ```

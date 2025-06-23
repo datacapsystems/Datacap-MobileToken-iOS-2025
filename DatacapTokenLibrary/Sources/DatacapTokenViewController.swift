@@ -132,33 +132,55 @@ class DatacapTokenViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 40),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
             cardNumberField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
-            cardNumberField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            cardNumberField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            cardNumberField.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             cardNumberField.heightAnchor.constraint(equalToConstant: 50),
             
             expirationField.topAnchor.constraint(equalTo: cardNumberField.bottomAnchor, constant: 20),
-            expirationField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            expirationField.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4, constant: -30),
             expirationField.heightAnchor.constraint(equalToConstant: 50),
             
             cvvField.topAnchor.constraint(equalTo: cardNumberField.bottomAnchor, constant: 20),
-            cvvField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            cvvField.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4, constant: -30),
             cvvField.heightAnchor.constraint(equalToConstant: 50),
             
             submitButton.topAnchor.constraint(equalTo: expirationField.bottomAnchor, constant: 40),
-            submitButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            submitButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            submitButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             submitButton.heightAnchor.constraint(equalToConstant: 50),
             
             cancelButton.topAnchor.constraint(equalTo: submitButton.bottomAnchor, constant: 16),
             cancelButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             cancelButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ])
+        
+        // Add device-specific width constraints
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // iPad: Constrain form elements to a reasonable width
+            let maxWidth: CGFloat = 600
+            NSLayoutConstraint.activate([
+                titleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maxWidth),
+                cardNumberField.widthAnchor.constraint(equalToConstant: maxWidth),
+                submitButton.widthAnchor.constraint(equalToConstant: maxWidth),
+                expirationField.leadingAnchor.constraint(equalTo: cardNumberField.leadingAnchor),
+                expirationField.widthAnchor.constraint(equalToConstant: (maxWidth - 20) * 0.4),
+                cvvField.trailingAnchor.constraint(equalTo: cardNumberField.trailingAnchor),
+                cvvField.widthAnchor.constraint(equalToConstant: (maxWidth - 20) * 0.4)
+            ])
+        } else {
+            // iPhone: Use full width with margins
+            NSLayoutConstraint.activate([
+                titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+                cardNumberField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                cardNumberField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+                submitButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                submitButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+                expirationField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+                expirationField.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4, constant: -30),
+                cvvField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+                cvvField.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.4, constant: -30)
+            ])
+        }
     }
     
     private func setupConstraints() {
