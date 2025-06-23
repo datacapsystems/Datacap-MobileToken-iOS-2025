@@ -17,8 +17,9 @@ extension UIView {
         cornerRadius: CGFloat = 20,
         shadowOpacity: Float = 0.15
     ) {
-        // Background blur effect
-        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        // Background blur effect - adapts to dark mode
+        let blurStyle: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemThinMaterialDark : .systemUltraThinMaterial
+        let blurEffect = UIBlurEffect(style: blurStyle)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = bounds
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -102,11 +103,58 @@ extension UIView {
 extension UIColor {
     
     struct Datacap {
+        // Core brand colors (unchanged)
         static let primaryRed = UIColor(red: 148/255, green: 26/255, blue: 37/255, alpha: 1.0) // #941a25
-        static let darkGray = UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0) // #54595f
-        static let blueGray = UIColor(red: 119/255, green: 135/255, blue: 153/255, alpha: 1.0) // #778799
-        static let nearBlack = UIColor(red: 35/255, green: 31/255, blue: 32/255, alpha: 1.0) // #231f20
-        static let lightBackground = UIColor(red: 246/255, green: 249/255, blue: 252/255, alpha: 1.0) // #f6f9fc
+        
+        // Dynamic colors that adapt to dark mode
+        static let darkGray = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 180/255, green: 185/255, blue: 190/255, alpha: 1.0)
+            } else {
+                return UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0) // #54595f
+            }
+        }
+        
+        static let blueGray = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 160/255, green: 170/255, blue: 180/255, alpha: 1.0)
+            } else {
+                return UIColor(red: 119/255, green: 135/255, blue: 153/255, alpha: 1.0) // #778799
+            }
+        }
+        
+        static let nearBlack = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 240/255, green: 240/255, blue: 242/255, alpha: 1.0) // Light text in dark mode
+            } else {
+                return UIColor(red: 35/255, green: 31/255, blue: 32/255, alpha: 1.0) // #231f20
+            }
+        }
+        
+        static let lightBackground = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1.0) // Dark background
+            } else {
+                return UIColor(red: 246/255, green: 249/255, blue: 252/255, alpha: 1.0) // #f6f9fc
+            }
+        }
+        
+        // New adaptive colors for form elements
+        static let formBackground = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0)
+            } else {
+                return UIColor.white
+            }
+        }
+        
+        static let formText = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor.white
+            } else {
+                return UIColor(red: 35/255, green: 31/255, blue: 32/255, alpha: 1.0)
+            }
+        }
         
         // Glass variants
         static let glassRed = primaryRed.withAlphaComponent(0.85)

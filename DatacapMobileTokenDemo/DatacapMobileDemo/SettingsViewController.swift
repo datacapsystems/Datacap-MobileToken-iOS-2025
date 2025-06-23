@@ -89,6 +89,25 @@ class SettingsViewController: UIViewController {
         animateIn()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // Update background colors when switching between light/dark mode
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateBackgroundColors()
+        }
+    }
+    
+    private func updateBackgroundColors() {
+        // Update container backgrounds
+        apiKeyContainerView.backgroundColor = UIColor.Datacap.formBackground
+        endpointContainerView.backgroundColor = UIColor.Datacap.formBackground
+        
+        // Update text fields
+        apiKeyTextField.textColor = UIColor.Datacap.formText
+        endpointTextField.textColor = UIColor.Datacap.formText
+    }
+    
     // MARK: - Setup
     
     private func setupIPadNavigationBar() {
@@ -183,6 +202,7 @@ class SettingsViewController: UIViewController {
         modeDescriptionLabel.text = "Select environment for secure payment tokenization"
         
         // API Key section
+        apiKeyContainerView.backgroundColor = UIColor.Datacap.formBackground
         apiKeyContainerView.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.05)
         
         apiKeyLabel.text = "API Public Key"
@@ -192,7 +212,8 @@ class SettingsViewController: UIViewController {
         apiKeyTextField.placeholder = "Enter your public key"
         apiKeyTextField.borderStyle = .none
         apiKeyTextField.font = .monospacedSystemFont(ofSize: 14, weight: .regular)
-        apiKeyTextField.textColor = UIColor.Datacap.nearBlack
+        apiKeyTextField.textColor = UIColor.Datacap.formText
+        apiKeyTextField.backgroundColor = .clear
         apiKeyTextField.autocapitalizationType = .none
         apiKeyTextField.autocorrectionType = .no
         apiKeyTextField.clearButtonMode = .whileEditing
@@ -200,6 +221,7 @@ class SettingsViewController: UIViewController {
         apiKeyInfoButton.addTarget(self, action: #selector(apiKeyInfoTapped), for: .touchUpInside)
         
         // Endpoint section
+        endpointContainerView.backgroundColor = UIColor.Datacap.formBackground
         endpointContainerView.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.05)
         
         endpointLabel.text = "API Endpoint"
@@ -214,7 +236,8 @@ class SettingsViewController: UIViewController {
         endpointTextField.placeholder = "API Endpoint URL"
         endpointTextField.borderStyle = .none
         endpointTextField.font = .monospacedSystemFont(ofSize: 14, weight: .regular)
-        endpointTextField.textColor = UIColor.Datacap.nearBlack
+        endpointTextField.textColor = UIColor.Datacap.formText
+        endpointTextField.backgroundColor = .clear
         endpointTextField.autocapitalizationType = .none
         endpointTextField.autocorrectionType = .no
         endpointTextField.keyboardType = .URL
