@@ -161,7 +161,7 @@ class ModernViewController: UIViewController {
         view.layer.insertSublayer(backgroundGradient, at: 0)
         
         // Glass morphism container
-        containerView.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+        containerView.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.8)
         containerView.applyLiquidGlass(intensity: 0.9, cornerRadius: 32, shadowOpacity: 0.1)
         
         // Setup button with dark red color like Save Configuration
@@ -309,6 +309,26 @@ class ModernViewController: UIViewController {
         backgroundGradient.frame = view.bounds
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // Update colors when switching between light/dark mode
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            updateColorsForCurrentMode()
+        }
+    }
+    
+    private func updateColorsForCurrentMode() {
+        // Update background gradient
+        backgroundGradient.colors = [
+            UIColor.Datacap.lightBackground.cgColor,
+            UIColor.systemBackground.cgColor,
+            UIColor.Datacap.lightBackground.cgColor
+        ]
+        
+        // The rest of the colors will update automatically because we're using dynamic colors
+    }
+    
     // MARK: - Actions
     
     @objc private func getTokenTapped() {
@@ -430,7 +450,7 @@ class ModernViewController: UIViewController {
     
     private func createFeatureCard(icon: String, title: String, description: String) -> UIView {
         let card = UIView()
-        card.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        card.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.9)
         card.layer.cornerRadius = 16
         card.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.08)
         
