@@ -9,11 +9,19 @@ This file contains important information for AI assistants (like Claude) working
 **Framework**: Datacap Tokenization REST API  
 **UI Design**: iOS 26 Liquid Glass (Glass Morphism)  
 **Target**: Enterprises, ISVs, and Merchants requiring PCI compliance  
-**Status**: Production app (v1.2) - Not a demo  
+**Status**: Production app (v1.3) - Not a demo  
 **Repository**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025  
 **App Store**: Datacap Mobile Token (pending approval)  
 
 ## Recent Updates (2025)
+
+### Version 1.3 Release (June 2025)
+- **Glass Morphism Consistency**: Fixed iPhone to match iPad's glass container design
+- **UI Polish**: Unified visual appearance across all devices
+- **App Store Build**: Version 1.3 (build 3) ready for distribution
+- **Updated Marketing**: Refined App Store description to accurately reflect features
+- **Security Clarification**: API keys stored in UserDefaults (no biometric protection)
+- **Bug Fixes**: Various UI improvements and consistency updates
 
 ### App Store Positioning (v1.2 - June 2025)
 - **Removed all "demo" references**: Now "Datacap Mobile Token" 
@@ -448,7 +456,7 @@ Content-Type: application/json
 
 ## Key Storage
 
-The app now manages separate API keys for each environment:
+The app manages separate API keys for each environment using UserDefaults:
 
 ```swift
 // Certification key
@@ -463,6 +471,8 @@ UserDefaults.standard.string(forKey: "DatacapPublicKey")
 // Current mode
 UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
 ```
+
+**Note**: API keys are stored in plain UserDefaults without encryption or biometric protection. Future versions should consider Keychain storage for enhanced security.
 
 ## Test Keys for Development
 
