@@ -35,23 +35,10 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 
 ## Screenshots
 
-### iPhone Interface
 <div align="center">
-  <img src="docs/screenshots/iphone-home-light.png" alt="iPhone Home" width="250"/>
-  <img src="docs/screenshots/iphone-card-entry.png" alt="iPhone Card Entry" width="250"/>
-  <img src="docs/screenshots/iphone-settings.png" alt="iPhone Settings" width="250"/>
-</div>
-
-### iPad Interface
-<div align="center">
-  <img src="docs/screenshots/ipad-home-light.png" alt="iPad Home" width="350"/>
-  <img src="docs/screenshots/ipad-settings.png" alt="iPad Settings" width="350"/>
-</div>
-
-### Dark Mode Support
-<div align="center">
-  <img src="docs/screenshots/iphone-dark-mode.png" alt="iPhone Dark Mode" width="250"/>
-  <img src="docs/screenshots/ipad-dark-mode.png" alt="iPad Dark Mode" width="350"/>
+  <img src="docs/screenshots/iphone-home.png" alt="Home Screen" width="250"/>
+  <img src="docs/screenshots/iphone-cert.png" alt="Certification Mode" width="250"/>
+  <img src="docs/screenshots/iphone-prod.png" alt="Production Mode" width="250"/>
 </div>
 
 ## Repository Structure
@@ -445,7 +432,6 @@ open DatacapMobileTokenDemo/DatacapMobileTokenDemo.xcodeproj
 
 ## Support
 
-- **Documentation**: [docs.datacapsystems.com](https://docs.datacapsystems.com)
 - **Developer Portal**: [dsidevportal.com](https://www.dsidevportal.com)
 - **Support**: [datacapsystems.com/support](http://datacapsystems.com/support)
 - **GitHub Issues**: [Report bugs here](https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025/issues)
