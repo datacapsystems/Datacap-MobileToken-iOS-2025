@@ -131,9 +131,12 @@ class SettingsViewController: UIViewController {
         // Header
         headerView.backgroundColor = .clear
         
-        titleLabel.text = "API Configuration"
-        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
-        titleLabel.textColor = UIColor.Datacap.nearBlack
+        // Only show title on iPad when not in full screen mode
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle != .fullScreen {
+            titleLabel.text = "API Configuration"
+            titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
+            titleLabel.textColor = UIColor.Datacap.nearBlack
+        }
         
         closeButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         closeButton.tintColor = UIColor.Datacap.darkGray
@@ -239,7 +242,12 @@ class SettingsViewController: UIViewController {
         
         contentView.addSubview(scrollView)
         scrollView.addSubview(headerView)
-        headerView.addSubview(titleLabel)
+        
+        // Only add titleLabel on iPad when not in full screen mode
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle != .fullScreen {
+            headerView.addSubview(titleLabel)
+        }
+        
         headerView.addSubview(closeButton)
         
         scrollView.addSubview(modeSegmentedControl)
@@ -315,9 +323,6 @@ class SettingsViewController: UIViewController {
             headerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -48),
             headerView.heightAnchor.constraint(equalToConstant: 50),
             
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            
             closeButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor),
             closeButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             closeButton.widthAnchor.constraint(equalToConstant: 30),
@@ -327,6 +332,14 @@ class SettingsViewController: UIViewController {
             modeSegmentedControl.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 24),
             modeSegmentedControl.heightAnchor.constraint(equalToConstant: 44),
         ])
+        
+        // Add titleLabel constraints only when it's shown
+        if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle != .fullScreen {
+            NSLayoutConstraint.activate([
+                titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+                titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            ])
+        }
         
         // Adjust constraints based on device
         if UIDevice.current.userInterfaceIdiom == .pad && modalPresentationStyle == .fullScreen {

@@ -93,6 +93,16 @@ class ModernViewController: UIViewController {
         return loading
     }()
     
+    // iPad-specific feature cards
+    private let featureCardsStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = 20
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+    
     private let scrollView = UIScrollView()
     private let contentStackView = UIStackView()
     
@@ -100,9 +110,31 @@ class ModernViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureForDevice()
         setupUI()
         setupConstraints()
         floatingMenu.updateModeAppearance()
+    }
+    
+    private func configureForDevice() {
+        let isIPad = UIDevice.current.userInterfaceIdiom == .pad
+        print("🔍 Device detection: isIPad = \(isIPad), idiom = \(UIDevice.current.userInterfaceIdiom.rawValue)")
+        
+        // Configure title
+        titleLabel.font = isIPad ? .systemFont(ofSize: 48, weight: .bold) : .systemFont(ofSize: 28, weight: .bold)
+        
+        // Configure subtitle
+        subtitleLabel.font = isIPad ? .systemFont(ofSize: 26, weight: .regular) : .systemFont(ofSize: 18, weight: .regular)
+        
+        // Configure value prop
+        let valuePropFontSize: CGFloat = isIPad ? 22 : 15
+        valuePropLabel.font = .systemFont(ofSize: valuePropFontSize, weight: .regular)
+        valuePropLabel.textAlignment = isIPad ? .center : .left
+        
+        // Configure button
+        let buttonFontSize: CGFloat = isIPad ? 22 : 17
+        getTokenButton.titleLabel?.font = .systemFont(ofSize: buttonFontSize, weight: .semibold)
+        getTokenButton.layer.cornerRadius = isIPad ? 20 : 16
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -181,11 +213,12 @@ class ModernViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: floatingMenu.topAnchor, constant: -20),
             
-            // Content stack view - center vertically on iPad
+            // Content stack view - remove vertical centering for better iPad layout
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentStackView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor),
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentStackView.bottomAnchor.constraint(greaterThanOrEqualTo: scrollView.bottomAnchor),
             
             // Floating menu pill
             floatingMenu.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -193,44 +226,40 @@ class ModernViewController: UIViewController {
             floatingMenu.heightAnchor.constraint(equalToConstant: 56),
             floatingMenu.widthAnchor.constraint(greaterThanOrEqualToConstant: 160),
             
-            // Container
-            containerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentStackView.leadingAnchor, constant: 20),
-            containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentStackView.trailingAnchor, constant: -20),
-            containerView.widthAnchor.constraint(lessThanOrEqualToConstant: 600),
+            // Container - responsive width based on device
             containerView.centerXAnchor.constraint(equalTo: contentStackView.centerXAnchor),
             
             // Logo
-            logoImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 40),
+            logoImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 60 : 40),
             logoImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 180),
-            logoImageView.heightAnchor.constraint(equalToConstant: 60),
+            logoImageView.widthAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 240 : 180),
+            logoImageView.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 80 : 60),
             
             // Title
-            titleLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 32),
+            titleLabel.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 48 : 32),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 32),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -32),
             
             // Subtitle
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 12),
             subtitleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 32),
             subtitleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -32),
             
             // Value Proposition
-            valuePropView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 24),
+            valuePropView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 48 : 32),
             valuePropView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 32),
             valuePropView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -32),
             
-            valuePropLabel.topAnchor.constraint(equalTo: valuePropView.topAnchor, constant: 16),
-            valuePropLabel.leadingAnchor.constraint(equalTo: valuePropView.leadingAnchor, constant: 16),
-            valuePropLabel.trailingAnchor.constraint(equalTo: valuePropView.trailingAnchor, constant: -16),
-            valuePropLabel.bottomAnchor.constraint(equalTo: valuePropView.bottomAnchor, constant: -16),
+            valuePropLabel.topAnchor.constraint(equalTo: valuePropView.topAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 32 : 20),
+            valuePropLabel.leadingAnchor.constraint(equalTo: valuePropView.leadingAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 32 : 20),
+            valuePropLabel.trailingAnchor.constraint(equalTo: valuePropView.trailingAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? -32 : -20),
+            valuePropLabel.bottomAnchor.constraint(equalTo: valuePropView.bottomAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? -32 : -20),
             
             // Get Token Button
-            getTokenButton.topAnchor.constraint(equalTo: valuePropView.bottomAnchor, constant: 32),
+            getTokenButton.topAnchor.constraint(equalTo: valuePropView.bottomAnchor, constant: UIDevice.current.userInterfaceIdiom == .pad ? 48 : 32),
             getTokenButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            getTokenButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 200),
-            getTokenButton.heightAnchor.constraint(equalToConstant: 56),
-            getTokenButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -48),
+            getTokenButton.widthAnchor.constraint(greaterThanOrEqualToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 300 : 200),
+            getTokenButton.heightAnchor.constraint(equalToConstant: UIDevice.current.userInterfaceIdiom == .pad ? 70 : 56),
             
             // Loading view
             loadingView.centerXAnchor.constraint(equalTo: getTokenButton.centerXAnchor),
@@ -238,6 +267,41 @@ class ModernViewController: UIViewController {
             loadingView.widthAnchor.constraint(equalToConstant: 60),
             loadingView.heightAnchor.constraint(equalToConstant: 60)
         ])
+        
+        // Add device-specific container constraints
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            print("📱 Setting up iPad-specific layout")
+            // iPad: Center content with optimal width and add feature cards
+            let optimalWidth: CGFloat = 800
+            NSLayoutConstraint.activate([
+                containerView.centerXAnchor.constraint(equalTo: contentStackView.centerXAnchor),
+                containerView.widthAnchor.constraint(equalToConstant: optimalWidth),
+                containerView.topAnchor.constraint(equalTo: contentStackView.topAnchor, constant: 40)
+            ])
+            
+            // Setup feature cards for iPad
+            setupFeatureCards()
+            containerView.addSubview(featureCardsStackView)
+            NSLayoutConstraint.activate([
+                featureCardsStackView.topAnchor.constraint(equalTo: getTokenButton.bottomAnchor, constant: 40),
+                featureCardsStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 32),
+                featureCardsStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -32),
+                featureCardsStackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200),
+                featureCardsStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -40)
+            ])
+        } else {
+            // iPhone: Keep existing narrow layout
+            NSLayoutConstraint.activate([
+                containerView.leadingAnchor.constraint(greaterThanOrEqualTo: contentStackView.leadingAnchor, constant: 20),
+                containerView.trailingAnchor.constraint(lessThanOrEqualTo: contentStackView.trailingAnchor, constant: -20),
+                containerView.widthAnchor.constraint(lessThanOrEqualToConstant: 600),
+                containerView.topAnchor.constraint(equalTo: contentStackView.topAnchor),
+                containerView.bottomAnchor.constraint(equalTo: contentStackView.bottomAnchor),
+                
+                // iPhone specific button bottom constraint
+                getTokenButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -48)
+            ])
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -347,6 +411,70 @@ class ModernViewController: UIViewController {
             self.containerView.alpha = 1
             self.containerView.transform = .identity
         }
+    }
+    
+    private func setupFeatureCards() {
+        print("🎯 Setting up feature cards for iPad")
+        // Create three feature cards for iPad
+        let features = [
+            ("shield.checkered", "Enterprise Security", "Bank-grade encryption with PCI DSS Level 1 compliance"),
+            ("bolt.fill", "Instant Processing", "Real-time tokenization with sub-second response times"),
+            ("arrow.triangle.2.circlepath", "Dual Environment", "Seamless switching between certification and production")
+        ]
+        
+        for feature in features {
+            let card = createFeatureCard(icon: feature.0, title: feature.1, description: feature.2)
+            featureCardsStackView.addArrangedSubview(card)
+        }
+    }
+    
+    private func createFeatureCard(icon: String, title: String, description: String) -> UIView {
+        let card = UIView()
+        card.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        card.layer.cornerRadius = 16
+        card.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.08)
+        
+        let iconView = UIImageView()
+        iconView.image = UIImage(systemName: icon)
+        iconView.tintColor = UIColor.Datacap.primaryRed
+        iconView.contentMode = .scaleAspectFit
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textColor = UIColor.Datacap.nearBlack
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let descLabel = UILabel()
+        descLabel.text = description
+        descLabel.font = .systemFont(ofSize: 16, weight: .regular)
+        descLabel.textColor = UIColor.Datacap.darkGray
+        descLabel.numberOfLines = 0  // Allow unlimited lines
+        descLabel.lineBreakMode = .byWordWrapping
+        descLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        card.addSubview(iconView)
+        card.addSubview(titleLabel)
+        card.addSubview(descLabel)
+        
+        NSLayoutConstraint.activate([
+            iconView.topAnchor.constraint(equalTo: card.topAnchor, constant: 20),
+            iconView.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 20),
+            iconView.widthAnchor.constraint(equalToConstant: 32),
+            iconView.heightAnchor.constraint(equalToConstant: 32),
+            
+            titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
+            
+            descLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            descLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
+            descLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
+            descLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -20)
+        ])
+        
+        return card
     }
     
     private func presentCustomAlert(title: String, message: String, actionTitle: String = "OK", action: (() -> Void)? = nil) {
