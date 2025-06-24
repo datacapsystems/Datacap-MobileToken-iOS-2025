@@ -14,7 +14,7 @@ class FloatingMenuPill: UIView {
     weak var delegate: FloatingMenuPillDelegate?
     
     private let containerView = UIView()
-    private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+    private let blurView = UIVisualEffectView()
     private let glassLayer = CAGradientLayer()
     
     private let modeButton = UIButton(type: .system)
@@ -54,7 +54,8 @@ class FloatingMenuPill: UIView {
         containerView.layer.masksToBounds = true
         addSubview(containerView)
         
-        // Blur effect
+        // Blur effect - adaptive for dark mode
+        updateBlurEffect()
         blurView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(blurView)
         
@@ -83,36 +84,36 @@ class FloatingMenuPill: UIView {
         
         // Settings circle (iOS 26 3D style)
         settingsCircle.translatesAutoresizingMaskIntoConstraints = false
-        settingsCircle.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        settingsCircle.backgroundColor = UIColor.Datacap.menuIconBackground
         settingsCircle.layer.cornerRadius = 20
         settingsCircle.alpha = 1  // Always visible
         settingsCircle.layer.shadowColor = UIColor.black.cgColor
-        settingsCircle.layer.shadowOpacity = 0.1
+        settingsCircle.layer.shadowOpacity = traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.1
         settingsCircle.layer.shadowOffset = CGSize(width: 0, height: 2)
         settingsCircle.layer.shadowRadius = 4
         containerView.addSubview(settingsCircle)
         
         // Settings button - Modern iOS 26 icon
         settingsButton.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
-        settingsButton.tintColor = UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0) // Datacap grey
+        settingsButton.tintColor = UIColor.Datacap.menuIconTint
         settingsButton.translatesAutoresizingMaskIntoConstraints = false
         settingsButton.addTarget(self, action: #selector(settingsTapped), for: .touchUpInside)
         settingsCircle.addSubview(settingsButton)
         
         // Help circle (iOS 26 3D style)
         helpCircle.translatesAutoresizingMaskIntoConstraints = false
-        helpCircle.backgroundColor = UIColor.white.withAlphaComponent(0.9)
+        helpCircle.backgroundColor = UIColor.Datacap.menuIconBackground
         helpCircle.layer.cornerRadius = 20
         helpCircle.alpha = 1  // Always visible
         helpCircle.layer.shadowColor = UIColor.black.cgColor
-        helpCircle.layer.shadowOpacity = 0.1
+        helpCircle.layer.shadowOpacity = traitCollection.userInterfaceStyle == .dark ? 0.3 : 0.1
         helpCircle.layer.shadowOffset = CGSize(width: 0, height: 2)
         helpCircle.layer.shadowRadius = 4
         containerView.addSubview(helpCircle)
         
         // Help button - Modern iOS 26 icon
         helpButton.setImage(UIImage(systemName: "questionmark.bubble"), for: .normal)
-        helpButton.tintColor = UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0) // Datacap grey
+        helpButton.tintColor = UIColor.Datacap.menuIconTint
         helpButton.translatesAutoresizingMaskIntoConstraints = false
         helpButton.addTarget(self, action: #selector(helpTapped), for: .touchUpInside)
         helpCircle.addSubview(helpButton)
@@ -130,20 +131,38 @@ class FloatingMenuPill: UIView {
     }
     
     private func setupGlassLayer() {
-        glassLayer.colors = [
-            UIColor.white.withAlphaComponent(0.3).cgColor,
-            UIColor.white.withAlphaComponent(0.1).cgColor,
-            UIColor.white.withAlphaComponent(0.05).cgColor
-        ]
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        
+        if isDarkMode {
+            glassLayer.colors = [
+                UIColor.white.withAlphaComponent(0.1).cgColor,
+                UIColor.white.withAlphaComponent(0.05).cgColor,
+                UIColor.clear.cgColor
+            ]
+        } else {
+            glassLayer.colors = [
+                UIColor.white.withAlphaComponent(0.3).cgColor,
+                UIColor.white.withAlphaComponent(0.1).cgColor,
+                UIColor.white.withAlphaComponent(0.05).cgColor
+            ]
+        }
+        
         glassLayer.locations = [0, 0.5, 1]
         glassLayer.startPoint = CGPoint(x: 0, y: 0)
         glassLayer.endPoint = CGPoint(x: 1, y: 1)
         containerView.layer.insertSublayer(glassLayer, above: blurView.layer)
     }
     
+    private func updateBlurEffect() {
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        let blurStyle: UIBlurEffect.Style = isDarkMode ? .systemMaterialDark : .systemUltraThinMaterial
+        blurView.effect = UIBlurEffect(style: blurStyle)
+    }
+    
     private func setupShadow() {
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.15
+        layer.shadowOpacity = isDarkMode ? 0.3 : 0.15
         layer.shadowOffset = CGSize(width: 0, height: 8)
         layer.shadowRadius = 20
     }
@@ -234,22 +253,49 @@ class FloatingMenuPill: UIView {
     
     func updateModeAppearance() {
         let isCertification = UserDefaults.standard.bool(forKey: "DatacapCertificationMode")
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
         
         if isCertification {
-            // Datacap grey for certification (#54595f)
-            let datacapGrey = UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0)
+            // Datacap grey for certification - lighter in dark mode
+            let datacapGrey = isDarkMode ? 
+                UIColor(red: 120/255, green: 125/255, blue: 130/255, alpha: 1.0) :
+                UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0)
             modeIndicator.backgroundColor = datacapGrey
             modeLabel.text = "CERTIFICATION"
         } else {
-            // Datacap dark black for production (#231f20)
-            let datacapBlack = UIColor(red: 35/255, green: 31/255, blue: 32/255, alpha: 1.0)
-            modeIndicator.backgroundColor = datacapBlack
+            // Production mode - red for better visibility
+            modeIndicator.backgroundColor = UIColor.Datacap.primaryRed
             modeLabel.text = "PRODUCTION"
         }
     }
     
     func collapse() {
         // No longer collapsible - always stays expanded
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            // Update all UI elements for dark mode change
+            updateBlurEffect()
+            setupGlassLayer()
+            setupShadow()
+            updateModeAppearance()
+            
+            // Update circle backgrounds
+            settingsCircle.backgroundColor = UIColor.Datacap.menuIconBackground
+            helpCircle.backgroundColor = UIColor.Datacap.menuIconBackground
+            
+            // Update button tints
+            settingsButton.tintColor = UIColor.Datacap.menuIconTint
+            helpButton.tintColor = UIColor.Datacap.menuIconTint
+            
+            // Update shadow opacities
+            let isDarkMode = traitCollection.userInterfaceStyle == .dark
+            settingsCircle.layer.shadowOpacity = isDarkMode ? 0.3 : 0.1
+            helpCircle.layer.shadowOpacity = isDarkMode ? 0.3 : 0.1
+        }
     }
 }
 

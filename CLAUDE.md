@@ -9,11 +9,20 @@ This file contains important information for AI assistants (like Claude) working
 **Framework**: Datacap Tokenization REST API  
 **UI Design**: iOS 26 Liquid Glass (Glass Morphism)  
 **Target**: Enterprises, ISVs, and Merchants requiring PCI compliance  
-**Status**: Production app (v1.3) - Not a demo  
+**Status**: Production app (v1.4) - Not a demo  
 **Repository**: https://github.com/datacapsystems/Datacap-MobileToken-iOS-2025  
 **App Store**: Datacap Mobile Token (pending approval)  
 
 ## Recent Updates (2025)
+
+### Version 1.4 Release (June 2025)
+- **Enhanced Dark Mode**: Complete overhaul with improved contrast and visibility
+- **Adaptive Logo**: Logo inverts to white in dark mode for professional appearance
+- **Dynamic UI Elements**: All components now properly adapt to light/dark mode
+- **Improved Accessibility**: Better contrast ratios throughout the app
+- **Menu Pill Updates**: Enhanced visibility with adaptive backgrounds and shadows
+- **Settings Screen**: Dark mode optimizations for all form elements
+- **Button Polish**: Brighter reds with subtle borders in dark mode
 
 ### Version 1.3 Release (June 2025)
 - **Glass Morphism Consistency**: Fixed iPhone to match iPad's glass container design

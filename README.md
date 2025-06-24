@@ -22,16 +22,16 @@ Enterprise payment tokenization for iOS. Strengthen PCI compliance with Datacap'
 - **Cross-Platform**: Use tokens across all sales channels
 - **35+ Years of Innovation**: Datacap's proven payment technology
 
-### Latest Updates (v1.3)
+### Latest Updates (v1.4)
 
-- **Glass Morphism Design**: Stunning iOS 26 liquid glass effects throughout
-- **iPad Optimization**: Full-screen layout with feature cards and dynamic typography
-- **Dark Mode Support**: Complete light/dark mode adaptation for all screens
-- **Consistent UI**: Unified glass morphism across iPhone and iPad
-- **Enhanced Typography**: Larger, clearer fonts for better readability
-- **Dual Environment Support**: Separate API keys for certification and production
-- **Floating Navigation**: Modern menu pill for quick access to settings and help
-- **Professional Polish**: Enterprise-ready interface with attention to detail
+- **Enhanced Dark Mode**: Comprehensive overhaul with improved contrast and visibility
+- **Adaptive Logo**: Logo now inverts to white in dark mode for better visibility
+- **Better Contrast**: All UI elements optimized for both light and dark appearances
+- **Dynamic Shadows**: Shadows adjust intensity based on appearance mode
+- **Improved Buttons**: Brighter colors and subtle borders in dark mode
+- **Menu Pill Updates**: Better icon visibility and adaptive backgrounds
+- **Settings Polish**: Segmented control and form elements adapt to dark mode
+- **Professional Finish**: Enterprise-ready with meticulous attention to accessibility
 
 ## Screenshots
 

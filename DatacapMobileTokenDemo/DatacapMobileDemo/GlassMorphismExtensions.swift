@@ -18,7 +18,8 @@ extension UIView {
         shadowOpacity: Float = 0.15
     ) {
         // Background blur effect - adapts to dark mode
-        let blurStyle: UIBlurEffect.Style = traitCollection.userInterfaceStyle == .dark ? .systemThinMaterialDark : .systemUltraThinMaterial
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        let blurStyle: UIBlurEffect.Style = isDarkMode ? .systemMaterialDark : .systemUltraThinMaterial
         let blurEffect = UIBlurEffect(style: blurStyle)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = bounds
@@ -29,14 +30,24 @@ extension UIView {
         // Insert blur view at the bottom
         insertSubview(blurView, at: 0)
         
-        // Glass overlay with gradient
+        // Glass overlay with gradient - different for dark mode
         let glassOverlay = CAGradientLayer()
         glassOverlay.frame = bounds
-        glassOverlay.colors = [
-            UIColor.white.withAlphaComponent(0.15).cgColor,
-            UIColor.white.withAlphaComponent(0.05).cgColor,
-            UIColor.clear.cgColor
-        ]
+        
+        if isDarkMode {
+            glassOverlay.colors = [
+                UIColor.white.withAlphaComponent(0.08).cgColor,
+                UIColor.white.withAlphaComponent(0.03).cgColor,
+                UIColor.clear.cgColor
+            ]
+        } else {
+            glassOverlay.colors = [
+                UIColor.white.withAlphaComponent(0.15).cgColor,
+                UIColor.white.withAlphaComponent(0.05).cgColor,
+                UIColor.clear.cgColor
+            ]
+        }
+        
         glassOverlay.locations = [0.0, 0.5, 1.0]
         glassOverlay.startPoint = CGPoint(x: 0, y: 0)
         glassOverlay.endPoint = CGPoint(x: 1, y: 1)
@@ -44,11 +55,11 @@ extension UIView {
         
         layer.insertSublayer(glassOverlay, at: 1)
         
-        // Specular highlight for glass effect
+        // Specular highlight for glass effect - reduced in dark mode
         let specularLayer = CAGradientLayer()
         specularLayer.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height * 0.3)
         specularLayer.colors = [
-            UIColor.white.withAlphaComponent(0.25).cgColor,
+            UIColor.white.withAlphaComponent(isDarkMode ? 0.12 : 0.25).cgColor,
             UIColor.clear.cgColor
         ]
         specularLayer.startPoint = CGPoint(x: 0, y: 0)
@@ -57,19 +68,25 @@ extension UIView {
         
         layer.insertSublayer(specularLayer, at: 2)
         
-        // Configure view properties
+        // Configure view properties - different background for dark mode
         layer.cornerRadius = cornerRadius
-        backgroundColor = UIColor.white.withAlphaComponent(intensity * 0.1)
+        if isDarkMode {
+            backgroundColor = UIColor(white: 0.1, alpha: intensity * 0.2)
+        } else {
+            backgroundColor = UIColor.white.withAlphaComponent(intensity * 0.1)
+        }
         
-        // Soft shadow for depth
+        // Soft shadow for depth - lighter in dark mode
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = shadowOpacity
+        layer.shadowOpacity = isDarkMode ? shadowOpacity * 0.5 : shadowOpacity
         layer.shadowOffset = CGSize(width: 0, height: 8)
         layer.shadowRadius = 16
         
-        // Border for glass edge
+        // Border for glass edge - adjusted for dark mode
         layer.borderWidth = 0.5
-        layer.borderColor = UIColor.white.withAlphaComponent(0.2).cgColor
+        layer.borderColor = isDarkMode ? 
+            UIColor.white.withAlphaComponent(0.1).cgColor : 
+            UIColor.white.withAlphaComponent(0.2).cgColor
     }
     
     /// Adds a subtle glass shimmer animation
@@ -109,7 +126,7 @@ extension UIColor {
         // Dynamic colors that adapt to dark mode
         static let darkGray = UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor(red: 180/255, green: 185/255, blue: 190/255, alpha: 1.0)
+                return UIColor(red: 200/255, green: 205/255, blue: 210/255, alpha: 1.0) // Lighter for better contrast
             } else {
                 return UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0) // #54595f
             }
@@ -117,7 +134,7 @@ extension UIColor {
         
         static let blueGray = UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor(red: 160/255, green: 170/255, blue: 180/255, alpha: 1.0)
+                return UIColor(red: 180/255, green: 190/255, blue: 200/255, alpha: 1.0) // Lighter for better contrast
             } else {
                 return UIColor(red: 119/255, green: 135/255, blue: 153/255, alpha: 1.0) // #778799
             }
@@ -133,7 +150,7 @@ extension UIColor {
         
         static let lightBackground = UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1.0) // Dark background
+                return UIColor(red: 18/255, green: 18/255, blue: 20/255, alpha: 1.0) // Darker background for better contrast
             } else {
                 return UIColor(red: 246/255, green: 249/255, blue: 252/255, alpha: 1.0) // #f6f9fc
             }
@@ -142,7 +159,7 @@ extension UIColor {
         // New adaptive colors for form elements
         static let formBackground = UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0)
+                return UIColor(red: 30/255, green: 30/255, blue: 32/255, alpha: 1.0) // Darker for better separation
             } else {
                 return UIColor.white
             }
@@ -150,9 +167,34 @@ extension UIColor {
         
         static let formText = UIColor { traitCollection in
             if traitCollection.userInterfaceStyle == .dark {
-                return UIColor.white
+                return UIColor(red: 250/255, green: 250/255, blue: 252/255, alpha: 1.0) // Brighter white for better contrast
             } else {
                 return UIColor(red: 35/255, green: 31/255, blue: 32/255, alpha: 1.0)
+            }
+        }
+        
+        // New colors for better dark mode support
+        static let menuBackground = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 0.95)
+            } else {
+                return UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.95)
+            }
+        }
+        
+        static let menuIconBackground = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 0.9)
+            } else {
+                return UIColor.white.withAlphaComponent(0.9)
+            }
+        }
+        
+        static let menuIconTint = UIColor { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(red: 200/255, green: 205/255, blue: 210/255, alpha: 1.0)
+            } else {
+                return UIColor(red: 84/255, green: 89/255, blue: 95/255, alpha: 1.0)
             }
         }
         
@@ -192,15 +234,31 @@ extension UIButton {
         // Apply glass morphism
         applyLiquidGlass(intensity: 0.9, cornerRadius: 16, shadowOpacity: 0.2)
         
-        // Configure colors based on button type
+        // Configure colors based on button type and dark mode
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        
         if isPrimary {
-            backgroundColor = UIColor.Datacap.glassRed
+            // Primary button - red remains consistent but adjust for dark mode
+            if isDarkMode {
+                backgroundColor = UIColor.Datacap.primaryRed.withAlphaComponent(0.9)
+                layer.borderWidth = 1
+                layer.borderColor = UIColor.Datacap.primaryRed.cgColor
+            } else {
+                backgroundColor = UIColor.Datacap.glassRed
+            }
             setTitleColor(.white, for: .normal)
             setTitleColor(UIColor.white.withAlphaComponent(0.8), for: .highlighted)
         } else {
-            backgroundColor = UIColor.Datacap.glassGray
-            setTitleColor(UIColor.Datacap.nearBlack, for: .normal)
-            setTitleColor(UIColor.Datacap.darkGray, for: .highlighted)
+            // Secondary button - better contrast in dark mode
+            if isDarkMode {
+                backgroundColor = UIColor(red: 60/255, green: 60/255, blue: 62/255, alpha: 0.9)
+                setTitleColor(UIColor.Datacap.formText, for: .normal)
+                setTitleColor(UIColor.Datacap.darkGray, for: .highlighted)
+            } else {
+                backgroundColor = UIColor.Datacap.glassGray
+                setTitleColor(UIColor.Datacap.nearBlack, for: .normal)
+                setTitleColor(UIColor.Datacap.darkGray, for: .highlighted)
+            }
         }
         
         // Typography
