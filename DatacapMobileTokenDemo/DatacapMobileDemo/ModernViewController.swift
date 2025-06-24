@@ -23,9 +23,12 @@ class ModernViewController: UIViewController {
     
     private let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "logo.png")
+        // Set image as template to allow tinting
+        imageView.image = UIImage(named: "logo.png")?.withRenderingMode(.alwaysTemplate)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        // Make logo adapt to dark mode
+        imageView.tintColor = UIColor.Datacap.nearBlack
         return imageView
     }()
     
@@ -64,6 +67,8 @@ class ModernViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.95)
         view.layer.cornerRadius = 16
+        view.layer.borderWidth = 0  // Will be updated based on dark mode
+        view.layer.borderColor = UIColor.Datacap.darkGray.withAlphaComponent(0.3).cgColor
         return view
     }()
     
@@ -143,7 +148,7 @@ class ModernViewController: UIViewController {
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .darkContent
+        return traitCollection.userInterfaceStyle == .dark ? .lightContent : .darkContent
     }
     
     // MARK: - Setup
@@ -151,29 +156,16 @@ class ModernViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = UIColor.Datacap.lightBackground
         
-        // Background gradient
-        backgroundGradient.colors = [
-            UIColor.Datacap.lightBackground.cgColor,
-            UIColor.white.cgColor,
-            UIColor.Datacap.lightBackground.cgColor
-        ]
-        backgroundGradient.locations = [0, 0.5, 1]
+        // Background gradient - adapts to dark mode
+        updateBackgroundGradient()
         view.layer.insertSublayer(backgroundGradient, at: 0)
         
         // Glass morphism container
         containerView.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.8)
         containerView.applyLiquidGlass(intensity: 0.9, cornerRadius: 32, shadowOpacity: 0.1)
         
-        // Setup button with dark red color like Save Configuration
-        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
-        getTokenButton.backgroundColor = darkRed
-        getTokenButton.setTitleColor(.white, for: .normal)
-        getTokenButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        getTokenButton.layer.cornerRadius = 16
-        getTokenButton.layer.shadowColor = darkRed.cgColor
-        getTokenButton.layer.shadowOpacity = 0.2
-        getTokenButton.layer.shadowOffset = CGSize(width: 0, height: 4)
-        getTokenButton.layer.shadowRadius = 8
+        // Setup button with adaptive styling
+        updateButtonAppearance()
         getTokenButton.addTarget(self, action: #selector(getTokenTapped), for: .touchUpInside)
         
         // Setup floating menu
@@ -312,25 +304,7 @@ class ModernViewController: UIViewController {
         backgroundGradient.frame = view.bounds
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        // Update colors when switching between light/dark mode
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateColorsForCurrentMode()
-        }
-    }
     
-    private func updateColorsForCurrentMode() {
-        // Update background gradient
-        backgroundGradient.colors = [
-            UIColor.Datacap.lightBackground.cgColor,
-            UIColor.systemBackground.cgColor,
-            UIColor.Datacap.lightBackground.cgColor
-        ]
-        
-        // The rest of the colors will update automatically because we're using dynamic colors
-    }
     
     // MARK: - Actions
     
@@ -438,6 +412,10 @@ class ModernViewController: UIViewController {
     
     private func setupFeatureCards() {
         print("🎯 Setting up feature cards for iPad")
+        
+        // Clear existing cards first
+        featureCardsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
         // Create three feature cards for iPad
         let features = [
             ("shield.checkered", "Enterprise Security", "Bank-grade encryption with PCI DSS Level 1 compliance"),
@@ -456,6 +434,11 @@ class ModernViewController: UIViewController {
         card.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.9)
         card.layer.cornerRadius = 16
         card.applyLiquidGlass(intensity: 0.8, cornerRadius: 16, shadowOpacity: 0.08)
+        
+        // Add border in dark mode for better separation
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        card.layer.borderWidth = isDarkMode ? 0.5 : 0
+        card.layer.borderColor = UIColor.Datacap.darkGray.withAlphaComponent(0.3).cgColor
         
         let iconView = UIImageView()
         iconView.image = UIImage(systemName: icon)
@@ -590,6 +573,79 @@ class ModernViewController: UIViewController {
         UIView.animate(withDuration: 0.3) {
             alertView.alpha = 1
             alertCard.transform = .identity
+        }
+    }
+    
+    private func updateBackgroundGradient() {
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        
+        if isDarkMode {
+            backgroundGradient.colors = [
+                UIColor.Datacap.lightBackground.cgColor,
+                UIColor(red: 25/255, green: 25/255, blue: 27/255, alpha: 1.0).cgColor,
+                UIColor.Datacap.lightBackground.cgColor
+            ]
+        } else {
+            backgroundGradient.colors = [
+                UIColor.Datacap.lightBackground.cgColor,
+                UIColor.white.cgColor,
+                UIColor.Datacap.lightBackground.cgColor
+            ]
+        }
+        backgroundGradient.locations = [0, 0.5, 1]
+    }
+    
+    private func updateButtonAppearance() {
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        
+        if isDarkMode {
+            // Brighter red in dark mode for better visibility
+            let brightRed = UIColor(red: 180/255, green: 30/255, blue: 40/255, alpha: 1.0)
+            getTokenButton.backgroundColor = brightRed
+            getTokenButton.layer.shadowColor = brightRed.cgColor
+            getTokenButton.layer.borderWidth = 1
+            getTokenButton.layer.borderColor = UIColor(red: 220/255, green: 50/255, blue: 60/255, alpha: 0.5).cgColor
+        } else {
+            let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
+            getTokenButton.backgroundColor = darkRed
+            getTokenButton.layer.shadowColor = darkRed.cgColor
+            getTokenButton.layer.borderWidth = 0
+        }
+        
+        getTokenButton.setTitleColor(.white, for: .normal)
+        getTokenButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        getTokenButton.layer.cornerRadius = 16
+        getTokenButton.layer.shadowOpacity = 0.2
+        getTokenButton.layer.shadowOffset = CGSize(width: 0, height: 4)
+        getTokenButton.layer.shadowRadius = 8
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            // Update UI elements for dark mode change
+            updateBackgroundGradient()
+            updateButtonAppearance()
+            floatingMenu.updateModeAppearance()
+            
+            // Update logo tint color
+            logoImageView.tintColor = UIColor.Datacap.nearBlack
+            
+            // Update value prop view border
+            valuePropView.layer.borderWidth = traitCollection.userInterfaceStyle == .dark ? 0.5 : 0
+            valuePropView.layer.borderColor = UIColor.Datacap.darkGray.withAlphaComponent(0.3).cgColor
+            
+            // Force status bar update
+            setNeedsStatusBarAppearanceUpdate()
+            
+            // Update container view if needed
+            containerView.backgroundColor = UIColor.Datacap.formBackground.withAlphaComponent(0.8)
+            
+            // Re-setup feature cards on iPad
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                setupFeatureCards()
+            }
         }
     }
 }

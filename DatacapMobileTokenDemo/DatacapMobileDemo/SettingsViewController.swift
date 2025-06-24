@@ -89,14 +89,6 @@ class SettingsViewController: UIViewController {
         animateIn()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        // Update background colors when switching between light/dark mode
-        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-            updateBackgroundColors()
-        }
-    }
     
     private func updateBackgroundColors() {
         // Update container backgrounds
@@ -189,7 +181,11 @@ class SettingsViewController: UIViewController {
         // Mode selector
         modeSegmentedControl.selectedSegmentIndex = 0
         modeSegmentedControl.addTarget(self, action: #selector(modeChanged), for: .valueChanged)
-        modeSegmentedControl.backgroundColor = UIColor.Datacap.lightBackground
+        // Configure segmented control for dark mode
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        modeSegmentedControl.backgroundColor = isDarkMode ? 
+            UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0) : 
+            UIColor.Datacap.lightBackground
         modeSegmentedControl.selectedSegmentTintColor = UIColor.Datacap.primaryRed.withAlphaComponent(0.8)
         let normalTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.Datacap.darkGray]
         let selectedTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -249,18 +245,9 @@ class SettingsViewController: UIViewController {
         endpointHelpLabel.textColor = UIColor.Datacap.blueGray
         endpointHelpLabel.numberOfLines = 0
         
-        // Save button
+        // Save button - adaptive for dark mode
         saveButton.setTitle("Save Configuration", for: .normal)
-        let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
-        saveButton.backgroundColor = darkRed
-        saveButton.setTitleColor(.white, for: .normal)
-        saveButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        saveButton.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16
-        saveButton.contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
-        saveButton.layer.shadowColor = darkRed.cgColor
-        saveButton.layer.shadowOpacity = 0.2
-        saveButton.layer.shadowOffset = CGSize(width: 0, height: 4)
-        saveButton.layer.shadowRadius = 8
+        updateSaveButtonAppearance()
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
         
         // Info card
@@ -672,6 +659,51 @@ class SettingsViewController: UIViewController {
     }
     
     // MARK: - Helpers
+    
+    private func updateSaveButtonAppearance() {
+        let isDarkMode = traitCollection.userInterfaceStyle == .dark
+        
+        if isDarkMode {
+            // Brighter red in dark mode for better visibility
+            let brightRed = UIColor(red: 180/255, green: 30/255, blue: 40/255, alpha: 1.0)
+            saveButton.backgroundColor = brightRed
+            saveButton.layer.shadowColor = brightRed.cgColor
+            saveButton.layer.borderWidth = 1
+            saveButton.layer.borderColor = UIColor(red: 220/255, green: 50/255, blue: 60/255, alpha: 0.5).cgColor
+        } else {
+            let darkRed = UIColor(red: 120/255, green: 20/255, blue: 30/255, alpha: 1.0)
+            saveButton.backgroundColor = darkRed
+            saveButton.layer.shadowColor = darkRed.cgColor
+            saveButton.layer.borderWidth = 0
+        }
+        
+        saveButton.setTitleColor(.white, for: .normal)
+        saveButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        saveButton.layer.cornerRadius = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 16
+        saveButton.contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
+        saveButton.layer.shadowOpacity = 0.2
+        saveButton.layer.shadowOffset = CGSize(width: 0, height: 4)
+        saveButton.layer.shadowRadius = 8
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            // Update UI elements for dark mode change
+            updateBackgroundColors()
+            updateSaveButtonAppearance()
+            
+            // Update segmented control
+            let isDarkMode = traitCollection.userInterfaceStyle == .dark
+            modeSegmentedControl.backgroundColor = isDarkMode ? 
+                UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0) : 
+                UIColor.Datacap.lightBackground
+            
+            // Update info card background
+            infoCardView.backgroundColor = UIColor.Datacap.primaryRed.withAlphaComponent(isDarkMode ? 0.1 : 0.05)
+        }
+    }
     
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
