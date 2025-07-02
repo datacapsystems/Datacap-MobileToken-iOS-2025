@@ -92,6 +92,7 @@ Temporary Items
 
 # Claude AI assistant files
 .claude/
+CLAUDE.md
 
 # Development scripts (keep them private)
 *.sh
