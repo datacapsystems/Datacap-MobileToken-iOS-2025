@@ -123,3 +123,6 @@ ExportOptions.plist
 # Backup files
 *.backup
 
+
+# Local Xcode build logs (contain local machine paths)
+xcodebuild_output.txt
